@@ -6,11 +6,11 @@ Work carried out by:
 -->
 # *HCI Project Logbook*
 
-**Title of the project**: [Title goes here]
+**Title of the project**: Gestão de complexos desportivos
 **Team:**
-- Student 1: [Name and Number] 
-- Student 2; [Name and Number]
-- Student 3: [Name and Number]
+- Student 1: Joaquim Martins, 115931
+- Student 2; Guilherme Gabino, 114947
+- Student 3: João Pinho, 113602
 
 ---
 # [A. Stage 0 - Planning and Problem Identification](stage0_planning/a_stage_0_planning_problem_identification.md)
