@@ -40,7 +40,7 @@
 ![alt text](image-3.png)
 
 ## Avaliações Online
-
 Cada campo/pavilhão tem reviews, então as reviews dependem do campo selecionado. 
-Exemplo das reviews de o campo AAPP Rollersky Futebol 5 - Amadora
+Exemplo das reviews do campo AAPP Rollersky, Futebol de 5 na Amadora.
+
 ![alt text](<Captura de ecrã de 2025-02-23 16-47-20.png>)
