@@ -2,18 +2,20 @@
 
 ---
 
-
 # A. Stage 0 - Planning and Problem Identification
->	Here you will briefly explain the domain of the problem you identified, briefly identify general challenges and, then, state you problem
+>  O domínio do problema é o desporto.
+>  Os objetivos são facilitar o acesso ao desporto (acesso a lugares para a prática do mesmo) ao cliente, ou seja o problema é a falta de organização em complexos desportivos.
 
 # Context
-[What is the context for your work. What area of application. It can be travelling, pet treatment, shopping. State the overall context and why it is interesting to think about it.]
+A àrea de aplicação é o desporto, a ideia do grupo surgiu devido às más experiências em complexos desportivos dos membros do grupo, é uma àrea interessante pois não existem muitas soluções para este problema. 
 
 # Challenges
-[What are aspects that remain a challenge? What is difficult to do? What could profit from a more customizable approach?]
+Os maiores objetivos são a marcação de espaços para prática de desporto de uma forma mais intuitiva, fácil e mais eficaz. 
+Muitos complexos desportivos utilizam a marcação por telefonemas ou até a deslocação até ao mesmo o que gera desorganização e inconveniência, que pode gerar desinteresse por parte das pessoas que procuram o serviço.
+Com esta abordagem os complexos desportivos ganham visibilidade podendo atrair mais pessoas a praticar desporto utilizando os seus serviços.
 
 # The goal
-[In a short sentence state what is the problem you wish to address]
+Facilitar a prática do desporto.
 
 
 [Back to main Logbook Page](hci_logbook.md)
