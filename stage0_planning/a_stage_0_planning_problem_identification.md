@@ -7,7 +7,7 @@
 >  Os objetivos são facilitar o acesso ao desporto (acesso a lugares para a prática do mesmo) ao cliente, ou seja o problema é a falta de organização em complexos desportivos.
 
 # Context
-A àrea de aplicação é o desporto, a ideia do grupo surgiu devido às más experiências em complexos desportivos dos membros do grupo, é uma àrea interessante pois não existem muitas soluções para este problema. 
+A área de aplicação é o desporto, a ideia do grupo surgiu devido às suas más experiências na tentativa de uso de complexos desportivos, é uma área interessante pois não existem muitas soluções para este problema. 
 
 # Challenges
 Os maiores objetivos são a marcação de espaços para prática de desporto de uma forma mais intuitiva, fácil e mais eficaz. 
