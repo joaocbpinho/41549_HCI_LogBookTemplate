@@ -9,13 +9,13 @@
 ---
 
 ## **Visão Geral da Tarefa**
-### **O que costuma fazer quando pretende praticar um desporto a seu gosto?**
+### **O que costuma fazer quando pretende praticar um desporto, em que necessita de reserva , a seu gosto?**
 
 
 ---
 
 ## **Dificuldades do Utilizador**
-### **Quais são os principais problemas que enfrentam atualmente para a prática de desporto?**
+### **Quais são os principais problemas que enfrentam atualmente para a prática desse mesmo desporto?**
 ### **Alguma vez esses problemas impediram, desmotivaram à prática de desporto?**  
 
 ---
@@ -40,7 +40,7 @@
 
 ## **Expectativas para uma Nova Solução**
 ### **Como seria uma solução ideal?**
-### **Quais são as preocupações em relação às novas soluções?**
+
 
 
 
