@@ -18,7 +18,7 @@ Summary of each usability heuristic: [here](https://media.nngroup.com/media/arti
 
 | **Issue**                                             | **Severity** | Recommendation                                                        |
 | ----------------------------------------------------------- | ------------------ | --------------------------------------------------------------------- |
-| Falta de feedback quando todos os elementos são carregados | 2                  | Exibir uma mensagem indicando que não há mais campos para carregar |
+| Falta de feedback quando todos os elementos são carregados | 1        | Exibir uma mensagem indicando que não há mais campos para carregar |
 
 # 2 Match Between System and The Real World
 
@@ -77,7 +77,7 @@ Summary of each usability heuristic: [here](https://media.nngroup.com/media/arti
 
 | **Issue**                                                                                                           | **Severity** | Recommendation                                                                                                                 |
 | ------------------------------------------------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
-| Informações importantes (ex: regras, política de cancelamento) não são facilmente acessíveis no processo de reserva | 3                  | ostrar um resumo das regras e políticas antes da confirmação da reserva, em vez de obrigar o utilizador a lembrar-se delas. |
+| Informações importantes (ex: regras, política de cancelamento) não são facilmente acessíveis no processo de reserva | 3                  | Mostrar um resumo das regras e políticas antes da confirmação da reserva, em vez de obrigar o utilizador a lembrar-se delas. |
 
 # 7 Flexibility and Efficiency of Use
 
