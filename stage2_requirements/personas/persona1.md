@@ -14,7 +14,7 @@ O dia do João começa cedo com aulas ou trabalhos de grupo. Passa grande parte 
 ## Goals & Needs
 
 * Quer uma forma rápida e simples de encontrar e reservar campos desportivos perto de si.
-* Precisa de uma plataforma intuitiva para verificar disponibilidades e dividir os custos com os amigos.
+* Precisa de uma plataforma simples e fácil de usar para verificar disponibilidades e dividir os custos com os amigos.
 * Gostaria de receber sugestões de horários alternativos caso o campo pretendido esteja ocupado.
 * Procura uma experiência sem complicações – sem necessidade de telefonemas ou trocas intermináveis de mensagens.
 

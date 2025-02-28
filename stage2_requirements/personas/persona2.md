@@ -13,7 +13,7 @@ O Manuel chega ao seu espaço por volta das 9h00 para verificar as reservas do d
 
 ## Goals & Needs
 
-* Quer uma plataforma que facilite a gestão das reservas de sessões de escalada e instrutores.
+* Quer uma plataforma que facilite a gestão das reservas de sessões de escalada.
 * Precisa de um sistema que permita bloquear horários específicos para manutenção da parede de escalada ou eventos privados.
 * Pretende reduzir a necessidade de chamadas telefónicas, tornando as marcações mais automáticas.
 * Gostaria de atrair mais clientes ao disponibilizar um sistema moderno e fácil de usar para marcações online.
