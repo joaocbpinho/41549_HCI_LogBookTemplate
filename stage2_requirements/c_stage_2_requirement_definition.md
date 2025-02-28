@@ -21,7 +21,7 @@
 | **Goals**        | Quer uma forma rápida e simples de encontrar e reservar campos desportivos perto de si.       |
 | **Pain Points**  |  O processo de marcação muitas vezes exige chamadas telefónicas ou deslocações.              |
 | **Motivation**   |*"Quero marcar um jogo rapidamente e sem complicações. Só preciso de saber onde há campos livres e dividir os custos com os amigos sem chatices."*               |
-| **Full Profile** | [📄 João Esteves](personas/persona1.md) |
+| **Full Profile** | [João Esteves](personas/persona1.md) |
 
 ---
 ## Persona: [Persona Name] 
@@ -77,7 +77,7 @@ Com o novo sistema, Manuel reduziu o número de chamadas em mais de 70% e perceb
  - Enviar notificações aos usuários sobre a confirmação da reserva.
  - Divisão de custos com todos os participantes
  - Caução caso seja cancelado 24 horas antes da reserva.
- - 
+ - Espaço para administradores de complexos desportivos.
 
 
 ## C.2. Non-functional requirements 
