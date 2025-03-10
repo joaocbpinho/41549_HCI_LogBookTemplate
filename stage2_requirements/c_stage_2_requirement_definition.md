@@ -24,7 +24,7 @@
 | **Full Profile** | [João Esteves](personas/persona1.md) |
 
 ---
-## Persona: [Persona Name] 
+## Persona: Manuel Ferreira
 ### Summary 
 | Attribute        | Details                                       |
 | ---------------- | --------------------------------------------- |
@@ -46,25 +46,20 @@
 
 # Scenarios
 
+## Scenario 1: João organizes a football game
+João wants to organize a football game with his friends, but the manual process is time-consuming. He discovers an app that allows him to search for available fields, view schedules and prices, and invite friends directly.
 
-## Scenario 1: João organiza um jogo de futebol
-João adorava jogar futebol, mas com o ritmo acelerado da universidade, organizar uma partida com os amigos tornava-se um verdadeiro desafio. Entre encontrar um campo disponível, coordenar os horários do grupo e dividir os custos, o processo costumava ser demorado e frustrante. 
+He selects a field, invites his friends via WhatsApp, and the costs are automatically divided. On the day of the game, he receives a reminder with the booking details. The entire process happens without phone calls or complications.
 
-Uma tarde, enquanto estudava no campus, João recebeu uma notificação de uma nova aplicação de reservas desportivas recomendada por um colega. Intrigado, decidiu experimentá-la. Ao abrir a app, foi recebido por uma interface simples, que lhe pediu para indicar o desporto que queria praticar e a sua localização. Em poucos segundos, a aplicação sugeriu campos de futebol disponíveis perto de si, com horários e preços claros.
+## Scenario 2: Manuel modernizes his sports complex
+Manuel manages a sports complex and spends a lot of time with manual bookings. He adopts a platform that allows clients to book climbing sessions online, view available times, and receive automatic confirmations.
 
-João escolheu um horário conveniente, e a app ofereceu-lhe a opção de convidar os amigos diretamente pelo WhatsApp. Em vez de longas trocas de mensagens, o grupo viu automaticamente as opções disponíveis e confirmou a participação com um clique. A plataforma até sugeriu um método integrado de divisão de custos, eliminando a necessidade de cobranças desconfortáveis. 
+He sets maintenance blocks and defines rules to avoid no-shows. The platform reduces phone calls and improves space occupancy, allowing Manuel to focus on improving services.
 
-No dia do jogo, João recebeu uma notificação de lembrete com o endereço e horário da reserva. Quando chegou ao campo, percebeu que a experiência foi completamente sem complicações – sem chamadas telefónicas, sem confusões com pagamentos e sem preocupações com disponibilidade. Sentiu que finalmente tinha encontrado uma solução prática para manter a sua paixão pelo futebol viva, mesmo com a rotina intensa da universidade. 
+## Scenario 3: João is invited to a game
+João receives a notification from a friend who organized a football game through the app. The message includes the time, location, and a link to confirm participation.
 
----
-## Scenario 2 : Manuel moderniza o seu complexo desportivo
-Gerir um complexo desportivo era o sonho de Manuel, mas o processo manual de marcações tornava-se cada vez mais difícil. Todos os dias, recebia chamadas de clientes a perguntar sobre horários disponíveis, instrutores e eventos, enquanto tentava coordenar a manutenção e gerir a equipa. O telefone tocava constantemente, tornando difícil focar-se noutras áreas do negócio.
-
-Um dia, um amigo recomendou-lhe uma plataforma de gestão de reservas desportivas. Manuel decidiu testar. Assim que criou o perfil do seu complexo, pôde configurar horários disponíveis, bloquear períodos para manutenção e definir regras para evitar reservas não comparecidas. Pela primeira vez, sentiu que tinha controlo total sobre a agenda do seu espaço sem depender de chamadas.
-
-Os clientes agora podiam reservar sessões de escalada online, escolher entre opções com ou sem instrutor e receber confirmações automáticas. Se um horário estivesse cheio, a plataforma sugeria alternativas disponíveis. Além disso, Manuel conseguia enviar notificações instantâneas sempre que houvesse uma alteração, evitando confusões.
-
-Com o novo sistema, Manuel reduziu o número de chamadas em mais de 70% e percebeu um aumento na taxa de ocupação, já que os clientes tinham mais facilidade em marcar e pagar antecipadamente. Agora, em vez de passar o dia ao telefone, podia focar-se no que realmente importava: melhorar a experiência do seu espaço e atrair mais apaixonados pela escalada.
+Already having an account on the app and money in his virtual wallet, João accepts the invitation with a click, and the reservation fee is automatically split between the participants. On the day of the game, he receives a reminder with the event details. The process is simple, with no need for lengthy messages or concerns about payments.
 
 # Requirements
 

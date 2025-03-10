@@ -70,45 +70,57 @@ A escala de gravidade usada foi a escala seguinte [escala de severidade](heurist
 
 | **Issue**       | **114947** | 115931 | 113602 | Recommendations                             |
 | --------------- | ------------ | -------- | -------- | ------------------------------------------- |
-| Estado de agendamento pouco compreensível | 3            | X     | X     | Em alguns campos atualizar o calendário para não ser possível marcar quando já está reservado |
-| Botão para retroceder | 2           | 3      |  0       | Colocar botão para retroceder , para não ser necessário estar sempre a voltar à página inicial                  |
-|Mistura de idiomas pouco claros           |      X        |      2   | X           |  Colocar botão PT/EN de modo a facilitar os utilizadores que não falam português                                           |
-| Problema no agendamento  | 2  | X |  3| Colocar "slots" em vez de 30 a 30 minutos, colocar 1 hora pois quando se escolhe uma "slot" de 30 minutos automaticamente escolhe a meia-hora a seguir ficando uma hora reservada,  que pode levar a um engano do utilizador, dependendo dos campos. |
-| Comodidades pouco visiveis | 2 | 3 | X| Filtrar campos por comodidades de modo a facilitar a procurar de um campo com uma comodidade específica.|
-| Inconsistência na linguagem usada (exemplo: mistura de termos técnicos e informais no mesmo contexto) | X | 3 |X | Unificar a terminologia usada no site, garantindo que segue padrões reconhecidos na indústria.|
-| Informações importantes (ex: regras, política de cancelamento) não são facilmente acessíveis no processo de reserva | X | 3 |X| Mostrar um resumo das regras e políticas antes da confirmação da reserva, em vez de obrigar o utilizador a lembrar-se delas. |
-| Falta de personalização da experiência para utilizadores frequentes (ex: sugestões automáticas com base em reservas anteriores) | X | 2 | X| Implementar sugestões inteligentes baseadas no histórico de reservas do utilizador para facilitar novas marcações.|
-| Destaque insuficiente para informações realmente importantes (ex: preço do campo pode não ser imediatamente visível) | X| 3 |X                  | Tornar as informações essenciais mais destacadas, como usar negrito, cor diferente ou ícones para facilitar a identificação rápida. |
-| Ligação à internet | X| X | 2|        Colocar um erro quando não existe ligação à internet, apenas aparece uma página em branco          |
-| Adicionar método de pagamento | X| X|  0         | Colocar um erro mais vísivel, quando não é válido apenas aparece o número do cartão (ou o que estiver errado) a vermelho              |
-| Página de Ajuda Pouco Vísivel |4 |  2 |0          | Colocar a página de ajuda na parte superior da página                |
-|Os títulos das seções são genéricos e podem não ser intuitivos para novos utilizadores| 3      | X | X             | Reformular os títulos para serem mais descritivos, por exemplo, "Como recuperar minha conta" em vez de "Questões relativas à minha Conta". |
+| Unclear booking status | 3            | X     | X     | In some fields, update the calendar to prevent booking when already reserved. |
+| Back button | 2           | 3      |  0       | Add a back button to avoid having to return to the homepage repeatedly. |
+| Unclear language mix |      X        |      2   | X           | Add a PT/EN button to facilitate navigation for non-Portuguese-speaking users. |
+| Booking issue  | 2  | X |  3| Use "slots" of 1 hour instead of 30-minute increments, as selecting a 30-minute slot currently reserves the next half-hour automatically, which can cause user confusion depending on the field. |
+| Filter by facilities (e.g., showers, complexes with available sports equipment for reservation)  | 2 | 3 | X| Filter fields by amenities to make it easier to find a field with a specific feature. |
+| Important information (e.g., rules, cancellation policy) not easily accessible during the booking process | X | 3 |X| Show a summary of the rules and policies before confirming the booking, instead of requiring the user to remember them. |
+| Lack of personalized experience for frequent users (e.g., automatic suggestions based on past bookings) | X | 2 | X| Implement smart suggestions based on the user's booking history to facilitate new reservations. |
+| Internet connection | X| X | 2| Display an error message when there is no internet connection, instead of just showing a blank page. |
+| Help page not easily visible |2 |  2 |0          | Move the help page to the top of the screen. |
+
+
+### - SWOT Analysis - Field Application
+
+| **SWOT Element** | **HCI Focus** | **Example in UX/UI** |
+|-----------------|-------------|--------------------|
+| **Strengths** | Simple and effective application that delivers what the user needs without difficulty. | "The clear and simple interface makes navigation and booking easy." |
+| **Weaknesses** | Unclear booking status, lack of a back button, mixed languages, issues managing time slots, important information not easily accessible. | "The lack of a back button forces users to return to the homepage, making navigation difficult." |
+| **Opportunities** | Implementation of a PT/EN button, improved visibility of essential information, automatic suggestions based on past bookings. | "Adding a PT/EN button would help non-Portuguese-speaking users navigate the app more easily." |
+| **Threats** | Competition from other field booking applications that solve the cost-splitting issue. | "Applications that handle cost-splitting more efficiently may attract users away from this platform." |
 
 ---
 ### - Cognitive Walkthrough
 
 #### Method
-[Briefly described  the method you used for the Cognitive Walkthrough analysis. ]
-
+The method used was Streamlined Cognitive walkthrough.
 #### Task Selection and Task Analysis
+The selected tasks (booking a 7-a-side football field and choosing a Padel court with available equipment for reservation) were chosen because they are essential to the application.
 
-[Which tasks did you select and why. What are the subtasks entailed for each ]
+
+
+
+
 
 
 | Task                        | Subtasks                               |
 | --------------------------- | -------------------------------------- |
-| **1. Reservar campo  de futebol de 7** | Escolher a localidade do campo     |
-|                             | Escolher o campo pretendido |
-|                             | Adicionar a hora da reserva     |
-|                             | Proceder para o checkout                  |
+| **1. Book a 7-a-side football field** | Choose the field location     |
+|                             | Select the desired field |
+|                             | Add the reservation time     |
+|                             | Proceed to checkout                  |
+
+
+
 
 
 | Task                          | Subtasks                                |
 | ----------------------------- | --------------------------------------- |
-| **2. Escolher um campo de Padel que tenha equipamento para reserva** | Escolher a localidade do campo|
-|                               | Escolher um campo que tenha equipamento disponível            |
-|                               | Adicionar a hora da reserva             |
-|                               | Proceder para o checkout       |
+| **2. Choose a Padel court with available equipment for reservation** | Choose the field location |
+|                               | Select a court with available equipment            |
+|                               | Add the reservation time             |
+|                               | Proceed to checkout                  |
 
 
 #### Results
