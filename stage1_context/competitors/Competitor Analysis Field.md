@@ -1,46 +1,46 @@
-# Análise de Concorrente: Field
-## Informações Gerais
-- **Nome do Sistema:** Field
-- **Empresa/Desenvolvedor:** FIELD MANAGEMENT TECHNOLOGY, LDA
-- **Website/Página do Produto:** https://field.pt/
-- **Versão/Data de Lançamento:** Abril de 2020 (última atualização)
-- **Plataforma(s) Suportada(s):** WebApp, Aplicação Móvel (iOS, Android)
-- **Público-Alvo:** Praticantes de desportos (Futsal, Futebol, Ténis, Padel, Squash)
+# Competitor Analysis: Field
+## General Information
+- **Name of System:** Field
+- **Company/Developer:** FIELD MANAGEMENT TECHNOLOGY, LDA
+- **Website/Product Page:** https://field.pt/
+- **Version/Release Date:** April 2020 (last update)
+- **Platform(s) Supported:** WebApp, Mobile Application (iOS, Android)
+- **Target Audience:** Sports practitioners (Futsal, Football, Tennis, Padel, Squash)
 
 ---
-## Funcionalidade Principal
+## Core Functionality
 
-**Objetivo Principal:** O Field é uma plataforma online destinada a facilitar a reserva de campos desportivos em Portugal, incluindo futebol, padel e ténis.
+**Primary Purpose:** Field is an online platform designed to facilitate the booking of sports fields in Portugal, including football, padel, and tennis.
 
-**Principais Funcionalidades:**
-- Reserva online, é possível fazer a reserva online de um campo/pavilhão com pagamento por MBWay ou cartão de crédito.
-- Indica a localização de cada campo/pavilhão.
-- Fotos dos campos/pavilhões.
-- Indica as comodidades que o respetivo campo/pavilhão tem (chuveiros, bancadas, Wi-Fi, Esplanada, etc.), bem como as regras do mesmo (não se pode fumar, não se pode usar pitons de alumínio). Tanto as comodidades como as regras estão adaptadas para cada campo.
-- Conhecimento da possibilidade de cancelamento.
+**Key Features:**
+- Online booking: Users can book a field/pavilion online and pay via MBWay or credit card.
+- Displays the location of each field/pavilion.
+- Provides photos of the fields/pavilions.
+- Shows the available amenities (showers, stands, Wi-Fi, terrace, etc.) as well as field-specific rules (e.g., no smoking, no aluminum cleats).
+- Information on cancellation policies.
 
-**O que torna o sistema único:**
--   Sistema que funciona no país inteiro incluindo, Madeira e os Açores
+**Unique Selling Points (USPs):**
+- The system operates nationwide, including Madeira and the Azores.
 
 
-**Limitações/Pontos Fracos:**
-- Não é possível dividir o pagamento.
-- Não é possível reservar equipamento (raquetes, bolas, coletes, etc.) aquando a reserva do campo.
-- Não é possível a reserva de parque de estacionamento.
-- Falta de variedade de desportos.
-- Falta de reservas periódicas.
+**Limitations/Weaknesses:**
+- Payment cannot be split.
+- It is not possible to book equipment (rackets, balls, vests, etc.) when reserving a field.
+- No option to reserve parking.
+- Limited variety of sports.
+- No option for recurring bookings.
 
 ---
 
-## Capturas de Ecrã
+## Screenshots
 
 ![alt text](image.png)
 ![alt text](image-2.png)
 ![alt text](image-1.png)
 ![alt text](image-3.png)
 
-## Avaliações Online
-Cada campo/pavilhão tem reviews, então as reviews dependem do campo selecionado. 
-Exemplo das reviews do campo AAPP Rollersky, Futebol de 5 na Amadora.
+## Online Reviews
+Each field/pavilion has its own reviews, so the ratings depend on the selected field.
+Example of reviews for the AAPP Rollersky 5-a-side football field in Amadora:
 
 ![alt text](<Captura de ecrã de 2025-02-23 16-47-20.png>)

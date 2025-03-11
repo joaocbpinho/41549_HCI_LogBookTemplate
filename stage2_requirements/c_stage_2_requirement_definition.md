@@ -16,11 +16,11 @@
 | **Photo**        | ![Persona Name\|100](personas/persona1_joao.png)  |
 | **Name**         | João Esteves                       |
 | **Age**          | 21                                 |
-| **Occupation**   | Estudante                           |
+| **Occupation**   | Student                           |
 | **Location**     | Aveiro, Portugal                               |
-| **Goals**        | Quer uma forma rápida e simples de encontrar e reservar campos desportivos perto de si.       |
-| **Pain Points**  |  O processo de marcação muitas vezes exige chamadas telefónicas ou deslocações.              |
-| **Motivation**   |*"Quero marcar um jogo rapidamente e sem complicações. Só preciso de saber onde há campos livres e dividir os custos com os amigos sem chatices."*               |
+| **Goals**        | Wants a fast and simple way to find and book sports fields nearby.      |
+| **Pain Points**  |  The booking process often requires phone calls or in-person visits.            |
+| **Motivation**   |*"I want to book a game quickly and without hassle. I just need to know where free fields are and split costs with friends effortlessly."*               |
 | **Full Profile** | [João Esteves](personas/persona1.md) |
 
 ---
@@ -31,11 +31,11 @@
 | **Photo**        | ![Persona Name](personas/persona2_Manuel.jpg)            |
 | **Name**         | Manuel Ferreira                             |
 | **Age**          | 45|
-| **Occupation**   | Gestor de Complexo Desportivo                   |
+| **Occupation**   | Sports Complex Manager                   |
 | **Location**     | Porto, Portugal                           |
-| **Goals**        |  Quer uma plataforma que facilite a gestão das reservas de sessões de escalada.           |
-| **Pain Points**  | Perda de tempo com reservas manuais e gestão de horários desorganizada              |
-| **Motivation**   | *"Quero gerir o meu espaço de escalada de forma mais eficiente e moderna. Se os clientes puderem marcar online e eu conseguir atualizar horários facilmente, consigo focar-me em melhorar o serviço e atrair mais pessoas."*               |
+| **Goals**        |  Wants a platform that simplifies the management of climbing session bookings.   |
+| **Pain Points**  | Wastes time with manual reservations and disorganized scheduling.       |
+| **Motivation**   | *"I want to manage my climbing facility more efficiently and modernly. If customers can book online and I can update schedules easily, I can focus on improving the service and attracting more people."*               |
 | **Full Profile** | [Manuel Ferreira ](personas/persona2.md) |
 
 ---
@@ -68,16 +68,16 @@ Already having an account on the app and money in his virtual wallet, João acce
 
 
 ## C.1. Functional requirements
- - Exibir uma lista de campos desportivos disponíveis para reserva. 
- - Enviar notificações aos usuários sobre a confirmação da reserva.
- - Divisão de custos com todos os participantes
- - Caução caso seja cancelado 24 horas antes da reserva.
- - Espaço para administradores de complexos desportivos.
+ - Display a list of available sports fields for booking.
+- Send notifications to users about booking confirmations.
+- Cost splitting among all participants.
+- Deposit required if cancellation occurs within 24 hours before the booking.
+- Dedicated space for sports complex administrators.
 
 
 ## C.2. Non-functional requirements 
--  A aplicação tem de funcionar 24/7
--  A aplicação tem que ser responsiva e rápida
+- The application must be available 24/7.
+- The application must be responsive and fast.
 
 ---
 [Back to main Logbook Page](hci_logbook.md)

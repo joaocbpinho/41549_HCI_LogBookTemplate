@@ -3,19 +3,19 @@
 ---
 
 # A. Stage 0 - Planning and Problem Identification
->  O domínio do problema é o desporto.
->  Os objetivos são facilitar o acesso ao desporto (acesso a lugares para a prática do mesmo) ao cliente, ou seja o problema é a falta de organização em complexos desportivos.
+>The problem domain is sports.
+>The objectives are to facilitate access to sports (access to places for practicing them) for clients. In other words, the problem is the lack of organization in sports complexes.
 
 # Context
-A área de aplicação é o desporto, a ideia do grupo surgiu devido às suas más experiências na tentativa de uso de complexos desportivos, é uma área interessante pois não existem muitas soluções para este problema. 
+The application area is sports. The group's idea arose due to their bad experiences when trying to use sports complexes. It is an interesting area because there are not many solutions to this problem.
 
 # Challenges
-Os maiores objetivos são a marcação de espaços para prática de desporto de uma forma mais intuitiva, fácil e mais eficaz. 
-Muitos complexos desportivos utilizam a marcação por telefonemas ou até a deslocação até ao mesmo o que gera desorganização e inconveniência, que pode gerar desinteresse por parte das pessoas que procuram o serviço.
-Com esta abordagem os complexos desportivos ganham visibilidade podendo atrair mais pessoas a praticar desporto utilizando os seus serviços.
+The main objectives are to make booking spaces for sports practice easier and efficient.
+Many sports complexes use booking via phone calls or even require people to go there in person, which causes disorganization and inconvenience. This can lead to a lack of interest from people looking for the service.
+With this approach, sports complexes gain visibility, potentially attracting more people to practice sports using their services.
 
 # The goal
-Facilitar a prática do desporto.
+Facilitate sports practice.
 
 
 [Back to main Logbook Page](hci_logbook.md)
