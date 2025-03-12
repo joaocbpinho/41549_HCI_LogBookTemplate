@@ -12,6 +12,7 @@
 | **Competitor**    | **Description**                             | Information repository              |
 | ----------------- | ------------------------------------------- | ----------------------------------- |
 | Field |  Application for booking sports fields    |[Competitor Analysis Field](competitors/Competitor%20Analysis%20Field.md)  |
+| Playtomic | Application for booking sports fields | [Competitor Analysis Playtomic](competitors/Competitor%20Analysis%20Playtomic.md)|
 
 
 
@@ -47,9 +48,9 @@ The following severity scale was used: [Severity Scale](heuristic_evaluations/se
 
 ### 5. Consensus Process
 
-- Após a análise individual, realizamos uma reunião para debater os problemas encontrados.
-- Quando um problema foi identificado por apenas um especialista, os outros membros foram reavaliar para decidir se deveria ser incluído na lista final.
-- Os problemas foram organizados conforme a gravidade, e sugestões de melhoria foram apresentadas.
+- After the individual analysis, we held a meeting to discuss the identified issues.
+- When a problem was identified by only one expert, the other members reassessed it to decide whether it should be included in the final list.
+- The issues were organized according to their severity, and improvement suggestions were presented.
 
 #### Individual Evaluations
 
@@ -138,7 +139,6 @@ Task: Choosing a Padel court with available equipment
 
 ## B.2a. Method
 
-[What approach was followed to talk with users; what kind of users were considered. What was the goal of the interviews? What were the questions considered?]
 
 The interviews aimed to gather user insights and suggestions. We considered users who had experienced booking issues to determine if the app would provide an appealing solution.
 ## B.2b. Results
@@ -148,9 +148,9 @@ The interviews aimed to gather user insights and suggestions. We considered user
 ### Interview List 
 | Date       | Participant / Role | Key Insights                                                    | Link to Notes                |     |
 | ---------- | ------------------ | --------------------------------------------------------------- | ---------------------------- | --- |
-| 26/02/2025| Nuno / Potencial utilizador     | Acumulação de pontos caso seja feita a reserva da aplicação, para depois descontar para algumas regalias, e também foi sugerido que seja dado um desconto para os utilizadores reservem um campo pela aplicação| [Entrevista Nuno](interviews/interview-Nuno.md) |     |
-|27/02/2025        |      Potencial utilizador           |     Haver no website uma página admin para os administradores de cada pavilhão colocarem informações sobre o mesmo, por exemplo estar fechado. Quando houver uma reserva enviar as informações para toda a gente que foi "convidada", de modo a aceitarem o convite no caso de futebol 5v5 caso não hajam 10 pessoas que tenham aceitado o convite a reserva é cancelada automaticamente.                                              |                                 [Entrevista Anónimo](interviews/interview-Anónimo.md)  |
-|27/02/2025  |  Theo/ Potencial utilizador |  Caso exista um grupo que queira jogar futebol 11vs11, caso faltem jogadores a aplicação auxiliar essas ajuda a encontrar pessoas que faltem.  |  [Entrevista Theo](interviews/interview-Theo.md)  |
+| 26/02/2025| Nuno / Potencial utilizador     | Accumulation of points for bookings made through the app, which can later be redeemed for benefits. It was also suggested to offer a discount for users who book a field through the app.| [Entrevista Nuno](interviews/interview-Nuno.md) |     |
+|27/02/2025        |      Potencial utilizador           |     Have an admin page on the website where the administrators of each sports facility can update information about it, such as marking it as closed. When a reservation is made, send the details to everyone who was "invited" so they can accept the invitation. In the case of a 5v5 football match, if fewer than 10 people accept the invitation, the reservation is automatically canceled.                                        |                            [Entrevista Anónimo](interviews/interview-Anónimo.md)  |
+|27/02/2025  |  Theo/ Potencial utilizador |  If there is a group wanting to play 11v11 football, and there are missing players, the app should assist in finding the missing players.  |  [Entrevista Theo](interviews/interview-Theo.md)  |
 
 ### Common Themes & Patterns 
 
