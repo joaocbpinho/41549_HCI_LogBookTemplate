@@ -36,7 +36,7 @@ Summary of each usability heuristic: [here](https://media.nngroup.com/media/arti
 
 | **Issue**       | **Severity** | Recommendation |
 | --------------- | ------------ | -------------- |
-| Marcação de campo | 3            | Colocar "slots" em vez de 30 a 30 minutos, colocar 1 hora pois quando se escolhe uma "slot" de 30 minutos automaticamente escolhe a meia-hora a seguir ficando uma hora que pode levar a um engano do utilizador, dependendo dos campos.            |
+| Marcação de campo | 2            | Colocar "slots" em vez de 30 a 30 minutos, colocar 1 hora pois quando se escolhe uma "slot" de 30 minutos automaticamente escolhe a meia-hora a seguir ficando uma hora que pode levar a um engano do utilizador, dependendo dos campos.            |
 | Página Admin  | 0         |       Colocar uma função para retroceder pois se o utilizador aceder à página admin não pode voltar atrás apenas acedendo ao site novamente   |
 
 

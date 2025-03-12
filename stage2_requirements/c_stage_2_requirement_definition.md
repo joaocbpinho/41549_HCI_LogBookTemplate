@@ -68,16 +68,21 @@ Already having an account on the app and money in his virtual wallet, João acce
 
 
 ## C.1. Functional requirements
- - Display a list of available sports fields for booking.
-- Send notifications to users about booking confirmations.
-- Cost splitting among all participants.
-- Deposit required if cancellation occurs within 24 hours before the booking.
-- Dedicated space for sports complex administrators.
+- Display a list of available sports fields for booking.  
+- Send notifications to users about the booking confirmation.  
+- Cost splitting with all participants.  
+- Filter the fields by facility.  
+- Deposit in case of cancellation 24/48 hours before the booking.  
+- Admin space for sports complex managers.  
+- Cancel the reservation in 5 hours if no confirmation from the clients.  
 
 
 ## C.2. Non-functional requirements 
-- The application must be available 24/7.
-- The application must be responsive and fast.
+- The application must function 24/7.  
+- The application must have a secure payment system.  
+- The application must be compatible with various devices, such as smartphones, tablets, and desktops.  
+- User data, including payment information, should be encrypted and stored securely.  
+
 
 ---
 [Back to main Logbook Page](hci_logbook.md)
