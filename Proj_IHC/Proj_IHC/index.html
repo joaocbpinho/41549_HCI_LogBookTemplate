@@ -38,8 +38,7 @@
         <span class="search-value" id="dataHoraResumo">Escolher...</span>
       </div>
     </div>
-    <div class="search-col search-col-comodidades" onclick="abrirPopup()">
-
+    <div class="search-col search-col-comodidades" onclick="abrirPopupComodidades()"> <!-- Adicionar onclick -->
       <div>
         <span class="search-label">Comodidades</span>
         <span class="search-value" id="comodidadesResumo">Escolher...</span>
@@ -126,6 +125,42 @@
     </div>
   </div>
 
+  <!-- NOVO Pop-up para Comodidades -->
+  <div id="popupComodidades" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupComodidades()">&times;</span>
+      <h2>Escolha Comodidades</h2>
+      <div class="popup-section">
+        <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeEstacionamento" name="comodidades" value="Estacionamento">
+          <label for="comodidadeEstacionamento">Estacionamento</label>
+        </div>
+        <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeBalnearios" name="comodidades" value="Balneários">
+          <label for="comodidadeBalnearios">Balneários</label>
+        </div>
+        <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeBolas" name="comodidades" value="Bolas">
+          <label for="comodidadeBolas">Equipamento</label>
+        </div>
+        <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeRaquetes" name="comodidades" value="Raquetes">
+          <label for="comodidadeRaquetes">Cafe/Bar</label>
+        </div>
+        <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeWC" name="comodidades" value="WC">
+          <label for="comodidadeWC">WC</label>
+        </div>
+         <div class="checkbox-container">
+          <input type="checkbox" id="comodidadeBebedouro" name="comodidades" value="Bebedouro">
+          <label for="comodidadeBebedouro">Iluminação</label>
+        </div>
+        <!-- Adicione mais checkboxes conforme necessário -->
+      </div>
+      <button class="popup-button" onclick="confirmarComodidades()">Confirmar</button>
+    </div>
+  </div>
+
   <!-- Dropdown do Perfil -->
   <div id="profileDropdown" class="dropdown-content">
     <a href="#">Notificações</a>
@@ -138,4 +173,5 @@
 
   <script src="script.js"></script>
 </body>
-</html>
+
+</html></html>

@@ -484,3 +484,57 @@ header {
 #horaInicio option, #horaFim option {
   padding: 6px 0;
 }
+
+/* Estilos específicos para o popup de Comodidades */
+#popupComodidades .popup-content {
+  /* Pode ajustar o padding se necessário */
+  padding: 20px 25px; 
+}
+
+#popupComodidades h2 {
+  margin-bottom: 20px; /* Mais espaço abaixo do título */
+  text-align: center;
+}
+
+/* Usar Grid para organizar as checkboxes */
+#popupComodidades .popup-section {
+  display: grid;
+  /* Cria 2 colunas de largura igual, com espaço entre elas */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 10px 20px; /* Espaço vertical e horizontal entre os itens */
+  margin-top: 15px; /* Espaço acima das checkboxes */
+}
+
+/* Estilos para cada container de checkbox */
+.checkbox-container {
+  display: flex; 
+  align-items: center; 
+  /* margin-bottom: 10px; */ /* Não é mais necessário com grid gap */
+  padding: 5px; /* Pequeno padding interno */
+  border-radius: 4px; /* Cantos ligeiramente arredondados */
+  transition: background-color 0.2s; /* Suaviza o hover */
+}
+
+/* Efeito hover para melhor feedback */
+.checkbox-container:hover {
+  background-color: #f0f0f0; /* Cor de fundo suave no hover */
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px; /* Espaço entre checkbox e label */
+  cursor: pointer;
+  /* Aumentar ligeiramente o tamanho do checkbox */
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-container label {
+  cursor: pointer;
+  flex-grow: 1; /* Faz o label ocupar o espaço restante */
+  font-size: 15px; /* Ajuste o tamanho da fonte se desejar */
+}
+
+/* Ajustar o botão Confirmar */
+#popupComodidades .popup-button {
+  margin-top: 25px; /* Mais espaço acima do botão */
+}

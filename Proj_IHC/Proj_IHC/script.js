@@ -324,3 +324,38 @@ function confirmarDataHora() {
   fecharPopup();
 }
 
+// Funções para o NOVO Popup de Comodidades
+function abrirPopupComodidades() {
+  const popup = document.getElementById('popupComodidades');
+  if (popup) popup.style.display = 'block'; // Mostra o popup de comodidades
+}
+
+function fecharPopupComodidades() {
+  const popup = document.getElementById('popupComodidades');
+  if (popup) popup.style.display = 'none'; // Esconde o popup de comodidades
+}
+
+function confirmarComodidades() {
+  const comodidadesSelecionadas = [];
+  // Seleciona todos os checkboxes com name="comodidades" que estão marcados DENTRO do popup específico
+  const checkboxes = document.querySelectorAll('#popupComodidades input[name="comodidades"]:checked'); 
+
+  checkboxes.forEach(checkbox => {
+    // Adiciona o valor (ex: "Estacionamento", "Balneários") à lista
+    comodidadesSelecionadas.push(checkbox.value); 
+  });
+
+  const resumoSpan = document.getElementById('comodidadesResumo');
+  if (resumoSpan) {
+      if (comodidadesSelecionadas.length > 0) {
+        // Mostra os valores selecionados separados por vírgula
+        resumoSpan.textContent = comodidadesSelecionadas.join(', '); 
+      } else {
+        // Se nada for selecionado, volta ao texto padrão
+        resumoSpan.textContent = 'Escolher...'; 
+      }
+  }
+
+  fecharPopupComodidades(); // Fecha o popup após confirmar
+}
+
