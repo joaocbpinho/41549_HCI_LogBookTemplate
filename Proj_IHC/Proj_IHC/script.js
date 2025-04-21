@@ -276,17 +276,22 @@ function abrirPopup() {
   atualizarOpcoesHoraInicio();
 }
 
-// Nova função para preencher os selects
+// Função para preencher os selects de hora
 function preencherOpcoesTempo(select) {
+  // Limpa opções existentes para evitar duplicados ao reabrir o popup
+  while (select.options.length > 0) {
+    select.remove(0);
+  }
+
   // Adicionar opção vazia primeiro
   const optionVazia = document.createElement("option");
   optionVazia.value = "";
-  optionVazia.textContent = "";
+  optionVazia.textContent = ""; // Vazio para não mostrar texto
   select.appendChild(optionVazia);
   
   // Adicionar as horas
   for (let hora = 0; hora < 24; hora++) {
-    for (let minuto = 0; minuto < 60; minuto += 30) {
+    for (let minuto = 0; minuto < 60; minuto += 30) { 
       const option = document.createElement("option");
       const horaFormatada = hora.toString().padStart(2, "0");
       const minutoFormatado = minuto.toString().padStart(2, "0");
@@ -296,7 +301,7 @@ function preencherOpcoesTempo(select) {
     }
   }
   
-  // Garantir que a opção vazia é a selecionada
+  // Garantir que a opção vazia é a selecionada inicialmente
   select.selectedIndex = 0;
 }
 
@@ -426,4 +431,69 @@ function confirmarDesporto() {
 
   fecharPopupDesporto(); // Fecha o popup
 }
+
+// --- Autocomplete Localidade ---
+
+const cidadesPortugal = [
+  "Lisboa", "Porto", "Vila Nova de Gaia", "Amadora", "Braga", "Funchal", 
+  "Coimbra", "Setúbal", "Almada", "Queluz", "Agualva-Cacém", "Guimarães", 
+  "Odivelas", "Aveiro", "Leiria", "Faro", "Évora", "Viseu", "Barreiro", 
+  "Matosinhos", "Ponta Delgada", "Viana do Castelo", "Santarém", "Beja",
+  "Castelo Branco", "Guarda", "Portalegre", "Bragança", "Vila Real"
+  // Adicione mais cidades se necessário
+];
+
+const localidadeInput = document.getElementById('localidade');
+const sugestoesList = document.getElementById('sugestoesLocalidade');
+
+if (localidadeInput && sugestoesList) {
+  localidadeInput.addEventListener('input', function() {
+    const inputText = this.value.toLowerCase();
+    sugestoesList.innerHTML = ''; 
+    sugestoesList.style.display = 'none'; 
+
+    if (inputText.length === 0) {
+      return; 
+    }
+
+    // Filtrar o array de strings
+    const sugestoesFiltradas = cidadesPortugal.filter(cidade => 
+      cidade.toLowerCase().startsWith(inputText)
+    );
+
+    console.log("Sugestões Filtradas:", sugestoesFiltradas); 
+
+    if (sugestoesFiltradas.length > 0) {
+      sugestoesFiltradas.forEach(cidade => {
+        const li = document.createElement('li');
+        // Definir apenas o texto do <li>
+        li.textContent = cidade; 
+
+        li.addEventListener('click', function() {
+          // Preencher o input com o texto da cidade clicada
+          localidadeInput.value = this.textContent; 
+          sugestoesList.innerHTML = ''; 
+          sugestoesList.style.display = 'none'; 
+        });
+        sugestoesList.appendChild(li);
+      });
+      console.log("Mostrando lista de sugestões.");
+      sugestoesList.style.display = 'block'; 
+    } else {
+       console.log("Nenhuma sugestão encontrada.");nsole.log("Nenhuma sugestão encontrada.");
+    }
+  });
+
+  // Opcional: Fechar a lista ao clicar foral: Fechar a lista ao clicar fora
+  document.addEventListener('click', function(event) {n(event) {
+    // Verifica se o clique foi fora do input E fora da lista de sugestõesa da lista de sugestões
+    if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {f (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
+      sugestoesList.style.display = 'none'; sugestoesList.style.display = 'none';
+    }    }
+  });
+} else {
+    console.error("ERRO: Elemento 'localidade' ou 'sugestoesLocalidade' não encontrado!"); o encontrado!"); 
+}
+
+// --- Fim Autocomplete Localidade ---- Fim Autocomplete Localidade ---
 

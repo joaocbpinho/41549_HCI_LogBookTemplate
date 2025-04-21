@@ -62,23 +62,18 @@ header {
 
 /* Modern Search Bar */
 .search-bar-modern {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 3px solid #0078d7;
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  max-width: 1000px;
-  margin: 30px auto;
-  padding: 0 10px;
-  gap: 0;
-  overflow: hidden;
-  grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto;
-}
-
-/* Opcional: Estilo específico para a coluna de desporto se necessário */
-.search-col-desporto {
-  /* Estilos específicos se precisar diferenciar */
+  display: flex; /* Mantido */
+  align-items: center; /* Mantido */
+  background: #fff; /* Mantido */
+  border: 3px solid #0078d7; /* Mantido */
+  border-radius: 20px; /* Mantido */
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08); /* Mantido */
+  max-width: 1000px; /* Mantido */
+  margin: 30px auto; /* Mantido */
+  padding: 0 10px; /* Mantido */
+  gap: 0; /* Mantido */
+  /* overflow: hidden; */ /* REMOVA OU COMENTE ESTA LINHA */
+  grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto; /* Mantido */
 }
 
 .search-col {
@@ -159,6 +154,7 @@ header {
 .search-col-localidade {
   flex: 2.2;
   min-width: 200px;
+  position: relative; /* Necessário para posicionar a lista de sugestões */
 }
 
 /* Data/Hora e Comodidades ocupam menos */
@@ -170,30 +166,39 @@ header {
 
 /* Lista de sugestões */
 .autocomplete-list {
-  position: absolute;
-  top: 100%;
+  position: absolute; /* Posiciona a lista abaixo do input */
   left: 0;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  max-height: 180px;
-  overflow-y: auto;
-  z-index: 10;
+  right: 0; 
+  top: 100%; /* Começa logo abaixo do container do input */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none; /* Evita borda dupla */
+  border-radius: 0 0 6px 6px; /* Cantos arredondados em baixo */
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 200px; /* Altura máxima antes de adicionar scroll */
+  overflow-y: auto;
+  z-index: 1001; /* Garanta que este valor é alto o suficiente */
+  display: none; /* Começa escondida */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .autocomplete-list li {
-  padding: 12px 18px;
+  padding: 10px 15px;
   cursor: pointer;
   font-size: 15px;
+  color: #333; /* Cor do texto padrão */
 }
 
 .autocomplete-list li:hover {
-  background: #f0f0f0;
+  background-color: #f0f0f0; /* Cor de fundo ao passar o rato */
+}
+
+/* Opcional: Estilo para item selecionado (se usar teclado) */
+.autocomplete-list li.selected {
+  background-color: var(--primary-color);
+  color: #fff;
 }
 
 /* Secções */
