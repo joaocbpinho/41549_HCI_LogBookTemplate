@@ -253,56 +253,48 @@ function atualizarOpcoesHoraInicio() {
 
 function abrirPopup() {
   const popup = document.getElementById('popup');
+  if (!popup) return; 
+
+  // --- NOVO: Definir data mínima ---
+  const dataInput = document.getElementById('dataSelecionada');
+  if (dataInput && !dataInput.getAttribute('min')) { // Verifica se o 'min' já não foi definido
+    const hoje = new Date();
+    
+    // Formatar a data para YYYY-MM-DD
+    const ano = hoje.getFullYear();
+    const mes = (hoje.getMonth() + 1).toString().padStart(2, '0'); // +1 porque getMonth() é 0-indexed
+    const dia = hoje.getDate().toString().padStart(2, '0');
+    const dataMinima = `${ano}-${mes}-${dia}`;
+    
+    dataInput.setAttribute('min', dataMinima);
+    console.log("Data mínima definida para:", dataMinima); // Log para confirmação
+  }
+  // --- FIM: Definir data mínima ---
+
   popup.style.display = 'block'; // Exibe o popup
 
   const horaInicio = document.getElementById('horaInicio');
   const horaFim = document.getElementById('horaFim');
 
-  // Preenche as opções se necessário (só na primeira vez)
-  if (horaInicio && horaInicio.options.length === 0) {
+  // Preenche as opções e adiciona listeners se necessário (só na primeira vez)
+  if (horaInicio && horaInicio.options.length <= 1) { 
     preencherOpcoesTempo(horaInicio);
-    // Adiciona listener DEPOIS de preencher
-    horaInicio.addEventListener('change', atualizarOpcoesHoraFim);
-  }
-
-  if (horaFim && horaFim.options.length === 0) {
-    preencherOpcoesTempo(horaFim);
-    // Adiciona listener DEPOIS de preencher
-    horaFim.addEventListener('change', atualizarOpcoesHoraInicio);
-  }
-
-  // Garante que as opções estão atualizadas com base nos valores atuais (caso já existam)
-  atualizarOpcoesHoraFim();
-  atualizarOpcoesHoraInicio();
-}
-
-// Função para preencher os selects de hora
-function preencherOpcoesTempo(select) {
-  // Limpa opções existentes para evitar duplicados ao reabrir o popup
-  while (select.options.length > 0) {
-    select.remove(0);
-  }
-
-  // Adicionar opção vazia primeiro
-  const optionVazia = document.createElement("option");
-  optionVazia.value = "";
-  optionVazia.textContent = ""; // Vazio para não mostrar texto
-  select.appendChild(optionVazia);
-  
-  // Adicionar as horas
-  for (let hora = 0; hora < 24; hora++) {
-    for (let minuto = 0; minuto < 60; minuto += 30) { 
-      const option = document.createElement("option");
-      const horaFormatada = hora.toString().padStart(2, "0");
-      const minutoFormatado = minuto.toString().padStart(2, "0");
-      option.value = `${horaFormatada}:${minutoFormatado}`;
-      option.textContent = `${horaFormatada}:${minutoFormatado}`;
-      select.appendChild(option);
+    if (!horaInicio.dataset.listenerAttached) { 
+        horaInicio.addEventListener('change', atualizarOpcoesHoraFim);
+        horaInicio.dataset.listenerAttached = 'true'; 
     }
   }
-  
-  // Garantir que a opção vazia é a selecionada inicialmente
-  select.selectedIndex = 0;
+
+  if (horaFim && horaFim.options.length <= 1) { 
+    preencherOpcoesTempo(horaFim);
+     if (!horaFim.dataset.listenerAttached) {
+        horaFim.addEventListener('change', atualizarOpcoesHoraInicio);
+        horaFim.dataset.listenerAttached = 'true'; 
+    }
+  }
+
+  atualizarOpcoesHoraFim();
+  atualizarOpcoesHoraInicio();
 }
 
 function fecharPopup() {
@@ -480,20 +472,20 @@ if (localidadeInput && sugestoesList) {
       console.log("Mostrando lista de sugestões.");
       sugestoesList.style.display = 'block'; 
     } else {
-       console.log("Nenhuma sugestão encontrada.");nsole.log("Nenhuma sugestão encontrada.");
+       console.log("Nenhuma sugestão encontrada.");
     }
   });
 
-  // Opcional: Fechar a lista ao clicar foral: Fechar a lista ao clicar fora
-  document.addEventListener('click', function(event) {n(event) {
-    // Verifica se o clique foi fora do input E fora da lista de sugestõesa da lista de sugestões
-    if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {f (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
-      sugestoesList.style.display = 'none'; sugestoesList.style.display = 'none';
-    }    }
+  // Opcional: Fechar a lista ao clicar fora
+  document.addEventListener('click', function(event) {
+    // Verifica se o clique foi fora do input E fora da lista de sugestões
+    if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
+      sugestoesList.style.display = 'none';
+    }
   });
 } else {
-    console.error("ERRO: Elemento 'localidade' ou 'sugestoesLocalidade' não encontrado!"); o encontrado!"); 
+    console.error("ERRO: Elemento 'localidade' ou 'sugestoesLocalidade' não encontrado!"); 
 }
 
-// --- Fim Autocomplete Localidade ---- Fim Autocomplete Localidade ---
+// --- Fim Autocomplete Localidade ---
 
