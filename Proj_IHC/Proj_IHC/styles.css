@@ -73,7 +73,6 @@ header {
   padding: 0 10px;
   gap: 0;
   overflow: hidden;
-  position: relative; /* Importante para o posicionamento absoluto do popup */
 }
 
 .search-col {
@@ -314,28 +313,30 @@ header {
   background-color: var(--hover-color);
 }
 
-/* Pop-up posicionado */
+/* Pop-up geral */
 .popup {
   display: none;
-  position: absolute; /* Mudar de fixed para absolute */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
   z-index: 1000;
-  /* Remover width, height e background overlay */
 }
 
 .popup-content {
   background: #fff;
   border-radius: 16px;
-  max-width: 420px;
-  width: max-content; /* Ajustar largura ao conteúdo, ou manter max-width */
-  /* Remover margin: 60px auto; */
-  margin: 8px 0 0 0; /* Adicionar margem superior para espaçar da barra */
-  padding: 24px; /* Ajustar padding se necessário */
+  max-width: 420px; /* Largura maior para conteúdo */
+  width: 95%;
+  margin: 60px auto;
+  padding: 32px 28px 24px 28px; /* Mais espaço interno */
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
-  /* position: relative; já não é necessário aqui */
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  border: 1px solid #ddd; /* Adicionar uma borda subtil como no exemplo */
 }
 
 .popup-content h2 {
@@ -385,6 +386,8 @@ header {
 .popup-section select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
   padding-right: 30px; /* Espaço para a seta */
+  max-height: 180px; /* Ajuste este valor se necessário */
+  overflow-y: auto; /* Adiciona scroll se houver mais opções */
 }
 
 /* Estilo APENAS para o INPUT de DATA (remove seta, mostra calendário) */
@@ -408,6 +411,13 @@ header {
   transform: translateY(-50%);
   width: 18px; /* Ajusta tamanho se necessário */
   height: 18px; /* Ajusta tamanho se necessário */
+}
+
+/* Estilo para opções desabilitadas nos selects de hora */
+.popup-section select option:disabled {
+  color: #cccccc; /* Cor de texto cinza claro */
+  background-color: #f8f8f8; /* Fundo ligeiramente diferente (opcional) */
+  /* text-decoration: line-through; */ /* Pode descomentar para adicionar um risco (opcional) */
 }
 
 .popup-button {
@@ -469,4 +479,8 @@ header {
 #profileDropdown a:hover,
 .dropdown-content a:hover {
   background-color: var(--secondary-color);
+}
+/* Para navegadores modernos, este estilo controla a altura do dropdown quando aberto */
+#horaInicio option, #horaFim option {
+  padding: 6px 0;
 }
