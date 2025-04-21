@@ -6,72 +6,58 @@
   <title>Play Smart</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="images/PlaySmart.png" type="image/png" />
+  <style>
+
+  </style>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="/home/jo-o-pinho/Secretária/Proj_IHC/images/PlaySmart.png" alt="Logo" class="logo-img" />
+      <img src="images/PlaySmart.png" alt="Logo" class="logo-img" />
       Play Smart
     </div>   
     <div class="header-icons">
-      <button id="addButton">➕</button>
-      <button id="profileButton">👤</button>
+      <div id="saldoContainer" onclick="abrirModalSaldo()">
+        <span id="saldoAtual">0.0€</span>
+      </div>
+      <button id="profileButton" onclick="toggleProfileDropdown()">👤</button>
     </div>
   </header>
 
-  <section class="filters">
-
-    <div class="dropdown" id="localidadeDropdown">
-      <button class="filter-btn" onclick="toggleDropdown('localidadeDropdown')">Localidade</button>
-      <div class="dropdown-content">
-        <select>
-          <option>Lisboa</option>
-          <option>Porto</option>
-          <option>Coimbra</option>
-        </select>
-      </div>
+  <section class="search-bar">
+    <div class="search-item">
+      <label for="localidade">Localidade</label>
+      <select id="localidade">
+        <option value="">Escolha uma localidade</option>
+        <option>Lisboa</option>
+        <option>Porto</option>
+        <option>Coimbra</option>
+      </select>
     </div>
-
-
-    <div class="dropdown" id="agendaDropdown">
-      <button class="filter-btn" onclick="toggleDropdown('agendaDropdown')">Agenda</button>
-      <div class="dropdown-content agenda">
-        <strong>Escolher Data</strong>
-        <input type="date" id="dataSelecionada" />
-        <strong>Horário</strong>
-        <div class="hours">
-          <label><input type="checkbox" value="09:00 - 09:30" /> 09:00 - 09:30</label><br />
-          <label><input type="checkbox" value="09:30 - 10:00" /> 09:30 - 10:00</label><br />
-          <label><input type="checkbox" value="10:00 - 10:30" /> 10:00 - 10:30</label><br />
-          <label><input type="checkbox" value="10:30 - 11:00" /> 10:30 - 11:00</label><br />
-          <label><input type="checkbox" value="11:00 - 11:30" /> 11:00 - 11:30</label>
-        </div>
-      </div>
+    <div class="search-item">
+      <label for="dataSelecionada">Data</label>
+      <input type="date" id="dataSelecionada" />
     </div>
-
-
-    <div class="dropdown" id="desportoDropdown">
-      <button class="filter-btn" onclick="toggleDropdown('desportoDropdown')">Desporto</button>
-      <div class="dropdown-content">
-        <select>
-          <option>Futebol</option>
-          <option>Basquetebol</option>
-          <option>Ténis</option>
-          <option>Pádel</option>
-        </select>
-      </div>
+    <div class="search-item">
+      <label for="horario">Horário</label>
+      <select id="horario">
+        <option value="">Escolha um horário</option>
+        <option>09:00 - 09:30</option>
+        <option>09:30 - 10:00</option>
+        <option>10:00 - 10:30</option>
+      </select>
     </div>
-
-    <div class="dropdown" id="comodidadesDropdown">
-      <button class="filter-btn" onclick="toggleDropdown('comodidadesDropdown')">Comodidades</button>
-      <div class="dropdown-content">
-        <label><input type="checkbox" /> Balneários</label><br />
-        <label><input type="checkbox" /> Estacionamento</label><br />
-        <label><input type="checkbox" /> Bar / Cafetaria</label><br />
-        <label><input type="checkbox" /> Iluminação Noturna</label><br />
-        <label><input type="checkbox" /> Equipamento para Reserva</label>
-      </div>
+    <div class="search-item">
+      <label for="desporto">Desporto</label>
+      <select id="desporto">
+        <option value="">Escolha um desporto</option>
+        <option>Futebol</option>
+        <option>Basquetebol</option>
+        <option>Ténis</option>
+        <option>Pádel</option>
+      </select>
     </div>
+    <button class="search-button" onclick="pesquisar()">Pesquisar</button>
   </section>
 
   <main>
@@ -97,6 +83,49 @@
       </div>
     </section>
   </main>
+
+  <!-- Modais -->
+  <div id="modalCriarEquipa" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModal()">&times;</span>
+      <h2>Criar Equipa</h2>
+      <label for="nomeEquipa">Nome:</label>
+      <input type="text" id="nomeEquipa" placeholder="Insira o nome da equipa" />
+      <button onclick="criarEquipa()">Criar Equipa</button>
+    </div>
+  </div>
+
+  <div id="modalAdicionarSaldo" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalSaldo()">&times;</span>
+      <h2>Adicionar Saldo</h2>
+      <label for="valorSaldo">Valor:</label>
+      <input type="number" id="valorSaldo" placeholder="Insira o valor" />
+      <button onclick="adicionarSaldo()">Adicionar</button>
+    </div>
+  </div>
+
+  <div id="modalLogin" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalLogin()">&times;</span>
+      <h2>Login</h2>
+      <label for="username">Utilizador:</label>
+      <input type="text" id="username" placeholder="Insira o seu utilizador" />
+      <label for="password">Senha:</label>
+      <input type="password" id="password" placeholder="Insira a sua senha" />
+      <button onclick="fazerLogin()">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Dropdown do Perfil -->
+  <div id="profileDropdown" class="dropdown-content">
+    <a href="#">Notificações</a>
+    <a href="#">Equipas</a>
+    <a href="#">Convites</a>
+    <a href="#">Reservas</a>
+    <a href="#">Histórico</a>
+    <a href="#" onclick="fazerLogout()">Sair</a>
+  </div>
 
   <script src="script.js"></script>
 </body>

@@ -6,8 +6,48 @@ document.getElementById('addButton').addEventListener('click', function () {
     alert('Abrir perfil do utilizador!');
   });
   
+  // Abrir o modal
   function addEquipa() {
-    alert('Criar nova equipa!');
+    document.getElementById("modalCriarEquipa").style.display = "block";
+  }
+  
+  // Fechar o modal
+  function fecharModal() {
+    document.getElementById("modalCriarEquipa").style.display = "none";
+  }
+  
+  // Criar equipa (simples exemplo)
+  function criarEquipa() {
+    const nomeEquipa = document.getElementById("nomeEquipa").value;
+    if (nomeEquipa) {
+      alert(`Equipa "${nomeEquipa}" criada com sucesso!`);
+      fecharModal();
+    } else {
+      alert("Por favor, insira um nome para a equipa.");
+    }
+  }
+  
+  // Abrir o modal de adicionar saldo
+  function abrirModalSaldo() {
+    document.getElementById("modalAdicionarSaldo").style.display = "block";
+  }
+
+  // Fechar o modal de adicionar saldo
+  function fecharModalSaldo() {
+    document.getElementById("modalAdicionarSaldo").style.display = "none";
+  }
+
+  // Adicionar saldo
+  function adicionarSaldo() {
+    const valorSaldo = parseFloat(document.getElementById("valorSaldo").value);
+    if (!isNaN(valorSaldo) && valorSaldo > 0) {
+      const saldoAtual = parseFloat(document.getElementById("saldoAtual").textContent.replace("€", ""));
+      const novoSaldo = saldoAtual + valorSaldo;
+      document.getElementById("saldoAtual").textContent = `${novoSaldo.toFixed(2)}€`;
+      fecharModalSaldo();
+    } else {
+      alert("Por favor, insira um valor válido.");
+    }
   }
   
   function toggleDropdown(id) {
@@ -19,6 +59,18 @@ document.getElementById('addButton').addEventListener('click', function () {
     document.getElementById(id).classList.toggle('active');
   }
   
+  // Alternar o dropdown do perfil
+  function toggleProfileDropdown() {
+    const dropdown = document.getElementById("profileDropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  // Fechar o dropdown ao clicar fora
+  window.addEventListener("click", function (e) {
+    if (!e.target.closest("#profileButton") && !e.target.closest("#profileDropdown")) {
+      document.getElementById("profileDropdown").style.display = "none";
+    }
+  });
 
   window.addEventListener('click', function (e) {
     if (!e.target.closest('.dropdown')) {
@@ -61,4 +113,3 @@ document.getElementById('addButton').addEventListener('click', function () {
       });
     });
   });
-  
