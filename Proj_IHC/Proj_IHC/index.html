@@ -24,40 +24,28 @@
     </div>
   </header>
 
-  <section class="search-bar">
-    <div class="search-item">
-      <label for="localidade">Localidade</label>
-      <select id="localidade">
-        <option value="">Escolha uma localidade</option>
-        <option>Lisboa</option>
-        <option>Porto</option>
-        <option>Coimbra</option>
-      </select>
+  <section class="search-bar-modern">
+    <div class="search-col search-col-localidade">
+      <div>
+        <span class="search-label">Localidade</span>
+        <input type="text" id="localidade" placeholder="Para onde?" autocomplete="off" />
+        <ul id="sugestoesLocalidade" class="autocomplete-list"></ul>
+      </div>
     </div>
-    <div class="search-item">
-      <label for="dataSelecionada">Data</label>
-      <input type="date" id="dataSelecionada" />
+    <div class="search-col search-col-data" onclick="abrirPopup()">
+      <div>
+        <span class="search-label">Data/Hora</span>
+        <span class="search-value" id="dataHoraResumo">Escolher...</span>
+      </div>
     </div>
-    <div class="search-item">
-      <label for="horario">Horário</label>
-      <select id="horario">
-        <option value="">Escolha um horário</option>
-        <option>09:00 - 09:30</option>
-        <option>09:30 - 10:00</option>
-        <option>10:00 - 10:30</option>
-      </select>
+    <div class="search-col search-col-comodidades" onclick="abrirPopup()">
+
+      <div>
+        <span class="search-label">Comodidades</span>
+        <span class="search-value" id="comodidadesResumo">Escolher...</span>
+      </div>
     </div>
-    <div class="search-item">
-      <label for="desporto">Desporto</label>
-      <select id="desporto">
-        <option value="">Escolha um desporto</option>
-        <option>Futebol</option>
-        <option>Basquetebol</option>
-        <option>Ténis</option>
-        <option>Pádel</option>
-      </select>
-    </div>
-    <button class="search-button" onclick="pesquisar()">Pesquisar</button>
+    <button class="search-bar-btn" onclick="pesquisar()">Pesquisar</button>
   </section>
 
   <main>
@@ -114,6 +102,27 @@
       <label for="password">Senha:</label>
       <input type="password" id="password" placeholder="Insira a sua senha" />
       <button onclick="fazerLogin()">Entrar</button>
+    </div>
+  </div>
+
+  <!-- Pop-up para Data e Hora -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopup()">&times;</span>
+      <h2>Escolha Data e Hora</h2>
+      <div class="popup-section">
+        <label for="dataSelecionada">Data</label>
+        <input type="date" id="dataSelecionada" />
+      </div>
+      <div class="popup-section">
+        <label for="horaInicio">Hora de Início</label>
+        <select id="horaInicio"></select>
+      </div>
+      <div class="popup-section">
+        <label for="horaFim">Hora de Fim</label>
+        <select id="horaFim"></select>
+      </div>
+      <button class="popup-button" onclick="confirmarDataHora()">Confirmar</button>
     </div>
   </div>
 

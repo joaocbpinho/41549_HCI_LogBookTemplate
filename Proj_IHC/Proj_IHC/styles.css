@@ -27,14 +27,14 @@ header {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-header .logo {
+.logo {
   display: flex;
   align-items: center;
   font-size: 24px;
   font-weight: bold;
 }
 
-header .logo img {
+.logo-img {
   height: 40px;
   margin-right: 10px;
 }
@@ -60,60 +60,135 @@ header .logo img {
   background-color: var(--primary-color);
 }
 
-/* Barra de Pesquisa */
-.search-bar {
+/* Modern Search Bar */
+.search-bar-modern {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: var(--background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 1200px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border: 3px solid #0078d7;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 0 10px;
+  gap: 0;
+  overflow: hidden;
+  position: relative; /* Importante para o posicionamento absoluto do popup */
 }
 
-.search-item {
+.search-col {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 18px 24px;
+  border-right: 1px solid #eee;
+  cursor: pointer;
+  min-width: 0;
+  gap: 12px;
+  background: #fff;
+  transition: background 0.2s;
+}
+
+.search-col:hover,
+.search-col:focus-within {
+  background: #f0f6ff; /* tom suave azulado, podes ajustar */
+  transition: background 0.2s;
+}
+
+.search-col:last-child {
+  border-right: none;
+}
+
+.search-col input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: transparent;
+  width: 160px;
+}
+
+.search-label {
+  font-weight: bold;
+  color: #222;
+  font-size: 15px;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.search-value {
+  font-size: 16px;
+  color: #222;
+  font-weight: normal; /* Tira o negrito */
+}
+
+/* Alinha o label e o input/valor verticalmente */
+.search-col > div {
   display: flex;
   flex-direction: column;
-  margin-right: 20px;
+  align-items: flex-start;
 }
 
-.search-item label {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: var(--text-color);
+.search-icon img {
+  width: 22px;
+  height: 22px;
 }
 
-.search-item select,
-.search-item input {
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid var(--border-color);
-  border-radius: 5px;
-  width: 180px;
-}
-
-.search-item select:focus,
-.search-item input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-.search-button {
-  padding: 12px 25px;
-  font-size: 16px;
-  color: white;
-  background-color: var(--primary-color);
+.search-bar-btn {
+  background: #0078d7;
+  color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 16px 32px;
+  margin-left: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.2s;
 }
 
-.search-button:hover {
-  background-color: var(--hover-color);
+.search-bar-btn:hover {
+  background: #005a9e;
+}
+
+/* Localidade ocupa mais espaço */
+.search-col-localidade {
+  flex: 2.2;
+  min-width: 200px;
+}
+
+/* Data/Hora e Comodidades ocupam menos */
+.search-col-data,
+.search-col-comodidades {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Lista de sugestões */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-list li {
+  padding: 12px 18px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.autocomplete-list li:hover {
+  background: #f0f0f0;
 }
 
 /* Secções */
@@ -206,8 +281,171 @@ header .logo img {
   background-color: var(--hover-color);
 }
 
+/* Modal de Login */
+#modalLogin .modal-content {
+  background-color: var(--background-color);
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#modalLogin .modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+#modalLogin .modal-content button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#modalLogin .modal-content button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Pop-up posicionado */
+.popup {
+  display: none;
+  position: absolute; /* Mudar de fixed para absolute */
+  z-index: 1000;
+  /* Remover width, height e background overlay */
+}
+
+.popup-content {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 420px;
+  width: max-content; /* Ajustar largura ao conteúdo, ou manter max-width */
+  /* Remover margin: 60px auto; */
+  margin: 8px 0 0 0; /* Adicionar margem superior para espaçar da barra */
+  padding: 24px; /* Ajustar padding se necessário */
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  /* position: relative; já não é necessário aqui */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid #ddd; /* Adicionar uma borda subtil como no exemplo */
+}
+
+.popup-content h2 {
+  font-size: 22px;
+  color: var(--primary-color);
+  margin-bottom: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* Ajustar espaçamento entre seções */
+.popup-section {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popup-section label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+/* Estilo base para inputs e selects no popup */
+.popup-section input[type="date"],
+.popup-section select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #d0d7e2;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #f7fafd; /* Cor de fundo */
+  color: #222;
+  transition: border 0.2s;
+  height: 42px; /* Altura fixa */
+  box-sizing: border-box;
+  appearance: none; /* Remover aparência nativa */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* Estilo APENAS para os SELECTS (adiciona a seta) */
+.popup-section select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
+  padding-right: 30px; /* Espaço para a seta */
+}
+
+/* Estilo APENAS para o INPUT de DATA (remove seta, mostra calendário) */
+.popup-section input[type="date"] {
+  background-image: none; /* Remove a seta */
+  padding-right: 12px; /* Padding normal */
+  position: relative; /* Necessário para posicionar o ícone */
+}
+
+/* Estilo para o ícone do calendário (torna-o visível e clicável) */
+.popup-section input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 1; /* Garante que o ícone nativo está visível */
+  cursor: pointer;
+  /* Opcional: Podes ajustar a cor ou tamanho se quiseres */
+  /* filter: invert(50%); */
+  margin-right: 0; /* Remove margem extra se houver */
+  padding: 0; /* Remove padding extra se houver */
+  position: absolute; /* Posiciona o ícone à direita */
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px; /* Ajusta tamanho se necessário */
+  height: 18px; /* Ajusta tamanho se necessário */
+}
+
+.popup-button {
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+
+.popup-button:hover {
+  background: var(--hover-color);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 22px;
+  color: #888;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: #333;
+}
+
 /* Dropdown do Perfil */
-#profileDropdown {
+#profileDropdown,
+.dropdown-content {
   display: none;
   position: absolute;
   right: 20px;
@@ -219,7 +457,8 @@ header .logo img {
   z-index: 1000;
 }
 
-#profileDropdown a {
+#profileDropdown a,
+.dropdown-content a {
   display: block;
   padding: 10px 20px;
   text-decoration: none;
@@ -227,64 +466,7 @@ header .logo img {
   font-size: 14px;
 }
 
-#profileDropdown a:hover {
+#profileDropdown a:hover,
+.dropdown-content a:hover {
   background-color: var(--secondary-color);
 }
-
-    /* Modal de Login */
-    #modalLogin .modal-content {
-      background-color: var(--background-color);
-      margin: 10% auto;
-      padding: 20px;
-      border: 1px solid var(--border-color);
-      width: 30%;
-      border-radius: 10px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    #modalLogin .modal-content input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid var(--border-color);
-      border-radius: 5px;
-    }
-
-    #modalLogin .modal-content button {
-      width: 100%;
-      padding: 10px;
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #modalLogin .modal-content button:hover {
-      background-color: var(--hover-color);
-    }
-
-    /* Dropdown do Perfil */
-    #profileDropdown {
-      display: none;
-      position: absolute;
-      right: 20px;
-      top: 60px;
-      background-color: var(--background-color);
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      z-index: 1000;
-    }
-
-    #profileDropdown a {
-      display: block;
-      padding: 10px 20px;
-      text-decoration: none;
-      color: var(--text-color);
-      font-size: 14px;
-    }
-
-    #profileDropdown a:hover {
-      background-color: var(--secondary-color);
-    }
