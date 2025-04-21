@@ -44,6 +44,13 @@
         <span class="search-value" id="comodidadesResumo">Escolher...</span>
       </div>
     </div>
+    <!-- NOVA SECÇÃO DESPORTO -->
+    <div class="search-col search-col-desporto" onclick="abrirPopupDesporto()">
+      <div>
+        <span class="search-label">Desporto</span>
+        <span class="search-value" id="desportoResumo">Escolher...</span>
+      </div>
+    </div>
     <button class="search-bar-btn" onclick="pesquisar()">Pesquisar</button>
   </section>
 
@@ -125,7 +132,7 @@
     </div>
   </div>
 
-  <!-- NOVO Pop-up para Comodidades -->
+  <!-- Pop-up para Comodidades -->
   <div id="popupComodidades" class="popup">
     <div class="popup-content">
       <span class="close" onclick="fecharPopupComodidades()">&times;</span>
@@ -161,6 +168,21 @@
     </div>
   </div>
 
+  <!-- NOVO Pop-up para Desporto -->
+  <div id="popupDesporto" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupDesporto()">&times;</span>
+      <h2>Escolha o Desporto</h2>
+      <div class="popup-section">
+        <label for="desportoSelect">Desporto:</label>
+        <select id="desportoSelect">
+          <!-- Opções serão adicionadas pelo JavaScript -->
+        </select>
+      </div>
+      <button class="popup-button" onclick="confirmarDesporto()">Confirmar</button>
+    </div>
+  </div>
+
   <!-- Dropdown do Perfil -->
   <div id="profileDropdown" class="dropdown-content">
     <a href="#">Notificações</a>
@@ -174,4 +196,4 @@
   <script src="script.js"></script>
 </body>
 
-</html></html>
+</html>

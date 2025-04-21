@@ -359,3 +359,71 @@ function confirmarComodidades() {
   fecharPopupComodidades(); // Fecha o popup após confirmar
 }
 
+// --- Funções para o Popup de Desporto ---
+
+// Função para preencher as opções de desporto
+function preencherOpcoesDesporto(selectElement) {
+  // Limpa opções existentes (exceto se já tiver a vazia)
+  while (selectElement.options.length > 0) {
+    selectElement.remove(0);
+  }
+
+  const desportos = ["Futebol", "Ténis", "Padel", "Basquetebol", "Voleibol"]; // Adicione mais desportos aqui
+
+  // Adicionar opção vazia/padrão
+  const optionVazia = document.createElement("option");
+  optionVazia.value = "";
+  optionVazia.textContent = "Selecione..."; // Texto da opção padrão
+  optionVazia.disabled = true; // Opcional: não permitir selecionar esta
+  optionVazia.selected = true; // Opcional: começar com esta selecionada
+  selectElement.appendChild(optionVazia);
+
+  // Adicionar os desportos
+  desportos.forEach(desporto => {
+    const option = document.createElement("option");
+    option.value = desporto;
+    option.textContent = desporto;
+    selectElement.appendChild(option);
+  });
+}
+
+// Função para abrir o Popup de Desporto
+function abrirPopupDesporto() {
+  const popup = document.getElementById('popupDesporto');
+  if (!popup) return;
+
+  const desportoSelect = document.getElementById('desportoSelect');
+
+  // Preenche as opções se for a primeira vez ou se estiver vazio
+  if (desportoSelect && desportoSelect.options.length <= 1) { // <=1 para contar a opção padrão
+    preencherOpcoesDesporto(desportoSelect);
+  }
+
+  popup.style.display = 'block'; // Mostra o popup
+}
+
+// Função para fechar o Popup de Desporto
+function fecharPopupDesporto() {
+  const popup = document.getElementById('popupDesporto');
+  if (popup) popup.style.display = 'none'; // Esconde o popup
+}
+
+// Função para confirmar a seleção de Desporto
+function confirmarDesporto() {
+  const desportoSelect = document.getElementById('desportoSelect');
+  const desportoSelecionado = desportoSelect.value;
+
+  // Verifica se um desporto válido foi selecionado (não a opção padrão vazia)
+  if (!desportoSelecionado) {
+    alert("Por favor, selecione um desporto.");
+    return;
+  }
+
+  const resumoSpan = document.getElementById('desportoResumo');
+  if (resumoSpan) {
+    resumoSpan.textContent = desportoSelecionado; // Atualiza o texto na barra de pesquisa
+  }
+
+  fecharPopupDesporto(); // Fecha o popup
+}
+
