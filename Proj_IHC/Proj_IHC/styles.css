@@ -73,6 +73,12 @@ header {
   padding: 0 10px;
   gap: 0;
   overflow: hidden;
+  grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto;
+}
+
+/* Opcional: Estilo específico para a coluna de desporto se necessário */
+.search-col-desporto {
+  /* Estilos específicos se precisar diferenciar */
 }
 
 .search-col {
@@ -537,4 +543,29 @@ header {
 /* Ajustar o botão Confirmar */
 #popupComodidades .popup-button {
   margin-top: 25px; /* Mais espaço acima do botão */
+}
+
+/* Garante que o select no popup de desporto tenha estilos consistentes */
+#popupDesporto .popup-section select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border 0.2s;
+  height: 42px; 
+  box-sizing: border-box;
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
+  padding-right: 30px; 
+}
+
+#popupDesporto .popup-section select:focus {
+  border-color: var(--primary-color);
+  outline: none;
 }
