@@ -1,0 +1,210 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #ffffff;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .logo-img {
+    width: 64px;
+    height: 64px;
+    margin-right: 25px;
+  }
+  
+  
+  .header-icons button {
+    background: #f0f0f0;
+    border: none;
+    margin-left: 1rem;
+    padding: 0.6rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .header-icons button:hover {
+    background: #e0e0e0;
+  }
+  
+  /* Filtros */
+  .filters {
+    display: flex;
+    justify-content: space-around;
+    background: #fafafa;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .filters button {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+  }
+  
+  .filters button:hover {
+    background: #f0f0f0;
+  }
+  
+  /* Conteúdo principal */
+  main {
+    padding: 2rem 1rem;
+  }
+  
+  .section {
+    margin-bottom: 2.5rem;
+  }
+  
+  .section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    color: #555;
+  }
+  
+  .cards {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .card {
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 2rem;
+    flex: 1 1 200px;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+  }
+  
+  .card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Card especial para criar equipa */
+  .add-card {
+    background: #eef2f7;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .cards {
+      flex-direction: column;
+    }
+  }
+  
+  .filters {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  flex-wrap: wrap;
+  padding: 10px;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-width: 200px;
+}
+
+.dropdown.active .dropdown-content {
+  display: block;
+}
+
+/* Dropdown agenda custom */
+.agenda .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin: 8px 0;
+    font-size: 0.8rem;
+  }
+  
+  .agenda .calendar-day {
+    background: #eaeaea;
+    padding: 6px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  
+  .agenda .calendar-day:hover {
+    background: #ccc;
+  }
+  
+  .agenda .calendar-day.active {
+    background-color: #00cc88;
+    color: white;
+  }
+  
+  .agenda .hour-slot {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .agenda strong {
+    display: block;
+    margin: 8px 0 4px;
+  }
+  
