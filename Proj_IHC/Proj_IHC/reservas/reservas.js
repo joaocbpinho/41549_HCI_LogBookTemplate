@@ -1,17 +1,25 @@
-// Função para voltar à página anterior
-function voltar() {
-    window.history.back();
+// Função para abrir detalhes de uma reserva
+function abrirDetalhesReserva() {
+    alert("Abrindo detalhes da reserva...");
   }
   
-  // Exemplo de funcionalidade para alternar entre abas
-  document.addEventListener("DOMContentLoaded", () => {
-    const tabButtons = document.querySelectorAll(".tab-btn");
+  // Função para cancelar presenças
+  function cancelarPresencas() {
+    alert("Presenças canceladas!");
+  }
   
-    tabButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        tabButtons.forEach(btn => btn.classList.remove("active"));
-        button.classList.add("active");
-        // Aqui você pode adicionar lógica para alternar entre "Feitas por ti" e "Mais Recentes"
-      });
-    });
+  // Função para cancelar uma reserva
+  function cancelarReserva() {
+    alert("Reserva cancelada!");
+  }
+  
+  // Adicionar eventos aos botões
+  document.addEventListener("DOMContentLoaded", () => {
+    const detalhesBtns = document.querySelectorAll(".detalhes-btn");
+    const cancelarPresencaBtns = document.querySelectorAll(".cancelar-presenca-btn");
+    const cancelarReservaBtns = document.querySelectorAll(".cancelar-reserva-btn");
+  
+    detalhesBtns.forEach(btn => btn.addEventListener("click", abrirDetalhesReserva));
+    cancelarPresencaBtns.forEach(btn => btn.addEventListener("click", cancelarPresencas));
+    cancelarReservaBtns.forEach(btn => btn.addEventListener("click", cancelarReserva));
   });
