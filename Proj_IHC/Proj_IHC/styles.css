@@ -574,3 +574,106 @@ header {
   border-color: var(--primary-color);
   outline: none;
 }
+
+/* Estilos da Barra Lateral */
+.sidebar {
+  height: 100%;
+  width: 0; /* Começa fechada */
+  position: fixed;
+  z-index: 1001; /* Acima do overlay */
+  top: 0;
+  right: 0;
+  background-color: #fff; /* Cor de fundo */
+  overflow-x: hidden; /* Desabilita scroll horizontal */
+  transition: 0.5s; /* Animação suave */
+  padding-top: 20px; /* Ajustar padding superior */
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2); /* Sombra */
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 10px; /* Ajustar posição */
+  right: 15px; /* Ajustar posição */
+  font-size: 36px;
+  color: #aaa; /* Cor do botão de fechar */
+  padding: 0; /* Remover padding extra */
+  line-height: 1; /* Alinhar melhor o 'x' */
+}
+
+.sidebar .closebtn:hover {
+    color: #333; /* Cor do botão de fechar ao passar o mouse */
+    background-color: transparent; /* Sem fundo no hover */
+}
+
+/* Secção de Informações do Perfil */
+.profile-info {
+    display: flex; /* Alinha itens horizontalmente */
+    align-items: center; /* Alinha itens verticalmente ao centro */
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    width: 50px; /* Ajustar tamanho se necessário */
+    height: 50px;
+    border-radius: 4px; /* Opcional: cantos ligeiramente arredondados */
+    margin-right: 15px; /* Adicionar espaço à direita da imagem */
+    object-fit: cover;
+    border: 1px solid #ddd;
+    flex-shrink: 0; /* Evita que a imagem encolha */
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column; /* Empilha nome e ID verticalmente */
+    align-items: flex-start; /* Alinha texto à esquerda */
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px; /* Ajustar espaço entre nome e ID */
+    color: #333;
+    text-align: left; /* Garantir alinhamento à esquerda */
+}
+
+.profile-id {
+    font-size: 0.9em;
+    color: #777;
+    text-align: left; /* Garantir alinhamento à esquerda */
+}
+
+/* Links da Barra Lateral */
+.sidebar a {
+  padding: 12px 15px 12px 25px; /* Ajustar padding (especialmente esquerdo) */
+  text-decoration: none;
+  font-size: 16px; /* Ajustar tamanho da fonte se necessário */
+  color: #333; /* Cor do texto */
+  display: block; /* Garante que ocupa a largura toda */
+  transition: background-color 0.3s, color 0.3s, padding-left 0.3s; /* Transição suave para hover */
+  white-space: nowrap; /* Evita quebra de linha */
+  text-align: left; /* Garante alinhamento à esquerda */
+  border-left: 3px solid transparent; /* Borda esquerda transparente para efeito hover */
+}
+
+.sidebar a:hover {
+  background-color: #f0f0f0; /* Cor de fundo suave no hover */
+  color: var(--primary-color); /* Cor do texto no hover (usando a variável CSS se definida) ou #0056b3 */
+  /* padding-left: 28px; */ /* Opcional: Pequeno recuo no hover */
+  border-left: 3px solid var(--primary-color); /* Mostra borda esquerda no hover */
+
+}
+
+/* Estilos do Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  z-index: 1000; /* Abaixo da sidebar */
+  display: none; /* Começa escondido */
+  transition: opacity 0.5s;
+}

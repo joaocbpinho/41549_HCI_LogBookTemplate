@@ -489,3 +489,19 @@ if (localidadeInput && sugestoesList) {
 
 // --- Fim Autocomplete Localidade ---
 
+// ========== FUNÇÕES DA BARRA LATERAL ==========
+function openProfileSidebar() {
+  document.getElementById("profileSidebar").style.width = "250px"; // Define a largura da sidebar
+  document.getElementById("sidebarOverlay").style.display = "block"; // Mostra o overlay
+}
+
+function closeProfileSidebar() {
+  document.getElementById("profileSidebar").style.width = "0"; // Esconde a sidebar
+  document.getElementById("sidebarOverlay").style.display = "none"; // Esconde o overlay
+}
+
+function fazerLogout() {
+  alert("Logout efetuado!");
+  closeProfileSidebar(); // Fecha a sidebar após logout
+}
+

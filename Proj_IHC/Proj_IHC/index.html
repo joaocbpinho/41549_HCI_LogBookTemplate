@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="images/PlaySmart.png" type="image/png" />
   <style>
-
   </style>
 </head>
 <body>
@@ -20,7 +19,7 @@
       <div id="saldoContainer" onclick="abrirModalSaldo()">
         <span id="saldoAtual">0.0€</span>
       </div>
-      <button id="profileButton" onclick="toggleProfileDropdown()">👤</button>
+      <button id="profileButton" onclick="openProfileSidebar()">👤</button>
     </div>
   </header>
 
@@ -183,14 +182,28 @@
     </div>
   </div>
 
-  <!-- Dropdown do Perfil -->
-  <div id="profileDropdown" class="dropdown-content">
-    <a href="#">Notificações</a>
-    <a href="#">Equipas</a>
-    <a href="#">Convites</a>
-    <a href="#">Reservas</a>
-    <a href="#">Histórico</a>
-    <a href="#" onclick="fazerLogout()">Sair</a>
+  <!-- Barra Lateral do Perfil -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeProfileSidebar()"></div>
+  <div id="profileSidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeProfileSidebar()">&times;</a>
+
+    <!-- Secção de Informações do Perfil -->
+    <div class="profile-info">
+      <img src="images/default-profile.png" alt="Foto de Perfil" class="profile-pic">
+      <!-- Novo div para agrupar texto -->
+      <div class="profile-text">
+        <span class="profile-name">João Silva</span>
+        <span class="profile-id">ID: 123456</span>
+      </div>
+    </div>
+
+    <!-- Links do Menu -->
+    <a href="#">🔔 Notificações</a>
+    <a href="#">👥 Equipas</a>
+    <a href="#">📧 Convites</a>
+    <a href="reserva/reservas.html">📅 Reservas</a>
+    <a href="#">📜 Histórico</a>
+    <a href="#" onclick="fazerLogout()">🚪 Sair</a>
   </div>
 
   <script src="script.js"></script>
