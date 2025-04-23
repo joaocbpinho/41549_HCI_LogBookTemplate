@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipas - Play Smart</title>
+  <link rel="stylesheet" href="equipa.css">
+  <link rel="icon" href="../images/PlaySmart.png" type="image/png">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="../images/PlaySmart.png" alt="Logo" class="logo-img">
+      Play Smart
+    </div>
+    <div class="header-icons">
+      <div id="saldoContainer" onclick="abrirModalSaldo()">
+        <span id="saldoAtual">10,00€</span>
+      </div>
+      <button id="profileButton" onclick="openProfileSidebar()">👤</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Minhas Equipas -->
+    <section class="section">
+      <h2>Minhas Equipas</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Equipa 1</h3>
+          <button class="gerir-btn" onclick="abrirPopupGerirEquipa('Equipa 1')">Gerir</button>
+        </div>
+        <div class="card">
+          <h3>Equipa 2</h3>
+          <button class="gerir-btn" onclick="abrirPopupGerirEquipa('Equipa 2')">Gerir</button>
+        </div>
+        <div class="card">
+          <h3>Equipa 3</h3>
+          <button class="gerir-btn" onclick="abrirPopupGerirEquipa('Equipa 3')">Gerir</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nova Equipa -->
+    <section class="section">
+      <h2>Nova Equipa</h2>
+      <button class="criar-equipa-btn" onclick="abrirPopupCriarEquipa()">+ Criar Nova Equipa</button>
+    </section>
+
+    <!-- Adicionar Amigos -->
+    <section class="section">
+      <h2>Adicionar Amigos</h2>
+      <button class="adicionar-amigo-btn" onclick="abrirPopupAdicionarAmigo()">+ Adicionar Amigos</button>
+    </section>
+  </main>
+
+  <!-- Pop-up para Criar Equipa -->
+<div id="popupCriarEquipa" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupCriarEquipa()">&times;</span>
+      <h2>Criar Nova Equipa</h2>
+      <form id="criarEquipaForm">
+        <!-- Nome da Equipa -->
+        <label for="nomeEquipa">Nome da Equipa:</label>
+        <input type="text" id="nomeEquipa" placeholder="Insira o nome da equipa" required>
+  
+        <!-- Seleção de Desporto -->
+        <label for="desporto">Selecione o Desporto:</label>
+        <select id="desporto" onchange="atualizarRestricoes()">
+          <option value="" disabled selected>Escolha um desporto</option>
+          <option value="futebol">Futebol</option>
+          <option value="basquetebol">Basquetebol</option>
+          <option value="voleibol">Voleibol</option>
+        </select>
+        <p id="restricoesDesporto" class="restricoes"></p>
+  
+        <!-- Pesquisa de Amigos -->
+        <label for="pesquisarAmigos">Pesquisar Amigos:</label>
+        <input type="text" id="pesquisarAmigos" placeholder="Digite o nome do amigo" oninput="filtrarAmigos()">
+  
+        <!-- Lista de Amigos -->
+        <h3>Adicionar Amigos</h3>
+        <div class="amigos-list" id="listaAmigos">
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Francisco Pinho</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Guilherme Pina</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Bruno Aguiar</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Miguel Pires</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">António Carlos</button>
+        </div>
+  
+        <!-- Amigos Recentes -->
+        <h3>Amigos Recentes</h3>
+        <div class="amigos-recentes" id="amigosRecentes">
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Joana Silva</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Pedro Costa</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Ana Martins</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Rui Pereira</button>
+        </div>
+  
+        <!-- Botão Criar Equipa -->
+        <div style="text-align: center;">
+          <button type="button" class="criar-equipa-btn" onclick="criarEquipa()">Criar Equipa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Pop-up para Adicionar Amigos -->
+  <div id="popupAdicionarAmigo" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupAdicionarAmigo()">&times;</span>
+      <h2>Adicionar Amigos</h2>
+      <form id="adicionarAmigoForm">
+        <label for="amigoId">ID do Amigo:</label>
+        <input type="text" id="amigoId" placeholder="Insira o ID do amigo">
+        <label for="amigoTelefone">Número de Telemóvel:</label>
+        <input type="text" id="amigoTelefone" placeholder="Insira o número de telemóvel">
+        <button type="button" class="confirmar-btn" onclick="adicionarAmigo()">Adicionar</button>
+      </form>
+    </div>
+  </div>
+    <!-- Pop-up de Confirmação para Adicionar Amigo -->
+    <div id="popupConfirmarAdicionarAmigo" class="popup">
+        <div class="popup-content">
+          <span class="close" onclick="fecharPopupConfirmarAdicionarAmigo()">&times;</span>
+          <h2>Amigo Adicionado</h2>
+          <p>O amigo foi adicionado com sucesso!</p>
+          <button class="confirmar-btn" onclick="fecharPopupConfirmarAdicionarAmigo()">OK</button>
+        </div>
+      </div>
+    
+      <!-- Pop-up de Confirmação para Criar Equipa -->
+    <div id="popupConfirmarCriarEquipa" class="popup">
+        <div class="popup-content">
+          <span class="close" onclick="fecharPopupConfirmarCriarEquipa()">&times;</span>
+          <h2>Equipa Criada</h2>
+          <p>A equipa foi criada com sucesso!</p>
+          <button class="confirmar-btn" onclick="fecharPopupConfirmarCriarEquipa()">OK</button>
+        </div>
+    </div>
+
+  <script src="equipa.js"></script>
+</body>
+</html>
