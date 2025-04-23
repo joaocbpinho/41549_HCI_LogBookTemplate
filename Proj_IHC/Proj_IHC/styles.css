@@ -602,6 +602,8 @@ main {
   transition: 0.5s; /* Animação suave */
   padding-top: 20px; /* Ajustar padding superior */
   box-shadow: -2px 0 5px rgba(0,0,0,0.2); /* Sombra */
+  display: flex; /* Adicionado */
+  flex-direction: column; /* Adicionado */
 }
 
 .sidebar .closebtn {
@@ -660,23 +662,68 @@ main {
 
 /* Links da Barra Lateral */
 .sidebar a {
-  padding: 12px 15px 12px 25px; /* Ajustar padding (especialmente esquerdo) */
+  padding: 15px 15px 15px 25px; /* Aumentado padding vertical (era 12px) */
   text-decoration: none;
-  font-size: 16px; /* Ajustar tamanho da fonte se necessário */
-  color: #333; /* Cor do texto */
-  display: block; /* Garante que ocupa a largura toda */
-  transition: background-color 0.3s, color 0.3s, padding-left 0.3s; /* Transição suave para hover */
-  white-space: nowrap; /* Evita quebra de linha */
-  text-align: left; /* Garante alinhamento à esquerda */
-  border-left: 3px solid transparent; /* Borda esquerda transparente para efeito hover */
+  font-size: 17px; /* Opcional: Aumentado tamanho da fonte (era 16px) */
+  color: #333;
+  display: block;
+  transition: background-color 0.3s, color 0.3s, border-left 0.3s;
+  white-space: nowrap;
+  text-align: left;
+  border-left: 3px solid transparent;
 }
 
 .sidebar a:hover {
-  background-color: #f0f0f0; /* Cor de fundo suave no hover */
-  color: var(--primary-color); /* Cor do texto no hover (usando a variável CSS se definida) ou #0056b3 */
-  /* padding-left: 28px; */ /* Opcional: Pequeno recuo no hover */
-  border-left: 3px solid var(--primary-color); /* Mostra borda esquerda no hover */
+  background-color: #f0f0f0;
+  color: var(--primary-color);
+  border-left: 3px solid var(--primary-color);
+}
 
+/* Estilos específicos para o botão Sair */
+.sidebar .sidebar-logout {
+  margin-top: auto; /* Empurra o botão para baixo DENTRO DO FLEX CONTAINER */
+  margin-bottom: 20px; /* Adiciona espaço em baixo */
+  color: #dc3545; /* Cor vermelha para o texto */
+  border-left-color: transparent; /* Garante que não tem borda esquerda por defeito */
+}
+
+.sidebar .sidebar-logout:hover {
+  background-color: #dc3545; /* Fundo vermelho no hover */
+  color: white; /* Texto branco no hover */
+  border-left-color: #dc3545; /* Borda esquerda vermelha no hover */
+}
+
+/* NOVOS ESTILOS PARA O PAINEL DE NOTIFICAÇÕES */
+.notification-panel {
+  display: none; /* Começa escondido */
+  position: fixed; /* Fixo na tela */
+  top: 105px; /* Alinhar com o topo da sidebar (ajuste conforme necessário) */
+  right: 250px; /* Posiciona à esquerda da sidebar aberta (largura da sidebar) */
+  width: 220px; /* Largura do painel */
+  height: auto; /* Altura automática ou defina um valor */
+  max-height: calc(100vh - 80px); /* Altura máxima para evitar cobrir tudo */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 1000; /* Abaixo da sidebar, mas acima do overlay */
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Animação */
+  transform: translateX(100%); /* Começa fora da tela à direita */
+  opacity: 0;
+}
+
+.notification-panel.visible {
+  display: block; /* Torna visível */
+  transform: translateX(0); /* Move para a posição correta */
+  opacity: 1;
+}
+
+.notification-panel p {
+  margin: 0;
+  font-size: 0.95em;
+  color: #555;
+  text-align: center;
 }
 
 /* Estilos do Overlay */

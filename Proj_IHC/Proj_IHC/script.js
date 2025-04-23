@@ -420,16 +420,58 @@ function openProfileSidebar() {
   const overlay = document.getElementById("sidebarOverlay");
   if (sidebar) sidebar.style.width = "250px";
   if (overlay) overlay.style.display = "block";
+  // NÃO abre o painel de notificações automaticamente
 }
+
 function closeProfileSidebar() {
   const sidebar = document.getElementById("profileSidebar");
   const overlay = document.getElementById("sidebarOverlay");
+  const notificationPanel = document.getElementById('notificationPanel'); // Pega o painel
+
+  // Fecha o painel de notificações se estiver aberto
+  if (notificationPanel && notificationPanel.classList.contains('visible')) {
+    notificationPanel.classList.remove('visible');
+    // Opcional: remover classe 'active' do link se usar
+    // const link = document.querySelector('.sidebar a[onclick*="toggleNotificationPanel"]');
+    // if (link) link.classList.remove('active');
+  }
+
   if (sidebar) sidebar.style.width = "0";
   if (overlay) overlay.style.display = "none";
 }
+
 function fazerLogout() {
   alert("Logout efetuado! (simulação)");
-  closeProfileSidebar();
+  closeProfileSidebar(); // Fecha a sidebar e o painel de notificações
+}
+
+// --- Painel de Notificações ---
+function toggleNotificationPanel(linkElement) {
+  const notificationPanel = document.getElementById('notificationPanel');
+  const sidebar = document.getElementById("profileSidebar");
+
+  if (!notificationPanel || !sidebar) {
+    console.error("Painel de notificações ou sidebar não encontrado.");
+    return;
+  }
+
+  // Só permite abrir o painel se a sidebar estiver aberta
+  if (sidebar.style.width === "250px") {
+    // Alterna a visibilidade do painel
+    notificationPanel.classList.toggle('visible');
+
+    // Opcional: Adicionar/remover classe 'active' no link para feedback visual
+    // if (linkElement) {
+    //   linkElement.classList.toggle('active', notificationPanel.classList.contains('visible'));
+    // }
+
+    console.log("Painel de notificações alternado. Visível:", notificationPanel.classList.contains('visible'));
+  } else {
+    console.log("Sidebar fechada, não abrindo o painel de notificações.");
+    // Garante que o painel está fechado se a sidebar não estiver totalmente aberta
+    notificationPanel.classList.remove('visible');
+    // if (linkElement) linkElement.classList.remove('active');
+  }
 }
 
 // --- Função Pesquisar ---
@@ -474,33 +516,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // gerarOpcoesHorario(horaInicioSelect); // Já é feito em abrirPopup
   // gerarOpcoesHorario(horaFimSelect);   // Já é feito em abrirPopup
   // preencherOpcoesDesporto(document.getElementById('desportoSelect')); // Já é feito em abrirPopupDesporto
-
-  // --- Remover código de outras páginas/versões ---
-  /*
-  // Código do Carrossel (pertence a campo.html)
-  const campoImages = ["images/campo_3.jpg", "images/campo_2.jpg", "images/campo_1.jpg"];
-  let currentImageIndex = 0;
-  const campoImage = document.getElementById("campoImage");
-  const nextBtn = document.getElementById("nextBtn");
-  const prevBtn = document.getElementById("prevBtn");
-  if (campoImage && nextBtn && prevBtn) {
-      nextBtn.addEventListener("click", () => { ... });
-      prevBtn.addEventListener("click", () => { ... });
-  }
-
-  // Código do Calendário Antigo (pertence a reserva.html ou versão antiga)
-  const calendarContainer = document.getElementById("calendarDays");
-  if (calendarContainer) { ... }
-
-  // Código dos Horários Antigos (checkboxes) (pertence a reserva.html ou versão antiga)
-  const horarios = document.querySelectorAll(".hour-slot input");
-  if (horarios.length > 0) { ... }
-
-  // Código do Dropdown Antigo (substituído pela sidebar)
-  const profileButtonOld = document.getElementById("profileButton"); // Cuidado com IDs duplicados
-  const profileDropdown = document.getElementById("profileDropdown");
-  if (profileButtonOld && profileDropdown) { ... }
-  */
 
   console.log("Listeners e configurações de index.html aplicados.");
 });

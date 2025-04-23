@@ -63,13 +63,6 @@
     </section>
 
     <section class="section">
-      <h2>Convites</h2>
-      <div class="cards">
-        <div class="card">Convite 1</div>
-      </div>
-    </section>
-
-    <section class="section">
       <h2>Equipas</h2>
       <div class="cards">
         <div class="card add-card" onclick="addEquipa()">➕ Criar Equipa</div>
@@ -190,7 +183,6 @@
     <!-- Secção de Informações do Perfil -->
     <div class="profile-info">
       <img src="images/default-profile.png" alt="Foto de Perfil" class="profile-pic">
-      <!-- Novo div para agrupar texto -->
       <div class="profile-text">
         <span class="profile-name">João Silva</span>
         <span class="profile-id">ID: 123456</span>
@@ -198,12 +190,16 @@
     </div>
 
     <!-- Links do Menu -->
-    <a href="#">🔔 Notificações</a>
+    <a href="javascript:void(0)" onclick="toggleNotificationPanel(this)">🔔 Notificações</a>
     <a href="#">👥 Equipas</a>
-    <a href="#">📧 Convites</a>
     <a href="reservas/reservas.html">📅 Reservas</a>
-    <a href="#">📜 Histórico</a>
-    <a href="#" onclick="fazerLogout()">🚪 Sair</a>
+    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a>
+  </div>
+
+  <!-- NOVO PAINEL DE NOTIFICAÇÕES (FORA DA SIDEBAR) -->
+  <div id="notificationPanel" class="notification-panel">
+      <p>Sem notificações novas.</p>
+      <!-- Pode adicionar mais conteúdo aqui no futuro -->
   </div>
 
   <script src="script.js"></script>
