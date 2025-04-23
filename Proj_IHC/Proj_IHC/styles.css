@@ -202,52 +202,57 @@ header {
 }
 
 /* Secções */
+main {
+  padding: 20px; /* Adiciona espaço interno em todos os lados */
+  max-width: 1400px; /* Aumentado de 1200px para 1400px (ou outro valor maior) */
+  margin: 0 auto; /* Opcional: Centra o conteúdo principal se max-width for definido */
+}
+
 .section {
-  margin-bottom: 30px;
-  padding: 20px;
-  background-color: var(--background-color);
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px; /* Mantém ou ajusta o espaço entre secções */
 }
 
 .section h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: var(--primary-color);
+  margin-bottom: 15px; /* Espaço abaixo dos títulos das secções */
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
 }
 
 .cards {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Layout responsivo dos cards */
+  gap: 20px; /* Espaço entre os cards */
 }
 
 .card {
-  background-color: var(--background-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
+  background-color: #fff;
   padding: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  flex: 1 1 calc(33.333% - 20px);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
-  transform: translateY(-5px);
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .add-card {
-  background-color: var(--primary-color);
-  color: white;
-  font-size: 18px;
+  border: 2px dashed var(--primary-color, #007bff); /* Usa a cor primária ou um azul padrão */
+  color: var(--primary-color, #007bff);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
+  background-color: #f8f9fa; /* Fundo ligeiramente diferente */
 }
 
 .add-card:hover {
-  background-color: var(--hover-color);
+  background-color: #e9ecef; /* Escurece ligeiramente no hover */
+  border-style: solid;
 }
 
 /* Modal */
