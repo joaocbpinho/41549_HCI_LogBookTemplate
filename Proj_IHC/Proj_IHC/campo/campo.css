@@ -188,3 +188,241 @@ header .logo img {
   color: var(--primary-color);
   font-size: 18px;
 }
+
+/* Modal de Reserva */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%; /* Ajuste para telas menores */
+  max-width: 600px; /* Limite de largura */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  overflow-y: auto; /* Permitir scroll se o conteúdo for muito grande */
+  max-height: 90%; /* Limitar a altura */
+}
+
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: color 0.3s;
+}
+
+.modal-content .close:hover {
+  color: var(--primary-color);
+}
+
+/* Calendário */
+.calendario-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendario-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.calendario-btn:hover {
+  background-color: var(--hover-color);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.calendar-day:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.calendar-day.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Horários */
+.horarios-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  background-color: var(--background-color);
+}
+
+.horario-slot {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.horario-slot:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.horario-slot.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Botões */
+.acoes button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.acoes button:hover {
+  background-color: var(--hover-color);
+}
+/* Modal de Comodidades */
+.comodidades-lista {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comodidades-lista li {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.comodidades-lista li:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.comodidades-lista li.selecionada {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.comodidades-lista li i {
+  font-size: 18px;
+}
+
+/* Modal de Reserva */
+.modal-content {
+  max-height: 90%; /* Limitar a altura do modal */
+  overflow-y: auto; /* Permitir scroll no conteúdo */
+}
+
+/* Estilo para "Convidar Amigos" */
+.convidar-amigos {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.convidar-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.convidar-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.convidar-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Estilo para "Pagar" */
+.pagar-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagar-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagar-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Botão "X" para fechar o modal */
+.modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.modal-content .close:hover {
+  color: var(--primary-color);
+}

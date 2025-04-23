@@ -1,0 +1,130 @@
+:root {
+    --primary-color: #0078d7;
+    --secondary-color: #f4f4f9;
+    --text-color: #333;
+    --hover-color: #005a9e;
+    --background-color: #ffffff;
+    --border-color: #ccc;
+  }
+  
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .back-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .saldo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .add-saldo-btn, .profile-btn {
+    background-color: var(--hover-color);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  .reservas-section {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reservas-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .tab-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .tab-btn.active {
+    background-color: var(--hover-color);
+  }
+  
+  .tab-btn:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .reserva-card {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reserva-card h2 {
+    margin: 0 0 10px;
+    font-size: 20px;
+    color: var(--primary-color);
+  }
+  
+  .reserva-info p {
+    margin: 5px 0;
+  }
+  
+  .reserva-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .reserva-actions button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .reserva-actions button:hover {
+    background-color: var(--hover-color);
+  }
