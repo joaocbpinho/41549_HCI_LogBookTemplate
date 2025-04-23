@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas - Play Smart</title>
+  <link rel="stylesheet" href="reservas.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="header-container">
+      <button class="back-btn" onclick="voltar()">&larr;</button>
+      <h1>Reservas</h1>
+      <div class="saldo-container">
+        <span>10,00€</span>
+        <button class="add-saldo-btn">+</button>
+        <button class="profile-btn">👤</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="reservas-section">
+      <div class="reservas-header">
+        <button class="tab-btn active">Feitas por ti</button>
+        <button class="tab-btn">Mais Recentes</button>
+      </div>
+
+      <div class="reserva-card">
+        <h2>Campo 2</h2>
+        <div class="reserva-info">
+          <p><strong>Data:</strong> 10 abril, 22h30 - 23h30</p>
+          <p><strong>Número Convidados:</strong> 10</p>
+          <p><strong>Número Confirmados:</strong> 2</p>
+          <p><strong>Preço Definido:</strong> 4,99€</p>
+        </div>
+        <div class="reserva-actions">
+          <button class="detalhes-btn">Mais Detalhes</button>
+          <button class="cancelar-presenca-btn">Cancelar Presenças</button>
+          <button class="cancelar-reserva-btn">Cancelar Reserva</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="reservas.js"></script>
+</body>
+</html>

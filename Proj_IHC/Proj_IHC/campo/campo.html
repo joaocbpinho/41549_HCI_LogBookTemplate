@@ -33,7 +33,69 @@
         </div>
         <button class="carousel-btn" id="nextBtn">&gt;</button>
       </div>
-      <button class="reserve-btn">Reservar</button>
+      <button class="reserve-btn" onclick="abrirReserva()">Reservar</button>
+
+        <!-- Modal de Reserva -->
+        <div id="reservaModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="fecharReserva()">&times;</span>
+            <section class="reserva-section">
+              <h1>Agendar</h1>
+              <div class="reserva-container">
+                <!-- Calendário -->
+                <div class="calendario">
+                  <div class="calendario-header">
+                    <button id="prevMonth" class="calendario-btn">&lt;</button>
+                    <h2 id="calendarioMesAno">Abril 2025</h2>
+                    <button id="nextMonth" class="calendario-btn">&gt;</button>
+                  </div>
+                  <div class="calendar-grid"></div>
+                </div>
+
+                <!-- Horários -->
+                <div class="horarios">
+                  <h2>Horários Disponíveis</h2>
+                  <div class="horarios-list"></div>
+                </div>
+              </div>
+              <div class="acoes">
+                <h2>Reservar Comodidades</h2>
+                <button class="comodidades-btn" onclick="abrirComodidades()">Comodidades</button>
+                <div id="comodidadesModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close" onclick="fecharComodidades()">&times;</span>
+                    <h2>Comodidades</h2>
+                    <ul class="comodidades-lista">
+                      <li class="comodidade" data-nome="Balneários" onclick="selecionarComodidade(this)">
+                        <i class="fas fa-shower"></i> Balneários
+                      </li>
+                      <li class="comodidade" data-nome="Equipamento" onclick="selecionarComodidade(this)">
+                        <i class="fas fa-shirt"></i> Equipamento
+                      </li>
+                      <li class="comodidade" data-nome="Estacionamento" onclick="selecionarComodidade(this)">
+                        <i class="fas fa-parking"></i> Estacionamento
+                      </li>
+                    </ul>
+                    <button onclick="confirmarComodidades()">Confirmar</button>
+                  </div>
+                </div>
+              
+                <div class="convidar-amigos">
+                  <h2>Convidar Equipas</h2>
+                  <div class="convidar-container">
+                    <button class="convidar-btn">Equipa 1</button>
+                    <button class="convidar-btn">+</button>
+                  </div>
+                </div>
+              
+                <div class="pagar-container">
+                  <button class="pagar-btn" onclick="realizarPagamento()">Confirmar Reserva</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+       
     </section>
 
     <section class="campo-info">
