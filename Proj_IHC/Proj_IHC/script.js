@@ -1,507 +1,523 @@
-// ========== FUNÇÕES GLOBAIS (MODAIS, POPUPS, SIDEBAR, ETC.) ==========
+document.addEventListener("DOMContentLoaded", () => {
+  // ========== CARROSSEL DE IMAGENS ==========
+  const campoImages = [
+    "images/campo_3.jpg",
+    "images/campo_2.jpg",
+    "images/campo_1.jpg",
+  ];
+  let currentImageIndex = 0;
+  const campoImage = document.getElementById("campoImage");
 
-// --- Funções Modais (Saldo, Login, Criar Equipa) ---
-function abrirModalSaldo() {
-  const modal = document.getElementById("modalAdicionarSaldo");
-  if (modal) modal.style.display = "block";
-}
-function fecharModalSaldo() {
-  const modal = document.getElementById("modalAdicionarSaldo");
-  if (modal) modal.style.display = "none";
-}
-function adicionarSaldo() {
-  const valorInput = document.getElementById("valorSaldo");
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    currentImageIndex = (currentImageIndex + 1) % campoImages.length;
+    campoImage.src = campoImages[currentImageIndex];
+  });
+
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    currentImageIndex = (currentImageIndex - 1 + campoImages.length) % campoImages.length;
+    campoImage.src = campoImages[currentImageIndex];
+  });
+
+  // ========== MODAL DE ADICIONAR SALDO ==========
   const saldoAtualEl = document.getElementById("saldoAtual");
-  if (!valorInput || !saldoAtualEl) return;
+  const saldoContainer = document.getElementById("saldoContainer");
+  const modalAdicionarSaldo = document.getElementById("modalAdicionarSaldo");
 
-  const valorSaldo = parseFloat(valorInput.value);
-  if (!isNaN(valorSaldo) && valorSaldo > 0) {
-    let saldoAtual = 0;
-    // Tenta extrair o valor numérico atual do saldo
-    const match = saldoAtualEl.textContent.match(/[\d,.]+/);
-    if (match) {
-        saldoAtual = parseFloat(match[0].replace(',', '.')); // Trata vírgula como ponto decimal se necessário
-    }
-    const novoSaldo = saldoAtual + valorSaldo;
-    saldoAtualEl.textContent = `${novoSaldo.toFixed(2)}€`; // Formata com 2 casas decimais
-    valorInput.value = ''; // Limpa o input
-    fecharModalSaldo();
-  } else {
-    alert("Por favor, insira um valor de saldo válido.");
+  if (saldoContainer) {
+    saldoContainer.addEventListener("click", () => {
+      if (modalAdicionarSaldo) modalAdicionarSaldo.style.display = "block";
+    });
   }
-}
 
-function addEquipa() { // Renomeada para corresponder ao onclick no HTML
-    const modal = document.getElementById('modalCriarEquipa');
-    if (modal) modal.style.display = 'block';
-}
-function fecharModal() { // Função genérica para fechar modais (usada no 'x')
-    // Fecha todos os modais abertos (ou pode adaptar para fechar um específico)
-    document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
-}
-function criarEquipa() {
-    const nomeEquipaInput = document.getElementById('nomeEquipa');
-    if (!nomeEquipaInput) return;
-    const nomeEquipa = nomeEquipaInput.value.trim();
-    if (nomeEquipa) {
-        alert(`Equipa "${nomeEquipa}" criada com sucesso! (simulação)`);
-        // Aqui adicionaria a lógica para realmente criar e mostrar a equipa
-        nomeEquipaInput.value = ''; // Limpa o input
-        fecharModal(); // Fecha o modal de criar equipa
-    } else {
+  const fecharModalSaldoBtn = document.getElementById("fecharModalSaldo");
+  if (fecharModalSaldoBtn) {
+    fecharModalSaldoBtn.addEventListener("click", () => {
+      modalAdicionarSaldo.style.display = "none";
+    });
+  }
+
+  const adicionarSaldoBtn = document.getElementById("confirmarAdicionarSaldo");
+  if (adicionarSaldoBtn) {
+    adicionarSaldoBtn.addEventListener("click", () => {
+      const valorInput = document.getElementById("valorSaldo");
+      const valorSaldo = parseFloat(valorInput.value);
+      if (!isNaN(valorSaldo) && valorSaldo > 0) {
+        const saldoAtual = parseFloat(saldoAtualEl.textContent.replace("€", ""));
+        const novoSaldo = saldoAtual + valorSaldo;
+        saldoAtualEl.textContent = `${novoSaldo.toFixed(2)}€`;
+        modalAdicionarSaldo.style.display = "none";
+      } else {
+        alert("Por favor, insira um valor válido.");
+      }
+    });
+  }
+
+  // ========== DROPDOWN DO PERFIL ==========
+  const profileButton = document.getElementById("profileButton");
+  const profileDropdown = document.getElementById("profileDropdown");
+
+  if (profileButton && profileDropdown) {
+    profileButton.addEventListener("click", () => {
+      profileDropdown.style.display = profileDropdown.style.display === "block" ? "none" : "block";
+    });
+
+    window.addEventListener("click", function (e) {
+      if (!e.target.closest("#profileButton") && !e.target.closest("#profileDropdown")) {
+        profileDropdown.style.display = "none";
+      }
+    });
+  }
+
+  // ========== CALENDÁRIO (DIAS DO MÊS) ==========
+  const calendarContainer = document.getElementById("calendarDays");
+  if (calendarContainer) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dayEl = document.createElement("div");
+      dayEl.className = "calendar-day";
+      dayEl.innerText = d;
+      dayEl.addEventListener("click", () => {
+        document.querySelectorAll(".calendar-day").forEach(el => el.classList.remove("active"));
+        dayEl.classList.add("active");
+        console.log("Dia selecionado:", d, month + 1, year);
+      });
+      calendarContainer.appendChild(dayEl);
+    }
+  }
+
+  // ========== HORÁRIOS ==========
+  const horarios = document.querySelectorAll(".hour-slot input");
+  horarios.forEach(cb => {
+    cb.addEventListener("change", () => {
+      const selecionadas = Array.from(horarios)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+      console.log("Horas selecionadas:", selecionadas);
+    });
+  });
+
+  // ========== MODAL CRIAR EQUIPA ==========
+  const criarEquipaBtn = document.getElementById("criarEquipaBtn");
+  const modalCriarEquipa = document.getElementById("modalCriarEquipa");
+
+  if (criarEquipaBtn && modalCriarEquipa) {
+    criarEquipaBtn.addEventListener("click", () => {
+      modalCriarEquipa.style.display = "block";
+    });
+  }
+
+  const fecharEquipaBtn = document.getElementById("fecharCriarEquipa");
+  if (fecharEquipaBtn) {
+    fecharEquipaBtn.addEventListener("click", () => {
+      modalCriarEquipa.style.display = "none";
+    });
+  }
+
+  const confirmarCriarEquipa = document.getElementById("confirmarCriarEquipa");
+  if (confirmarCriarEquipa) {
+    confirmarCriarEquipa.addEventListener("click", () => {
+      const nomeEquipa = document.getElementById("nomeEquipa").value;
+      if (nomeEquipa) {
+        alert(`Equipa "${nomeEquipa}" criada com sucesso!`);
+        modalCriarEquipa.style.display = "none";
+      } else {
         alert("Por favor, insira um nome para a equipa.");
-    }
-}
+      }
+    });
+  }
 
-function abrirModalLogin() {
-    const modal = document.getElementById('modalLogin');
-    if (modal) modal.style.display = 'block';
-}
-function fecharModalLogin() {
-    const modal = document.getElementById('modalLogin');
-    if (modal) modal.style.display = 'none';
-}
-function fazerLogin() {
-    const user = document.getElementById('username').value;
-    // Adicionar validação de login real aqui
-    alert(`Login simulado para: ${user}`);
-    fecharModalLogin();
-}
-
-
-// --- Funções Popup Data/Hora ---
-
-// Função para gerar opções de horário (00:00 - 23:30)
-function gerarOpcoesHorario(selectElement) {
-  if (!selectElement) return;
-  selectElement.innerHTML = ''; // Limpa opções existentes
-
-  // Adiciona uma opção vazia inicial
-  const optionVazia = document.createElement("option");
-  optionVazia.value = "";
-  optionVazia.textContent = "Selecione...";
-  optionVazia.disabled = true; // Não pode ser selecionada diretamente
-  optionVazia.selected = true; // Começa selecionada
-  selectElement.appendChild(optionVazia);
-
-  // Gera horas de 30 em 30 min (ajuste o início/fim/incremento se necessário)
-  for (let h = 0; h <= 23; h++) {
-    for (let m = 0; m < 60; m += 30) {
-      const horaFormatada = String(h).padStart(2, '0');
-      const minutoFormatado = String(m).padStart(2, '0');
-      const valor = `${horaFormatada}:${minutoFormatado}`;
-
-      const option = document.createElement("option");
-      option.value = valor;
-      option.textContent = valor;
-      selectElement.appendChild(option);
+  // ========== GERAR OPÇÕES DE HORÁRIO ==========
+  function gerarOpcoesHorario(selectElement) {
+    for (let hora = 0; hora < 24; hora++) {
+      for (let minuto = 0; minuto < 60; minuto += 30) {
+        const option = document.createElement("option");
+        const horaFormatada = hora.toString().padStart(2, "0");
+        const minutoFormatado = minuto.toString().padStart(2, "0");
+        option.value = `${horaFormatada}:${minutoFormatado}`;
+        option.textContent = `${horaFormatada}:${minutoFormatado}`;
+        selectElement.appendChild(option);
+      }
     }
   }
-}
 
-// Função auxiliar para converter "HH:MM" em minutos
+  // Preencher os selects de hora de início e fim
+  const horaInicioSelect = document.getElementById("horaInicio");
+  const horaFimSelect = document.getElementById("horaFim");
+
+  if (horaInicioSelect && horaFimSelect) {
+    gerarOpcoesHorario(horaInicioSelect);
+    gerarOpcoesHorario(horaFimSelect);
+  }
+});
+
+// Função auxiliar para converter "HH:MM" em minutos desde a meia-noite
 function parseTime(timeStr) {
-  if (!timeStr) return -1;
-  const parts = timeStr.split(':');
-  if (parts.length !== 2) return -1;
-  const hours = parseInt(parts[0], 10);
-  const minutes = parseInt(parts[1], 10);
-  if (isNaN(hours) || isNaN(minutes)) return -1;
+  if (!timeStr) return -1; // Retorna -1 para hora inválida ou vazia
+  const [hours, minutes] = timeStr.split(':').map(Number);
   return hours * 60 + minutes;
 }
 
-// Atualiza opções de Hora Fim baseado na Hora Início
+// Função para atualizar as opções de Hora Fim com base na Hora Início
 function atualizarOpcoesHoraFim() {
   const horaInicioSelect = document.getElementById('horaInicio');
   const horaFimSelect = document.getElementById('horaFim');
-  if (!horaInicioSelect || !horaFimSelect) return;
-
   const inicioSelecionadoMin = parseTime(horaInicioSelect.value);
-  const fimAtualMin = parseTime(horaFimSelect.value); // Guarda o valor atual para tentar manter
+  const fimAtualMin = parseTime(horaFimSelect.value);
 
   let primeiroValidoEncontrado = false;
-  let novoIndiceSelecionado = -1; // Guarda o índice da opção a ser selecionada
+  let novoValorFim = ""; // Guarda o valor atual se ainda for válido, ou o primeiro válido
 
   for (let i = 0; i < horaFimSelect.options.length; i++) {
     const option = horaFimSelect.options[i];
     const optionMin = parseTime(option.value);
 
-    // Opção vazia é sempre válida
+    // A opção vazia é sempre válida
     if (option.value === "") {
       option.disabled = false;
-      option.style.display = '';
       continue;
     }
 
-    // Desabilita e esconde se for <= hora de início
+    // Desabilita se for <= hora de início
     if (inicioSelecionadoMin !== -1 && optionMin <= inicioSelecionadoMin) {
       option.disabled = true;
-      option.style.display = 'none';
     } else {
       option.disabled = false;
-      option.style.display = '';
-      // Se a opção atual ainda for válida, marca-a para ser selecionada
-      if (optionMin === fimAtualMin) {
-          novoIndiceSelecionado = i;
-      }
-      // Se não encontrámos uma válida ainda, marca esta como a primeira
+      // Guarda o primeiro valor válido encontrado
       if (!primeiroValidoEncontrado) {
-          primeiroValidoEncontrado = true;
-          // Se a opção atual se tornou inválida, usa esta primeira válida como fallback
-          if (novoIndiceSelecionado === -1 || fimAtualMin <= inicioSelecionadoMin) {
-              novoIndiceSelecionado = i;
-          }
+        primeiroValidoEncontrado = true;
+        // Se o valor atual se tornou inválido, usaremos este como fallback
+        if (fimAtualMin !== -1 && fimAtualMin <= inicioSelecionadoMin) {
+           novoValorFim = option.value;
+        } else {
+           // Se o valor atual ainda é válido, mantém-no
+           novoValorFim = horaFimSelect.value;
+        }
       }
     }
   }
 
-  // Define o índice selecionado (ou 0 se for a opção vazia)
-  horaFimSelect.selectedIndex = (novoIndiceSelecionado !== -1) ? novoIndiceSelecionado : 0;
-
-  // Se hora início não estiver selecionada, reabilita tudo
-   if (inicioSelecionadoMin === -1) {
-       for (let i = 0; i < horaFimSelect.options.length; i++) {
-           horaFimSelect.options[i].disabled = false;
-           horaFimSelect.options[i].style.display = '';
-       }
-       // Mantém a seleção atual se possível, senão vai para a vazia (índice 0)
-       horaFimSelect.selectedIndex = (fimAtualMin !== -1 && horaFimSelect.options[horaFimSelect.selectedIndex].value === horaFimSelect.value) ? horaFimSelect.selectedIndex : 0;
-   }
+  // Se a hora de fim selecionada ficou inválida, redefine para o primeiro válido ou vazio
+  if (fimAtualMin !== -1 && inicioSelecionadoMin !== -1 && fimAtualMin <= inicioSelecionadoMin) {
+      horaFimSelect.value = novoValorFim || ""; // Usa o primeiro válido ou vazio se não houver nenhum
+  } else if (inicioSelecionadoMin === -1) {
+      // Se a hora de início foi desmarcada, reabilita tudo e mantém a seleção atual se possível
+      for (let i = 0; i < horaFimSelect.options.length; i++) {
+          horaFimSelect.options[i].disabled = false;
+      }
+  }
 }
 
-// Atualiza opções de Hora Início baseado na Hora Fim
+// Função para atualizar as opções de Hora Início com base na Hora Fim
 function atualizarOpcoesHoraInicio() {
-    const horaInicioSelect = document.getElementById('horaInicio');
-    const horaFimSelect = document.getElementById('horaFim');
-    if (!horaInicioSelect || !horaFimSelect) return;
+  const horaInicioSelect = document.getElementById('horaInicio');
+  const horaFimSelect = document.getElementById('horaFim');
+  const fimSelecionadoMin = parseTime(horaFimSelect.value);
+  const inicioAtualMin = parseTime(horaInicioSelect.value);
 
-    const fimSelecionadoMin = parseTime(horaFimSelect.value);
-    const inicioAtualMin = parseTime(horaInicioSelect.value); // Guarda o valor atual
+  let ultimoValidoEncontrado = ""; // Guarda o último valor válido
 
-    let ultimoIndiceValido = -1; // Guarda o índice da última opção válida
+  for (let i = 0; i < horaInicioSelect.options.length; i++) {
+    const option = horaInicioSelect.options[i];
+    const optionMin = parseTime(option.value);
 
-    for (let i = 0; i < horaInicioSelect.options.length; i++) {
-        const option = horaInicioSelect.options[i];
-        const optionMin = parseTime(option.value);
-
-        if (option.value === "") {
-            option.disabled = false;
-            option.style.display = '';
-            continue;
-        }
-
-        // Desabilita e esconde se for >= hora de fim
-        if (fimSelecionadoMin !== -1 && optionMin >= fimSelecionadoMin) {
-            option.disabled = true;
-            option.style.display = 'none';
-        } else {
-            option.disabled = false;
-            option.style.display = '';
-            ultimoIndiceValido = i; // Atualiza o último índice válido
-        }
+    // A opção vazia é sempre válida
+    if (option.value === "") {
+      option.disabled = false;
+      continue;
     }
 
-    // Se a seleção atual se tornou inválida, seleciona a opção vazia (índice 0)
-    if (inicioAtualMin !== -1 && fimSelecionadoMin !== -1 && inicioAtualMin >= fimSelecionadoMin) {
-        horaInicioSelect.selectedIndex = 0;
+    // Desabilita se for >= hora de fim
+    if (fimSelecionadoMin !== -1 && optionMin >= fimSelecionadoMin) {
+      option.disabled = true;
+    } else {
+      option.disabled = false;
+      // Guarda o último valor válido encontrado
+      ultimoValidoEncontrado = option.value;
     }
-    // Se a hora de fim não estiver selecionada, reabilita tudo
-    else if (fimSelecionadoMin === -1) {
-        for (let i = 0; i < horaInicioSelect.options.length; i++) {
-            horaInicioSelect.options[i].disabled = false;
-            horaInicioSelect.options[i].style.display = '';
-        }
-         // Mantém a seleção atual se possível, senão vai para a vazia (índice 0)
-        horaInicioSelect.selectedIndex = (inicioAtualMin !== -1 && horaInicioSelect.options[horaInicioSelect.selectedIndex].value === horaInicioSelect.value) ? horaInicioSelect.selectedIndex : 0;
-    }
+  }
+
+  // Se a hora de início selecionada ficou inválida, redefine para vazio
+  if (inicioAtualMin !== -1 && fimSelecionadoMin !== -1 && inicioAtualMin >= fimSelecionadoMin) {
+      horaInicioSelect.value = ""; // Força a escolher novamente
+  } else if (fimSelecionadoMin === -1) {
+       // Se a hora de fim foi desmarcada, reabilita tudo e mantém a seleção atual se possível
+      for (let i = 0; i < horaInicioSelect.options.length; i++) {
+          horaInicioSelect.options[i].disabled = false;
+      }
+  }
 }
-
 
 function abrirPopup() {
   const popup = document.getElementById('popup');
-  if (!popup) return;
+  if (!popup) return; 
 
-  // Define data mínima (só na primeira vez ou se não existir)
+  // --- NOVO: Definir data mínima ---
   const dataInput = document.getElementById('dataSelecionada');
-  if (dataInput && !dataInput.getAttribute('min')) {
+  if (dataInput && !dataInput.getAttribute('min')) { // Verifica se o 'min' já não foi definido
     const hoje = new Date();
+    
+    // Formatar a data para YYYY-MM-DD
     const ano = hoje.getFullYear();
-    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-    const dia = String(hoje.getDate()).padStart(2, '0');
-    dataInput.min = `${ano}-${mes}-${dia}`;
+    const mes = (hoje.getMonth() + 1).toString().padStart(2, '0'); // +1 porque getMonth() é 0-indexed
+    const dia = hoje.getDate().toString().padStart(2, '0');
+    const dataMinima = `${ano}-${mes}-${dia}`;
+    
+    dataInput.setAttribute('min', dataMinima);
+    console.log("Data mínima definida para:", dataMinima); // Log para confirmação
+  }
+  // --- FIM: Definir data mínima ---
+
+  popup.style.display = 'block'; // Exibe o popup
+
+  const horaInicio = document.getElementById('horaInicio');
+  const horaFim = document.getElementById('horaFim');
+
+  // Preenche as opções e adiciona listeners se necessário (só na primeira vez)
+  if (horaInicio && horaInicio.options.length <= 1) { 
+    preencherOpcoesTempo(horaInicio);
+    if (!horaInicio.dataset.listenerAttached) { 
+        horaInicio.addEventListener('change', atualizarOpcoesHoraFim);
+        horaInicio.dataset.listenerAttached = 'true'; 
+    }
   }
 
-  // Garante que as opções de hora estão preenchidas (chamar sempre é seguro se a função limpar primeiro)
-  gerarOpcoesHorario(document.getElementById('horaInicio'));
-  gerarOpcoesHorario(document.getElementById('horaFim'));
+  if (horaFim && horaFim.options.length <= 1) { 
+    preencherOpcoesTempo(horaFim);
+     if (!horaFim.dataset.listenerAttached) {
+        horaFim.addEventListener('change', atualizarOpcoesHoraInicio);
+        horaFim.dataset.listenerAttached = 'true'; 
+    }
+  }
 
-  // Atualiza as opções com base nos valores atuais (ou padrão)
   atualizarOpcoesHoraFim();
   atualizarOpcoesHoraInicio();
-
-  popup.style.display = 'block';
 }
 
 function fecharPopup() {
   const popup = document.getElementById('popup');
-  if (popup) popup.style.display = 'none';
+  popup.style.display = 'none'; // Oculta o pop-up
 }
 
 function confirmarDataHora() {
-  const dataInput = document.getElementById('dataSelecionada');
-  const horaInicioSelect = document.getElementById('horaInicio');
-  const horaFimSelect = document.getElementById('horaFim');
-  const resumoEl = document.getElementById('dataHoraResumo');
-
-  if (!dataInput || !horaInicioSelect || !horaFimSelect || !resumoEl) return;
-
-  const data = dataInput.value;
-  const horaInicio = horaInicioSelect.value;
-  const horaFim = horaFimSelect.value;
-
-  // Validação
+  const data = document.getElementById('dataSelecionada').value;
+  const horaInicio = document.getElementById('horaInicio').value;
+  const horaFim = document.getElementById('horaFim').value;
+  
+  // Verificar se todos os campos foram preenchidos
   if (!data || !horaInicio || !horaFim) {
-    alert("Por favor, selecione a data, hora de início e hora de fim.");
+    alert("Por favor, preencha todos os campos (data, hora de início e hora de fim).");
     return;
   }
-
-  // *** ADICIONAR VALIDAÇÃO: Hora Fim > Hora Início ***
-  if (parseTime(horaFim) <= parseTime(horaInicio)) {
-      alert("A hora de fim deve ser posterior à hora de início.");
-      return; // Não fecha o popup
-  }
-
-  // Atualizar resumo
-  try {
-      const [ano, mes, dia] = data.split('-');
-      const dataFormatada = `${dia}/${mes}/${ano}`;
-      resumoEl.textContent = `${dataFormatada}, ${horaInicio} - ${horaFim}`;
-  } catch (e) {
-      resumoEl.textContent = `${data}, ${horaInicio} - ${horaFim}`; // Fallback
-  }
-   resumoEl.classList.add('selecionado'); // Adiciona classe para feedback visual (definir no CSS)
-
+  
+  // Atualizar o resumo na barra de pesquisa
+  const dataFormatada = new Date(data).toLocaleDateString('pt-PT');
+  document.getElementById('dataHoraResumo').textContent = 
+    `${dataFormatada}, ${horaInicio}-${horaFim}`;
+  
   fecharPopup();
 }
 
-// --- Funções Popup Comodidades ---
+// Funções para o NOVO Popup de Comodidades
 function abrirPopupComodidades() {
   const popup = document.getElementById('popupComodidades');
-  if (popup) popup.style.display = 'block';
+  if (popup) popup.style.display = 'block'; // Mostra o popup de comodidades
 }
+
 function fecharPopupComodidades() {
   const popup = document.getElementById('popupComodidades');
-  if (popup) popup.style.display = 'none';
+  if (popup) popup.style.display = 'none'; // Esconde o popup de comodidades
 }
-function confirmarComodidades() {
-  const checkboxes = document.querySelectorAll('#popupComodidades input[name="comodidades"]:checked');
-  const comodidadesSelecionadas = Array.from(checkboxes).map(cb => cb.labels[0].textContent.trim()); // Pega o texto do label
-  const resumoSpan = document.getElementById('comodidadesResumo');
 
+function confirmarComodidades() {
+  const comodidadesSelecionadas = [];
+  // Seleciona todos os checkboxes com name="comodidades" que estão marcados DENTRO do popup específico
+  const checkboxes = document.querySelectorAll('#popupComodidades input[name="comodidades"]:checked'); 
+
+  checkboxes.forEach(checkbox => {
+    // Adiciona o valor (ex: "Estacionamento", "Balneários") à lista
+    comodidadesSelecionadas.push(checkbox.value); 
+  });
+
+  const resumoSpan = document.getElementById('comodidadesResumo');
   if (resumoSpan) {
       if (comodidadesSelecionadas.length > 0) {
-        resumoSpan.textContent = comodidadesSelecionadas.join(', ');
-        resumoSpan.classList.add('selecionado');
+        // Mostra os valores selecionados separados por vírgula
+        resumoSpan.textContent = comodidadesSelecionadas.join(', '); 
       } else {
-        resumoSpan.textContent = 'Escolher...';
-        resumoSpan.classList.remove('selecionado');
+        // Se nada for selecionado, volta ao texto padrão
+        resumoSpan.textContent = 'Escolher...'; 
       }
   }
-  fecharPopupComodidades();
+
+  fecharPopupComodidades(); // Fecha o popup após confirmar
 }
 
-// --- Funções Popup Desporto ---
+// --- Funções para o Popup de Desporto ---
+
+// Função para preencher as opções de desporto
 function preencherOpcoesDesporto(selectElement) {
-    if (!selectElement) return;
-    selectElement.innerHTML = ''; // Limpa
+  // Limpa opções existentes (exceto se já tiver a vazia)
+  while (selectElement.options.length > 0) {
+    selectElement.remove(0);
+  }
 
-    const desportos = ["Futebol", "Ténis", "Padel", "Basquetebol", "Voleibol"];
+  const desportos = ["Futebol", "Ténis", "Padel", "Basquetebol", "Voleibol"]; // Adicione mais desportos aqui
 
-    const optionVazia = document.createElement("option");
-    optionVazia.value = "";
-    optionVazia.textContent = "Selecione...";
-    optionVazia.disabled = true;
-    optionVazia.selected = true;
-    selectElement.appendChild(optionVazia);
+  // Adicionar opção vazia/padrão
+  const optionVazia = document.createElement("option");
+  optionVazia.value = "";
+  optionVazia.textContent = "Selecione..."; // Texto da opção padrão
+  optionVazia.disabled = true; // Opcional: não permitir selecionar esta
+  optionVazia.selected = true; // Opcional: começar com esta selecionada
+  selectElement.appendChild(optionVazia);
 
-    desportos.forEach(desporto => {
-        const option = document.createElement("option");
-        option.value = desporto;
-        option.textContent = desporto;
-        selectElement.appendChild(option);
-    });
+  // Adicionar os desportos
+  desportos.forEach(desporto => {
+    const option = document.createElement("option");
+    option.value = desporto;
+    option.textContent = desporto;
+    selectElement.appendChild(option);
+  });
 }
+
+// Função para abrir o Popup de Desporto
 function abrirPopupDesporto() {
   const popup = document.getElementById('popupDesporto');
   if (!popup) return;
-  // Preenche sempre para garantir que está atualizado (limpa primeiro)
-  preencherOpcoesDesporto(document.getElementById('desportoSelect'));
-  popup.style.display = 'block';
+
+  const desportoSelect = document.getElementById('desportoSelect');
+
+  // Preenche as opções se for a primeira vez ou se estiver vazio
+  if (desportoSelect && desportoSelect.options.length <= 1) { // <=1 para contar a opção padrão
+    preencherOpcoesDesporto(desportoSelect);
+  }
+
+  popup.style.display = 'block'; // Mostra o popup
 }
+
+// Função para fechar o Popup de Desporto
 function fecharPopupDesporto() {
   const popup = document.getElementById('popupDesporto');
-  if (popup) popup.style.display = 'none';
+  if (popup) popup.style.display = 'none'; // Esconde o popup
 }
+
+// Função para confirmar a seleção de Desporto
 function confirmarDesporto() {
   const desportoSelect = document.getElementById('desportoSelect');
-  const resumoSpan = document.getElementById('desportoResumo');
-  if (!desportoSelect || !resumoSpan) return;
-
   const desportoSelecionado = desportoSelect.value;
+
+  // Verifica se um desporto válido foi selecionado (não a opção padrão vazia)
   if (!desportoSelecionado) {
     alert("Por favor, selecione um desporto.");
     return;
   }
-  resumoSpan.textContent = desportoSelecionado;
-  resumoSpan.classList.add('selecionado');
-  fecharPopupDesporto();
+
+  const resumoSpan = document.getElementById('desportoResumo');
+  if (resumoSpan) {
+    resumoSpan.textContent = desportoSelecionado; // Atualiza o texto na barra de pesquisa
+  }
+
+  fecharPopupDesporto(); // Fecha o popup
 }
 
 // --- Autocomplete Localidade ---
+
 const cidadesPortugal = [
-  "Lisboa", "Porto", "Vila Nova de Gaia", "Amadora", "Braga", "Funchal",
-  "Coimbra", "Setúbal", "Almada", "Queluz", "Agualva-Cacém", "Guimarães",
-  "Odivelas", "Aveiro", "Leiria", "Faro", "Évora", "Viseu", "Barreiro",
+  "Lisboa", "Porto", "Vila Nova de Gaia", "Amadora", "Braga", "Funchal", 
+  "Coimbra", "Setúbal", "Almada", "Queluz", "Agualva-Cacém", "Guimarães", 
+  "Odivelas", "Aveiro", "Leiria", "Faro", "Évora", "Viseu", "Barreiro", 
   "Matosinhos", "Ponta Delgada", "Viana do Castelo", "Santarém", "Beja",
   "Castelo Branco", "Guarda", "Portalegre", "Bragança", "Vila Real"
+  // Adicione mais cidades se necessário
 ];
-function setupAutocompleteLocalidade() {
-    const localidadeInput = document.getElementById('localidade');
-    const sugestoesList = document.getElementById('sugestoesLocalidade');
-    if (!localidadeInput || !sugestoesList) return;
 
-    localidadeInput.addEventListener('input', function() {
-        const inputText = this.value.toLowerCase();
-        sugestoesList.innerHTML = '';
-        sugestoesList.style.display = 'none';
-        if (inputText.length === 0) return;
+const localidadeInput = document.getElementById('localidade');
+const sugestoesList = document.getElementById('sugestoesLocalidade');
 
-        const sugestoesFiltradas = cidadesPortugal.filter(cidade =>
-            cidade.toLowerCase().startsWith(inputText)
-        );
+if (localidadeInput && sugestoesList) {
+  localidadeInput.addEventListener('input', function() {
+    const inputText = this.value.toLowerCase();
+    sugestoesList.innerHTML = ''; 
+    sugestoesList.style.display = 'none'; 
 
-        if (sugestoesFiltradas.length > 0) {
-            sugestoesFiltradas.forEach(cidade => {
-                const li = document.createElement('li');
-                li.textContent = cidade;
-                li.addEventListener('click', function() {
-                    localidadeInput.value = this.textContent;
-                    sugestoesList.innerHTML = '';
-                    sugestoesList.style.display = 'none';
-                    // Opcional: Atualizar resumo se necessário
-                    // atualizarResumoLocalidade(this.textContent);
-                });
-                sugestoesList.appendChild(li);
-            });
-            sugestoesList.style.display = 'block';
-        }
-    });
+    if (inputText.length === 0) {
+      return; 
+    }
 
-    // Fechar a lista ao clicar fora
-    document.addEventListener('click', function(event) {
-        if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
-            sugestoesList.style.display = 'none';
-        }
-    });
+    // Filtrar o array de strings
+    const sugestoesFiltradas = cidadesPortugal.filter(cidade => 
+      cidade.toLowerCase().startsWith(inputText)
+    );
+
+    console.log("Sugestões Filtradas:", sugestoesFiltradas); 
+
+    if (sugestoesFiltradas.length > 0) {
+      sugestoesFiltradas.forEach(cidade => {
+        const li = document.createElement('li');
+        // Definir apenas o texto do <li>
+        li.textContent = cidade; 
+
+        li.addEventListener('click', function() {
+          // Preencher o input com o texto da cidade clicada
+          localidadeInput.value = this.textContent; 
+          sugestoesList.innerHTML = ''; 
+          sugestoesList.style.display = 'none'; 
+        });
+        sugestoesList.appendChild(li);
+      });
+      console.log("Mostrando lista de sugestões.");
+      sugestoesList.style.display = 'block'; 
+    } else {
+       console.log("Nenhuma sugestão encontrada.");
+    }
+  });
+
+  // Opcional: Fechar a lista ao clicar fora
+  document.addEventListener('click', function(event) {
+    // Verifica se o clique foi fora do input E fora da lista de sugestões
+    if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
+      sugestoesList.style.display = 'none';
+    }
+  });
+} else {
+    console.error("ERRO: Elemento 'localidade' ou 'sugestoesLocalidade' não encontrado!"); 
 }
-// Função para atualizar resumo (exemplo, adaptar conforme necessário)
-// function atualizarResumoLocalidade(localidade) {
-//     const resumoEl = document.getElementById('localidadeResumo'); // Supondo que existe um span para resumo
-//     if (resumoEl) {
-//         resumoEl.textContent = localidade;
-//         resumoEl.classList.add('selecionado');
-//     }
-// }
 
+// --- Fim Autocomplete Localidade ---
 
-// --- Funções Barra Lateral ---
+// ========== FUNÇÕES DA BARRA LATERAL ==========
 function openProfileSidebar() {
-  const sidebar = document.getElementById("profileSidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  if (sidebar) sidebar.style.width = "250px";
-  if (overlay) overlay.style.display = "block";
+  document.getElementById("profileSidebar").style.width = "250px"; // Define a largura da sidebar
+  document.getElementById("sidebarOverlay").style.display = "block"; // Mostra o overlay
 }
+
 function closeProfileSidebar() {
-  const sidebar = document.getElementById("profileSidebar");
-  const overlay = document.getElementById("sidebarOverlay");
-  if (sidebar) sidebar.style.width = "0";
-  if (overlay) overlay.style.display = "none";
+  document.getElementById("profileSidebar").style.width = "0"; // Esconde a sidebar
+  document.getElementById("sidebarOverlay").style.display = "none"; // Esconde o overlay
 }
+
 function fazerLogout() {
-  alert("Logout efetuado! (simulação)");
-  closeProfileSidebar();
+  alert("Logout efetuado!");
+  closeProfileSidebar(); // Fecha a sidebar após logout
 }
 
-// --- Função Pesquisar ---
+
+
 function pesquisar() {
-    const localidade = document.getElementById('localidade').value;
-    const dataHora = document.getElementById('dataHoraResumo').textContent;
-    const comodidades = document.getElementById('comodidadesResumo').textContent;
-    const desporto = document.getElementById('desportoResumo').textContent;
+    const filtros = {
+      localidade: document.getElementById("localidade").value,
+      dataHora: document.getElementById("dataHoraResumo").textContent,
+      desporto: document.getElementById("desportoResumo").textContent,
+      comodidades: document.getElementById("comodidadesResumo").textContent,
+    };
 
-    // Simulação de pesquisa
-    console.log("Pesquisando com os seguintes critérios:");
-    console.log("Localidade:", localidade);
-    console.log("Data/Hora:", dataHora !== 'Escolher...' ? dataHora : 'Não especificado');
-    console.log("Comodidades:", comodidades !== 'Escolher...' ? comodidades : 'Não especificado');
-    console.log("Desporto:", desporto !== 'Escolher...' ? desporto : 'Não especificado');
+    // Salvar os filtros no localStorage
+    localStorage.setItem("filtros", JSON.stringify(filtros));
 
-    alert("Pesquisa simulada! Verifique a consola para os critérios.");
-    // Aqui iria a lógica para redirecionar para uma página de resultados ou carregar resultados dinamicamente.
-}
-
-
-// ========== EVENT LISTENER DOMContentLoaded ==========
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM carregado para index.html");
-
-  // --- Adicionar Listeners Essenciais para index.html ---
-
-  // Listener para selects de hora (adicionar UMA VEZ)
-  const horaInicioSelect = document.getElementById("horaInicio");
-  const horaFimSelect = document.getElementById("horaFim");
-  if (horaInicioSelect) {
-      horaInicioSelect.addEventListener('change', atualizarOpcoesHoraFim);
+    // Redirecionar para a página de pesquisa
+    window.location.href = "pesquisa/pesquisa.html";
   }
-  if (horaFimSelect) {
-      horaFimSelect.addEventListener('change', atualizarOpcoesHoraInicio);
-  }
-
-  // Configurar autocomplete da localidade
-  setupAutocompleteLocalidade();
-
-  // Preencher opções iniciais (se aplicável e não feito em abrirPopup)
-  // gerarOpcoesHorario(horaInicioSelect); // Já é feito em abrirPopup
-  // gerarOpcoesHorario(horaFimSelect);   // Já é feito em abrirPopup
-  // preencherOpcoesDesporto(document.getElementById('desportoSelect')); // Já é feito em abrirPopupDesporto
-
-  // --- Remover código de outras páginas/versões ---
-  /*
-  // Código do Carrossel (pertence a campo.html)
-  const campoImages = ["images/campo_3.jpg", "images/campo_2.jpg", "images/campo_1.jpg"];
-  let currentImageIndex = 0;
-  const campoImage = document.getElementById("campoImage");
-  const nextBtn = document.getElementById("nextBtn");
-  const prevBtn = document.getElementById("prevBtn");
-  if (campoImage && nextBtn && prevBtn) {
-      nextBtn.addEventListener("click", () => { ... });
-      prevBtn.addEventListener("click", () => { ... });
-  }
-
-  // Código do Calendário Antigo (pertence a reserva.html ou versão antiga)
-  const calendarContainer = document.getElementById("calendarDays");
-  if (calendarContainer) { ... }
-
-  // Código dos Horários Antigos (checkboxes) (pertence a reserva.html ou versão antiga)
-  const horarios = document.querySelectorAll(".hour-slot input");
-  if (horarios.length > 0) { ... }
-
-  // Código do Dropdown Antigo (substituído pela sidebar)
-  const profileButtonOld = document.getElementById("profileButton"); // Cuidado com IDs duplicados
-  const profileDropdown = document.getElementById("profileDropdown");
-  if (profileButtonOld && profileDropdown) { ... }
-  */
-
-  console.log("Listeners e configurações de index.html aplicados.");
-});
-

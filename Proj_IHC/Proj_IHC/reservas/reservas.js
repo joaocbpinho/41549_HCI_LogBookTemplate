@@ -23,3 +23,25 @@ function abrirDetalhesReserva() {
     cancelarPresencaBtns.forEach(btn => btn.addEventListener("click", cancelarPresencas));
     cancelarReservaBtns.forEach(btn => btn.addEventListener("click", cancelarReserva));
   });
+
+// Abrir a sidebar
+function openProfileSidebar() {
+    const sidebar = document.getElementById("profileSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    sidebar.style.width = "250px";
+    overlay.classList.add("active");
+  }
+  
+  // Fechar a sidebar
+  function closeProfileSidebar() {
+    const sidebar = document.getElementById("profileSidebar");
+    const overlay = document.getElementById("sidebarOverlay");
+    sidebar.style.width = "0";
+    overlay.classList.remove("active");
+  }
+  
+  // Função de logout
+  function fazerLogout() {
+    alert("Logout efetuado!");
+    closeProfileSidebar();
+  }

@@ -21,6 +21,24 @@
     </div>
   </header>
 
+  <!-- Sidebar -->
+  <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeProfileSidebar()"></div>
+  <div id="profileSidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeProfileSidebar()">&times;</a>
+    <div class="profile-info">
+      <img src="../images/persona1_joao.png" alt="Foto de Perfil" class="profile-pic">
+      <div class="profile-text">
+        <span class="profile-name">João Silva</span>
+        <span class="profile-id">ID: 123456</span>
+      </div>
+    </div>
+    <a href="#">🔔 Notificações</a>
+    <a href="#">👥 Equipas</a>
+    <a href="#">📧 Convites</a>
+    <a href="reservas.html">📅 Reservas</a>
+    <a href="#">📜 Histórico</a>
+    <a href="#" onclick="fazerLogout()">🚪 Sair</a>
+  </div>
   <main>
     <section class="section">
       <h2>Reservas Feitas por Ti</h2>
@@ -57,6 +75,7 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <script src="reservas.js"></script>
