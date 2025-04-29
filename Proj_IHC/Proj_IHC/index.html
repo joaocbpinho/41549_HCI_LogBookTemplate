@@ -37,12 +37,13 @@
         <span class="search-value" id="dataHoraResumo">Escolher...</span>
       </div>
     </div>
-    <div class="search-col search-col-comodidades" onclick="abrirPopupComodidades()">
+    <div class="search-col search-col-comodidades" onclick="abrirPopupComodidades()"> <!-- Adicionar onclick -->
       <div>
         <span class="search-label">Comodidades</span>
         <span class="search-value" id="comodidadesResumo">Escolher...</span>
       </div>
     </div>
+    <!-- NOVA SECÇÃO DESPORTO -->
     <div class="search-col search-col-desporto" onclick="abrirPopupDesporto()">
       <div>
         <span class="search-label">Desporto</span>
@@ -51,7 +52,6 @@
     </div>
     <button class="search-bar-btn" onclick="pesquisar()">Pesquisar</button>
   </section>
-  
 
   <main>
     <section class="section">
@@ -59,13 +59,6 @@
       <div class="cards">
         <div class="card">Reserva 1</div>
         <div class="card">Reserva 2</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Convites</h2>
-      <div class="cards">
-        <div class="card">Convite 1</div>
       </div>
     </section>
 
@@ -189,8 +182,7 @@
 
     <!-- Secção de Informações do Perfil -->
     <div class="profile-info">
-      <img src="images/persona1_joao.png" alt="Foto de Perfil" class="profile-pic">
-      <!-- Novo div para agrupar texto -->
+      <img src="images/default-profile.png" alt="Foto de Perfil" class="profile-pic">
       <div class="profile-text">
         <span class="profile-name">João Silva</span>
         <span class="profile-id">ID: 123456</span>
@@ -198,12 +190,16 @@
     </div>
 
     <!-- Links do Menu -->
-    <a href="#">🔔 Notificações</a>
+    <a href="javascript:void(0)" onclick="toggleNotificationPanel(this)">🔔 Notificações</a>
     <a href="#">👥 Equipas</a>
-    <a href="#">📧 Convites</a>
     <a href="reservas/reservas.html">📅 Reservas</a>
-    <a href="#">📜 Histórico</a>
-    <a href="#" onclick="fazerLogout()">🚪 Sair</a>
+    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a>
+  </div>
+
+  <!-- NOVO PAINEL DE NOTIFICAÇÕES (FORA DA SIDEBAR) -->
+  <div id="notificationPanel" class="notification-panel">
+      <p>Sem notificações novas.</p>
+      <!-- Pode adicionar mais conteúdo aqui no futuro -->
   </div>
 
   <script src="script.js"></script>
