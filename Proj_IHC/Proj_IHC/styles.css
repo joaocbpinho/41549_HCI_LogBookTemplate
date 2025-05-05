@@ -227,40 +227,25 @@ main {
   gap: 25px; /* Aumentar espaço entre os cards */
 }
 
-/* Estilo para os cards */
 .card {
   background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  padding: 25px; /* Aumentar padding interno do card */
+  border-radius: 10px; /* Aumentar arredondamento se desejar */
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1); /* Sombra ligeiramente maior */
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  font-size: 1em;
-  display: flex;
-  flex-direction: column; /* Alinhar conteúdo verticalmente */
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  font-size: 1.1em; /* Aumentar tamanho da fonte dentro do card */
+  min-height: 100px; /* Opcional: Definir uma altura mínima */
+  display: flex; /* Para melhor alinhamento vertical se necessário */
+  align-items: center; /* Centrar conteúdo verticalmente */
+  justify-content: center; /* Centrar conteúdo horizontalmente */
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-6px); /* Aumentar efeito hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Título do card (nome da equipa) */
-.card-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-/* Subtítulo do card (desporto) */
-.card-subtitle {
-  font-size: 1em;
-  color: #555;
-}
 .add-card {
   border: 2px dashed var(--primary-color, #007bff);
   color: var(--primary-color, #007bff);
@@ -754,3 +739,37 @@ main {
   transition: opacity 0.5s;
 }
 
+/* Estilo para os cards */
+.card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 1em;
+  display: flex;
+  flex-direction: column; /* Alinhar conteúdo verticalmente */
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Título do card (nome da equipa) */
+.card-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Subtítulo do card (desporto) */
+.card-subtitle {
+  font-size: 1em;
+  color: #555;
+}
