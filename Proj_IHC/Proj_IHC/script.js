@@ -527,3 +527,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Listeners e configurações de index.html aplicados.");
 });
+
+
+function renderizarEquipas() {
+  const listaEquipas = document.getElementById("listaEquipas");
+  listaEquipas.innerHTML = ""; // Limpar a lista antes de renderizar
+
+  // Recuperar as equipas do Local Storage
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+
+  if (equipas.length === 0) {
+    listaEquipas.innerHTML = "<p>Não há equipas criadas.</p>";
+    return;
+  }
+
+  equipas.forEach((equipa) => {
+    const desportoFormatado = equipa.desporto.charAt(0).toUpperCase() + equipa.desporto.slice(1); // Capitalizar a primeira letra
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.style.cursor = "pointer"; // Adicionar cursor de ponteiro para indicar que é clicável
+    card.innerHTML = `
+      <h3>${equipa.nome}</h3>
+      <p><strong>Desporto:</strong> ${desportoFormatado}</p>
+    `;
+
+    // Adicionar evento de clique para redirecionar para a página de equipas
+    card.addEventListener("click", () => {
+      // Salvar o nome da equipa no Local Storage para uso na página de equipas
+      localStorage.setItem("equipaSelecionada", equipa.nome);
+
+      // Redirecionar para a página de equipas
+      window.location.href = "equipa/equipa.html";
+    });
+
+    listaEquipas.appendChild(card);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderizarEquipas();
+});

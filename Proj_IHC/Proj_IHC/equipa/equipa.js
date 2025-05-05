@@ -1,8 +1,17 @@
-// Abrir o pop-up de criar equipa
 function abrirPopupCriarEquipa() {
-  document.getElementById("popupCriarEquipa").style.display = "block";
-}
+  const popup = document.getElementById("popupCriarEquipa");
+  popup.style.display = "block";
 
+  // Limpar seleções anteriores
+  const amigosSelecionados = document.querySelectorAll(".amigos-list .selectable.selected");
+  amigosSelecionados.forEach((amigo) => amigo.classList.remove("selected"));
+
+  // Limpar o formulário
+  document.getElementById("criarEquipaForm").reset();
+
+  // Limpar restrições de desporto
+  document.getElementById("restricoesDesporto").textContent = "";
+}
 // Fechar o pop-up de criar equipa
 function fecharPopupCriarEquipa() {
   document.getElementById("popupCriarEquipa").style.display = "none";
@@ -74,7 +83,14 @@ function criarEquipa() {
     exibirMensagemErro("Por favor, selecione um desporto.", form);
     return;
   }
-
+   // Verificar se o nome da equipa já existe
+   const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+   const nomeDuplicado = equipas.some((e) => e.nome.toLowerCase() === nomeEquipa.toLowerCase());
+   if (nomeDuplicado) {
+     exibirMensagemErro("Já existe uma equipa com este nome. Escolha outro nome.", form);
+     return;
+   }
+ 
   // Definir os limites de jogadores com base no desporto
   let minimoJogadores = 0;
   let maximoJogadores = 0;
@@ -117,8 +133,7 @@ function criarEquipa() {
       maximoJogadores = Infinity; // Sem limite
   }
 
-  // Validar o número de jogadores
-  if (amigosSelecionados.length < minimoJogadores) {
+  if (amigosSelecionados.length + 1 < minimoJogadores) {
     const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
     exibirMensagemErro(
       `O número mínimo de jogadores para ${desportoFormatado} é ${minimoJogadores}.`,
@@ -127,7 +142,7 @@ function criarEquipa() {
     return;
   }
 
-  if (amigosSelecionados.length > maximoJogadores) {
+  if (amigosSelecionados.length + 1 > maximoJogadores) {
     const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
     exibirMensagemErro(
       `O número máximo de jogadores para ${desportoFormatado} é ${maximoJogadores}.`,
@@ -135,9 +150,8 @@ function criarEquipa() {
     );
     return;
   }
-
   // Criar a equipa
-  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+
   equipas.push({
     nome: nomeEquipa,
     desporto: desporto,
@@ -202,7 +216,7 @@ function adicionarMembro() {
   const nomeEquipa = document.getElementById("gerirEquipaForm").getAttribute("data-equipa");
 
   if (!novoMembro) {
-    alert("Por favor, insira o nome do novo membro.");
+    exibirMensagemErro("Por favor, insira o nome do novo membro.");
     return;
   }
 
@@ -255,7 +269,7 @@ function salvarAlteracoes() {
   const nomeEquipaAtual = document.getElementById("gerirEquipaForm").getAttribute("data-equipa");
 
   if (!novoNomeEquipa) {
-    alert("Por favor, insira um nome para a equipa.");
+    exibirMensagemErro("Por favor, insira um nome para a equipa.");
     return;
   }
 
@@ -285,19 +299,24 @@ function exibirMensagemSucesso(mensagem) {
     mensagemSucesso.remove();
   }, 3000);
 }
-// Adicionar um amigo (mantém a funcionalidade existente)
 function adicionarAmigo() {
-  const amigoId = document.getElementById("amigoId").value;
-  const amigoTelefone = document.getElementById("amigoTelefone").value;
+  const amigoId = document.getElementById("amigoId").value.trim();
+  const amigoTelefone = document.getElementById("amigoTelefone").value.trim();
 
   if (!amigoId && !amigoTelefone) {
-    alert("Por favor, insira o ID ou o número de telemóvel do amigo.");
+    exibirMensagemErro("Por favor, preencha todos os campos para adicionar um amigo.",form);
     return;
   }
 
-  alert(`Amigo adicionado com sucesso!`);
-  fecharPopupAdicionarAmigo();
-  document.getElementById("adicionarAmigoForm").reset();
+  // Adicionar o amigo (simulação, pode ser salvo no localStorage ou enviado para um servidor)
+  console.log(`Amigo adicionado: ID=${amigoId}, Telefone=${amigoTelefone}`);
+
+  // Limpar os campos do formulário
+  document.getElementById("amigoId").value = "";
+  document.getElementById("amigoTelefone").value = "";
+
+  // Exibir o pop-up de confirmação
+  abrirPopupConfirmarAdicionarAmigo();
 }
   // Abrir o pop-up de confirmação para adicionar amigo
   function abrirPopupConfirmarAdicionarAmigo() {
@@ -315,7 +334,27 @@ function adicionarAmigo() {
       popup.style.display = "block";
     }
   }
+  // Abrir o pop-up de erro
+function abrirPopupErroAdicionarAmigo(mensagem) {
+  const popup = document.getElementById("popupErroAdicionarAmigo");
+  const mensagemErro = document.getElementById("mensagemErroAdicionarAmigo");
 
+  if (mensagemErro) {
+    mensagemErro.textContent = mensagem; // Atualizar a mensagem de erro
+  }
+
+  if (popup) {
+    popup.style.display = "block";
+  }
+}
+
+// Fechar o pop-up de erro
+function fecharPopupErroAdicionarAmigo() {
+  const popup = document.getElementById("popupErroAdicionarAmigo");
+  if (popup) {
+    popup.style.display = "none";
+  }
+}
   // Fechar o pop-up de Adicionar Amigos
   function fecharPopupAdicionarAmigo() {
     const popup = document.getElementById("popupAdicionarAmigo");
@@ -324,36 +363,26 @@ function adicionarAmigo() {
     }
   
   }
-    // Atualizar restrições com base no desporto selecionado
-  function atualizarRestricoes() {
-    const desporto = document.getElementById("desporto").value;
-    const restricoes = document.getElementById("restricoesDesporto");
-
-    if (desporto === "futebol 11") {
-      restricoes.textContent = "Mínimo: 11 jogadores, Máximo: 22 jogadores.";
-    } else if (desporto === "basquetebol") {
-      restricoes.textContent = "Mínimo: 5 jogadores, Máximo: 12 jogadores.";
-    } else if (desporto === "voleibol") {
-      restricoes.textContent = "Mínimo: 6 jogadores, Máximo: 12 jogadores.";
-    } else if (desporto === "futebol 7") {
-      restricoes.textContent = "Mínimo: 7 jogadores, Máximo: 12 jogadores.";
-    }else if (desporto === "futsal") {
-      restricoes.textContent = "Mínimo: 5 jogadores, Máximo: 12 jogadores.";
+    function atualizarRestricoes() {
+      const desporto = document.getElementById("desporto").value;
+      const restricoes = document.getElementById("restricoesDesporto");
+    
+      const limites = {
+        "futebol 11": "Mínimo: 11 jogadores, Máximo: 22 jogadores.",
+        "futebol 5": "Mínimo: 5 jogadores, Máximo: 10 jogadores.",
+        "futebol 7": "Mínimo: 7 jogadores, Máximo: 12 jogadores.",
+        "futsal": "Mínimo: 5 jogadores, Máximo: 12 jogadores.",
+        "andebol": "Mínimo: 7 jogadores, Máximo: 14 jogadores.",
+        "Padel": "Mínimo: 2 jogadores, Máximo: 4 jogadores.",
+        "Ténis": "Mínimo: 1 jogador, Máximo: 2 jogadores.",
+        "basquetebol": "Mínimo: 5 jogadores, Máximo: 12 jogadores.",
+        "voleibol": "Mínimo: 6 jogadores, Máximo: 12 jogadores.",
+        "Outro": "Sem restrições específicas.",
+      };
+    
+      restricoes.textContent = limites[desporto] || "";
     }
-    else if (desporto === "andebol") {
-      restricoes.textContent = "Mínimo: 7 jogadores, Máximo: 14 jogadores.";
-    }else if (desporto == "Padel"){
-      restricoes.textContent = "Mínimo: 2 jogadores, Máximo: 4 jogadores.";
-    }
-    else if (desporto == "Ténis"){
-      restricoes.textContent = "Mínimo: 2 jogador, Máximo: 4 jogadores.";
-    }
-    else if (desporto == "Outro"){
-
-      restricoes.textContent = "";
-    }
-  }
-  
+    
   // Inicializar a página
 document.addEventListener("DOMContentLoaded", () => {
   renderizarEquipas();

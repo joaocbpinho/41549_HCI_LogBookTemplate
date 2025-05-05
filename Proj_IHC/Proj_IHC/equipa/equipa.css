@@ -663,3 +663,19 @@ form h3 {
 .popup-content .cancelar-btn:hover {
   background-color: #aaa;
 }
+
+.popup-content .ok-btn {
+  background-color: #0078d7;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.popup-content .ok-btn:hover {
+  background-color: #cc0000;
+}

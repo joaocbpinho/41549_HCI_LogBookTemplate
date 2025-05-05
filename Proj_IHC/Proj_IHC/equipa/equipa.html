@@ -145,7 +145,7 @@
           <span class="close" onclick="fecharPopupConfirmarAdicionarAmigo()">&times;</span>
           <h2>Amigo Adicionado</h2>
           <p>O amigo foi adicionado com sucesso!</p>
-          <button class="confirmar-btn" onclick="fecharPopupConfirmarAdicionarAmigo()">OK</button>
+          <button class="ok-btn"onclick="fecharPopupConfirmarAdicionarAmigo()">OK</button>
         </div>
   </div>
     
@@ -159,6 +159,16 @@
       <button class="confirmar-btn" onclick="confirmarRemocaoEquipa()">Sim</button>
       <button class="cancelar-btn" onclick="fecharPopupConfirmarRemoverEquipa()">Não</button>
     </div>
+  </div>
+</div>
+
+<!-- Pop-up de Erro -->
+<div id="popupErroAdicionarAmigo" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="fecharPopupErroAdicionarAmigo()">&times;</span>
+    <h2>Erro</h2>
+    <p id="mensagemErroAdicionarAmigo">Ocorreu um erro ao adicionar o amigo.</p>
+    <button class="mensagem-erro" onclick="fecharPopupErroAdicionarAmigo()">OK</button>
   </div>
 </div>
   <script src="equipa.js"></script>
