@@ -64,14 +64,20 @@ function exibirMensagemErro(mensagem, elementoPai) {
     mensagemErro.remove();
   }, 3000);
 }
+function obterAmigosSelecionados() {
+  const amigosSelecionados = [];
+  const botoesSelecionados = document.querySelectorAll(".amigos-list .selected, .amigos-recentes .selected");
 
+  botoesSelecionados.forEach((botao) => {
+    amigosSelecionados.push(botao.textContent.trim());
+  });
+
+  return amigosSelecionados;
+}
 function criarEquipa() {
   const nomeEquipa = document.getElementById("nomeEquipa").value.trim();
   const desporto = document.getElementById("desporto").value;
-  const amigosSelecionados = Array.from(
-    document.querySelectorAll(".amigos-list .selectable.selected")
-  ).map((button) => button.textContent);
-
+  const amigosSelecionados = obterAmigosSelecionados();
   const form = document.getElementById("criarEquipaForm");
 
   if (!nomeEquipa) {
@@ -83,6 +89,10 @@ function criarEquipa() {
     exibirMensagemErro("Por favor, selecione um desporto.", form);
     return;
   }
+  if (amigosSelecionados.length === 0) {
+    exibirMensagemErro("Por favor, selecione pelo menos um amigo.");
+    return;
+  }
    // Verificar se o nome da equipa já existe
    const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
    const nomeDuplicado = equipas.some((e) => e.nome.toLowerCase() === nomeEquipa.toLowerCase());
@@ -92,25 +102,22 @@ function criarEquipa() {
    }
  
   // Definir os limites de jogadores com base no desporto
-  let minimoJogadores = 0;
-  let maximoJogadores = 0;
-  
-  switch (desporto) {
+ 
+// Normalizar o valor do desporto para evitar problemas de capitalização ou espaços extras
+  const desportoNormalizado = desporto.trim().toLowerCase();
+
+  switch (desportoNormalizado) {
     case "futebol 11":
       minimoJogadores = 11;
       maximoJogadores = 22;
       break;
-    case "basquetebol":
+    case "futebol 5":
       minimoJogadores = 5;
-      maximoJogadores = 12;
-      break;
-    case "voleibol":
-      minimoJogadores = 6;
-      maximoJogadores = 12;
+      maximoJogadores = 10;
       break;
     case "futebol 7":
       minimoJogadores = 7;
-      maximoJogadores = 12;
+      maximoJogadores = 14;
       break;
     case "futsal":
       minimoJogadores = 5;
@@ -120,13 +127,21 @@ function criarEquipa() {
       minimoJogadores = 7;
       maximoJogadores = 14;
       break;
-    case "Padel":
+    case "padel":
       minimoJogadores = 2;
       maximoJogadores = 4;
       break;
-    case "Ténis":
+    case "ténis":
       minimoJogadores = 1;
       maximoJogadores = 2;
+      break;
+    case "basquetebol":
+      minimoJogadores = 5;
+      maximoJogadores = 12;
+      break;
+    case "voleibol":
+      minimoJogadores = 6;
+      maximoJogadores = 12;
       break;
     default:
       minimoJogadores = 0;
@@ -134,7 +149,7 @@ function criarEquipa() {
   }
 
   if (amigosSelecionados.length + 1 < minimoJogadores) {
-    const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
+    const desportoFormatado = desportoNormalizado.charAt(0).toUpperCase() + desporto.slice(1);
     exibirMensagemErro(
       `O número mínimo de jogadores para ${desportoFormatado} é ${minimoJogadores}.`,
       form
@@ -143,7 +158,7 @@ function criarEquipa() {
   }
 
   if (amigosSelecionados.length + 1 > maximoJogadores) {
-    const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
+    const desportoFormatado = desportoNormalizado.charAt(0).toUpperCase() + desporto.slice(1);
     exibirMensagemErro(
       `O número máximo de jogadores para ${desportoFormatado} é ${maximoJogadores}.`,
       form
@@ -370,7 +385,7 @@ function fecharPopupErroAdicionarAmigo() {
       const limites = {
         "futebol 11": "Mínimo: 11 jogadores, Máximo: 22 jogadores.",
         "futebol 5": "Mínimo: 5 jogadores, Máximo: 10 jogadores.",
-        "futebol 7": "Mínimo: 7 jogadores, Máximo: 12 jogadores.",
+        "futebol 7": "Mínimo: 7 jogadores, Máximo: 14 jogadores.",
         "futsal": "Mínimo: 5 jogadores, Máximo: 12 jogadores.",
         "andebol": "Mínimo: 7 jogadores, Máximo: 14 jogadores.",
         "Padel": "Mínimo: 2 jogadores, Máximo: 4 jogadores.",

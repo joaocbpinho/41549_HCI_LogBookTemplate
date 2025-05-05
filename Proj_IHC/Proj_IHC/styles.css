@@ -738,38 +738,64 @@ main {
   display: none; /* Começa escondido */
   transition: opacity 0.5s;
 }
+/* Contêiner com grid para os cards */
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+  padding: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
 
-/* Estilo para os cards */
-.card {
+/* Card de equipa e o botão de adicionar */
+.card-equipa{
   background-color: #fff;
-  padding: 20px;
+  padding: 25px;
   border-radius: 10px;
   box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  font-size: 1em;
+  font-size: 1.1em;
+  min-height: 100px;
   display: flex;
-  flex-direction: column; /* Alinhar conteúdo verticalmente */
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.card:hover {
+/* Efeito hover */
+.card-equipa:hover{
   transform: translateY(-6px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Título do card (nome da equipa) */
-.card-title {
-  font-size: 1.2em;
+.add-card {
+  border: 2px dashed var(--primary-color, #007bff);
+  color: var(--primary-color, #007bff);
+  background-color: #f8f9fa;
   font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
+  font-size: 1.1em;
+  padding: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Estes estilos alinham com .card */
+  border-radius: 10px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  min-height: 100px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center;
 }
 
-/* Subtítulo do card (desporto) */
-.card-subtitle {
-  font-size: 1em;
-  color: #555;
+.add-card:hover {
+  background-color: #e9ecef;
+  border-style: solid;
+  transform: translateY(-6px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
