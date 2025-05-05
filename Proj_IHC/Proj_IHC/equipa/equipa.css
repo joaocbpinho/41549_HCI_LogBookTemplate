@@ -1,405 +1,665 @@
 /* Paleta de Cores */
 :root {
-    --primary-color: #0078d7;
-    --secondary-color: #f4f4f9;
-    --text-color: #333;
-    --border-color: #ccc;
-    --hover-color: #005a9e;
-    --background-color: #ffffff;
-  }
-  
-  /* Geral */
-  body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-  }
-  
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .logo-img {
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  .header-icons {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  #saldoContainer {
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    padding: 5px 15px;
-    border: 1px solid white;
-    border-radius: 20px;
-    background-color: var(--hover-color);
-  }
-  
-  #saldoContainer:hover {
-    background-color: var(--primary-color);
-  }
-  
-  /* Secções */
-  main {
-    padding: 20px 40px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  
-  .section {
-    margin-bottom: 40px;
-  }
-  
-  .section h2 {
-    margin-bottom: 20px;
-    color: #333;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 8px;
-    font-size: 1.8em;
-  }
-  
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
-  }
-  
-  .card {
-    background-color: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    font-size: 1.1em;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
-  
-  .card h3 {
-    margin-bottom: 10px;
-  }
-  
-  .gerir-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-  }
-  
-  .gerir-btn:hover {
-    background-color: var(--hover-color);
-  }
-  
-  /* Botões Gerais */
-  .criar-equipa-btn, .adicionar-amigo-btn, .confirmar-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .criar-equipa-btn:hover, .adicionar-amigo-btn:hover, .confirmar-btn:hover {
-    background-color: var(--hover-color);
-  }
-  
-  /* Botões Selecionáveis */
-  .selectable {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    font-size: 16px;
-    text-align: left;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    background-color: white;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-  }
-  
-  .selectable:hover {
-    background-color: var(--hover-color);
-    color: white;
-  }
-  
-  .selectable.selected {
-    background-color: var(--primary-color);
-    color: white;
-  }
-  
-  /* Pop-ups */
-  .popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
-  
-  .popup-content {
-    background: var(--background-color);
-    border-radius: 10px;
-    max-width: 500px;
-    width: 90%;
-    margin: 100px auto;
-    padding: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
-  }
-  
-  .popup-content h2 {
-    margin-top: 0;
-    color: var(--primary-color);
-  }
-  
-  .popup-content .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #aaa;
-  }
-  
-  .popup-content .close:hover {
-    color: #333;
-  }
-  
-  /* Formulário de Adicionar Amigos */
-  form#adicionarAmigoForm {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  form#adicionarAmigoForm input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-  }
-  
-  form#adicionarAmigoForm button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  form#adicionarAmigoForm button:hover {
-    background-color: var(--hover-color);
-  }
+  --primary-color: #0078d7;
+  --secondary-color: #f4f4f9;
+  --text-color: #333;
+  --border-color: #ccc;
+  --hover-color: #005a9e;
+  --background-color: #ffffff;
+}
 
-  /* Pop-ups de Confirmação */
+/* Geral */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#saldoContainer {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 5px 15px;
+  border: 1px solid white;
+  border-radius: 20px;
+  background-color: var(--hover-color);
+}
+
+#saldoContainer:hover {
+  background-color: var(--primary-color);
+}
+
+/* Secções */
+main {
+  padding: 20px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+.section h2 {
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  font-size: 1.8em;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 1.1em;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.gerir-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.gerir-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Botões Gerais */
+.criar-equipa-btn, .adicionar-amigo-btn, .confirmar-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.criar-equipa-btn:hover, .adicionar-amigo-btn:hover, .confirmar-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Botões Selecionáveis */
+.selectable {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 16px;
+  text-align: left;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.selectable:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+/* Estilo para amigos selecionados */
+.selectable.selected {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+/* Pop-ups */
 .popup {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
-  
-  .popup-content {
-    background: var(--background-color);
-    border-radius: 10px;
-    max-width: 360px;
-    width: 90%;
-    margin: 80px auto;
-    padding:16px 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  
-    position: relative;
-  }
-  
-  .popup-content h2 {
-    margin-top: 0;
-    color: var(--primary-color);
-    font-size: 24px;
-  }
-  
-  .popup-content p {
-    font-size: 16px;
-    color: var(--text-color);
-    margin: 15px 0;
-  }
-  
-  .popup-content .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #aaa;
-  }
-  
-  .popup-content .close:hover {
-    color: #333;
-  }
-  
-  .popup-content .confirmar-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  .popup-content .confirmar-btn:hover {
-    background-color: var(--hover-color);
-  }
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-content {
+  background: var(--background-color);
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  margin: 100px auto;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.popup-content .close:hover {
+  color: #333;
+}
+
+/* Formulário de Adicionar Amigos */
+form#adicionarAmigoForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form#adicionarAmigoForm input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+form#adicionarAmigoForm button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+form#adicionarAmigoForm button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Pop-ups de Confirmação */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-content {
+  background: var(--background-color);
+  border-radius: 10px;
+  max-width: 360px;
+  width: 90%;
+  margin: 80px auto;
+  padding:16px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  position: relative;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+  font-size: 24px;
+}
+
+.popup-content p {
+  font-size: 16px;
+  color: var(--text-color);
+  margin: 15px 0;
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.popup-content .close:hover {
+  color: #333;
+}
+
+.popup-content .confirmar-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.popup-content .confirmar-btn:hover {
+  background-color: var(--hover-color);
+}
 
 /* Campos de input e select com altura mais ajustada */
 #nomeEquipa,
 #desporto,
 #pesquisarAmigos {
-  width: 100%;
-  height: 40px; /* altura controlada */
-  padding: 6px 10px;
-  font-size: 14px;
-  line-height: 1.4;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: #f9f9f9;
-  color: var(--text-color);
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
+width: 100%;
+height: 40px; /* altura controlada */
+padding: 6px 10px;
+font-size: 14px;
+line-height: 1.4;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+background-color: #f9f9f9;
+color: var(--text-color);
+box-sizing: border-box;
+transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 #nomeEquipa:focus,
 #desporto:focus,
 #pesquisarAmigos:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 5px rgba(0, 120, 215, 0.4);
-  outline: none;
+border-color: var(--primary-color);
+box-shadow: 0 0 5px rgba(0, 120, 215, 0.4);
+outline: none;
 }
 
 /* Específico para o select com ícone */
 #desporto {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 12px;
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 12px center;
+background-size: 12px;
 }
 
-  
-  /* Ajuste para os rótulos (labels) */
-  form label {
-    font-size: 14px;
-    font-weight: bold;
-    color: var(--text-color);
-    margin-bottom: 5px;
-    display: block;
+
+/* Ajuste para os rótulos (labels) */
+form label {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Ajuste para os títulos das seções */
+form h3 {
+  font-size: 16px;
+  color: var(--primary-color);
+  margin-top: 15px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* Ajuste para a lista de amigos */
+.amigos-list, .amigos-recentes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.amigos-list .selectable, .amigos-recentes .selectable {
+  flex: 1 1 calc(50% - 10px);
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.amigos-list .selectable:hover, .amigos-recentes .selectable:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.amigos-list .selectable.selected, .amigos-recentes .selectable.selected {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Ajuste para o botão Criar Equipa */
+.criar-equipa-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.criar-equipa-btn:hover {
+  background-color: var(--hover-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* Estilo para o pop-up de Gerir Equipa */
+.popup-content {
+  background: white;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  margin: 100px auto;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: left;
+  font-family: Arial, sans-serif;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+}
+
+.popup-content label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.popup-content input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.popup-content .membros-list {
+  margin-bottom: 15px;
+}
+
+.membro-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.membro-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.membro-item .remover-membro-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.3s;
+}
+
+.membro-item .remover-membro-btn:hover {
+  background-color: #cc0000;
+}
+
+.popup-content .adicionar-membro-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.popup-content .adicionar-membro-btn:hover {
+  background-color: #0056b3;
+}
+
+.popup-content .salvar-alteracoes-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  display: block;
+  width: 100%;
+}
+
+.popup-content .salvar-alteracoes-btn:hover {
+  background-color: #218838;
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.popup-content .close:hover {
+  color: #333;
+}
+
+/* Mensagem de Sucesso */
+.mensagem-sucesso {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  z-index: 1000;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  /* Ajuste para os títulos das seções */
-  form h3 {
-    font-size: 16px;
-    color: var(--primary-color);
-    margin-top: 15px;
-    margin-bottom: 8px;
-    font-weight: bold;
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  /* Ajuste para a lista de amigos */
-  .amigos-list, .amigos-recentes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 10px;
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .amigos-list .selectable, .amigos-recentes .selectable {
-    flex: 1 1 calc(50% - 10px);
-    text-align: center;
-    padding: 10px;
-    font-size: 14px;
-    border: 1.5px solid var(--border-color);
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-  }
-  
-  .amigos-list .selectable:hover, .amigos-recentes .selectable:hover {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-  }
-  
-  .amigos-list .selectable.selected, .amigos-recentes .selectable.selected {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-  }
-  
-  /* Ajuste para o botão Criar Equipa */
-  .criar-equipa-btn {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .criar-equipa-btn:hover {
-    background-color: var(--hover-color);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
+}
+/* Mensagem de Erro */
+.mensagem-erro {
+  color: #ff4d4d;
+  background-color: #ffe6e6;
+  padding: 10px;
+  margin-top: 10px;
+  border: 1px solid #ff4d4d;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
+/* Ajuste para caixas de entrada no pop-up */
+.popup-content input[type="text"] {
+  width: 100%;
+  height: 35px; /* Altura fixa */
+  padding: 5px 10px; /* Espaçamento interno */
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box; /* Inclui padding e borda no tamanho total */
+}
+
+.popup-content input[type="text"]:focus {
+  border-color: #007bff; /* Cor da borda ao focar */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efeito de foco */
+  outline: none;
+}
+
+/* Botão para remover equipa */
+.remover-equipa-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.remover-equipa-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Estilo para o pop-up de confirmação */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  margin: 100px auto;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  text-align: center;
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.popup-content p {
+  color: #555;
+  font-size: 16px;
+  margin: 15px 0;
+}
+
+.popup-content .confirmar-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.popup-content .confirmar-btn:hover {
+  background-color: #cc0000;
+}
+
+.popup-content .cancelar-btn {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.popup-content .cancelar-btn:hover {
+  background-color: #aaa;
+}

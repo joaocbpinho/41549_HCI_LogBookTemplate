@@ -490,6 +490,17 @@ function pesquisar() {
   window.location.href = "pesquisa/pesquisa.html";
 }
 
+
+// Função para redirecionar para a página de criação de equipa
+function criarEquipa() {
+  // Salvar dados iniciais no Local Storage (se necessário)
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  // Redirecionar para a página de criação de equipa
+  window.location.href = "equipa/equipa.html";
+}
+
 // ========== EVENT LISTENER DOMContentLoaded ==========
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM carregado para index.html");

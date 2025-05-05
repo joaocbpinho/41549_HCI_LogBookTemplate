@@ -1,89 +1,306 @@
 // Abrir o pop-up de criar equipa
 function abrirPopupCriarEquipa() {
-    document.getElementById("popupCriarEquipa").style.display = "block";
-  }
-  
-  // Fechar o pop-up de criar equipa
-  function fecharPopupCriarEquipa() {
-    document.getElementById("popupCriarEquipa").style.display = "none";
-  }
-  
-  // Abrir o pop-up de adicionar amigos
-  function abrirPopupAdicionarAmigo() {
-    document.getElementById("popupAdicionarAmigo").style.display = "block";
-  }
-  
-  // Fechar o pop-up de adicionar amigos
-  function fecharPopupAdicionarAmigo() {
-    document.getElementById("popupAdicionarAmigo").style.display = "none";
-  }
-  
-  // Abrir o pop-up de gerir equipa
-  function abrirPopupGerirEquipa(equipa) {
-    document.getElementById("popupGerirEquipa").style.display = "block";
-  }
-  
-  // Fechar o pop-up de gerir equipa
-  function fecharPopupGerirEquipa() {
-    document.getElementById("popupGerirEquipa").style.display = "none";
-  }
-  
-  // Criar uma nova equipa
-  function criarEquipa() {
-    const nomeEquipa = document.getElementById("nomeEquipa").value;
-    const amigosSelecionados = Array.from(
-      document.querySelectorAll(".amigos-list .selectable.selected")
-    ).map((button) => button.textContent);
-  
-    if (!nomeEquipa) {
-      alert("Por favor, insira um nome para a equipa.");
-      return;
-    }
-  
-    alert(`Equipa "${nomeEquipa}" criada com os membros: ${amigosSelecionados.join(", ")}`);
-    fecharPopupCriarEquipa();
-    document.getElementById("criarEquipaForm").reset();
-  }
-  
-  // Adicionar um amigo
-  function adicionarAmigo() {
-    const amigoId = document.getElementById("amigoId").value;
-    const amigoTelefone = document.getElementById("amigoTelefone").value;
-  
-    if (!amigoId && !amigoTelefone) {
-      alert("Por favor, insira o ID ou o número de telemóvel do amigo.");
-      return;
-    }
-  
-    alert(`Amigo adicionado com sucesso!`);
-    fecharPopupAdicionarAmigo();
-    document.getElementById("adicionarAmigoForm").reset();
+  document.getElementById("popupCriarEquipa").style.display = "block";
+}
+
+// Fechar o pop-up de criar equipa
+function fecharPopupCriarEquipa() {
+  document.getElementById("popupCriarEquipa").style.display = "none";
+}
+
+// Abrir o pop-up de gerir equipa
+function abrirPopupGerirEquipa(nomeEquipa) {
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const equipa = equipas.find((e) => e.nome === nomeEquipa);
+
+  if (!equipa) {
+    alert("Equipa não encontrada.");
+    return;
   }
 
-  // Alternar seleção de botões
+  document.getElementById("novoNomeEquipa").value = equipa.nome;
+
+  const membrosEquipa = document.getElementById("membrosEquipa");
+  membrosEquipa.innerHTML = "";
+  equipa.membros.forEach((membro, index) => {
+    const membroDiv = document.createElement("div");
+    membroDiv.className = "membro-item";
+    membroDiv.innerHTML = `
+      <span>${membro}</span>
+      <button type="button" class="remover-membro-btn" onclick="removerMembro('${nomeEquipa}', ${index})">Remover</button>
+    `;
+    membrosEquipa.appendChild(membroDiv);
+  });
+
+  document.getElementById("popupGerirEquipa").style.display = "block";
+
+  // Salvar o nome da equipa atual no atributo do formulário
+  document.getElementById("gerirEquipaForm").setAttribute("data-equipa", nomeEquipa);
+}
+
+// Fechar o pop-up de gerir equipa
+function fecharPopupGerirEquipa() {
+  document.getElementById("popupGerirEquipa").style.display = "none";
+}
+// Exibir mensagem de erro
+function exibirMensagemErro(mensagem, elementoPai) {
+  const mensagemErro = document.createElement("div");
+  mensagemErro.className = "mensagem-erro";
+  mensagemErro.textContent = mensagem;
+
+  elementoPai.appendChild(mensagemErro);
+
+  // Remover a mensagem após 3 segundos
+  setTimeout(() => {
+    mensagemErro.remove();
+  }, 3000);
+}
+
+function criarEquipa() {
+  const nomeEquipa = document.getElementById("nomeEquipa").value.trim();
+  const desporto = document.getElementById("desporto").value;
+  const amigosSelecionados = Array.from(
+    document.querySelectorAll(".amigos-list .selectable.selected")
+  ).map((button) => button.textContent);
+
+  const form = document.getElementById("criarEquipaForm");
+
+  if (!nomeEquipa) {
+    exibirMensagemErro("Por favor, insira um nome para a equipa.", form);
+    return;
+  }
+
+  if (!desporto) {
+    exibirMensagemErro("Por favor, selecione um desporto.", form);
+    return;
+  }
+
+  // Definir os limites de jogadores com base no desporto
+  let minimoJogadores = 0;
+  let maximoJogadores = 0;
+  
+  switch (desporto) {
+    case "futebol 11":
+      minimoJogadores = 11;
+      maximoJogadores = 22;
+      break;
+    case "basquetebol":
+      minimoJogadores = 5;
+      maximoJogadores = 12;
+      break;
+    case "voleibol":
+      minimoJogadores = 6;
+      maximoJogadores = 12;
+      break;
+    case "futebol 7":
+      minimoJogadores = 7;
+      maximoJogadores = 12;
+      break;
+    case "futsal":
+      minimoJogadores = 5;
+      maximoJogadores = 12;
+      break;
+    case "andebol":
+      minimoJogadores = 7;
+      maximoJogadores = 14;
+      break;
+    case "Padel":
+      minimoJogadores = 2;
+      maximoJogadores = 4;
+      break;
+    case "Ténis":
+      minimoJogadores = 1;
+      maximoJogadores = 2;
+      break;
+    default:
+      minimoJogadores = 0;
+      maximoJogadores = Infinity; // Sem limite
+  }
+
+  // Validar o número de jogadores
+  if (amigosSelecionados.length < minimoJogadores) {
+    const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
+    exibirMensagemErro(
+      `O número mínimo de jogadores para ${desportoFormatado} é ${minimoJogadores}.`,
+      form
+    );
+    return;
+  }
+
+  if (amigosSelecionados.length > maximoJogadores) {
+    const desportoFormatado = desporto.charAt(0).toUpperCase() + desporto.slice(1);
+    exibirMensagemErro(
+      `O número máximo de jogadores para ${desportoFormatado} é ${maximoJogadores}.`,
+      form
+    );
+    return;
+  }
+
+  // Criar a equipa
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  equipas.push({
+    nome: nomeEquipa,
+    desporto: desporto,
+    membros: amigosSelecionados,
+  });
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  fecharPopupCriarEquipa();
+  renderizarEquipas();
+}
+// Renderizar equipas na interface
+function renderizarEquipas() {
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const listaEquipas = document.getElementById("listaEquipas");
+  listaEquipas.innerHTML = ""; // Limpar lista de equipas
+
+  equipas.forEach((equipa) => {
+    const desportoFormatado = equipa.desporto.charAt(0).toUpperCase() + equipa.desporto.slice(1); // Capitalizar a primeira letra
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${equipa.nome}</h3>
+      <p><strong>Desporto:</strong> ${desportoFormatado}</p>
+      <button class="gerir-btn" onclick="abrirPopupGerirEquipa('${equipa.nome}')">Gerir</button>
+    `;
+    listaEquipas.appendChild(card);
+  });
+}
+// Abrir o pop-up de confirmação para remover a equipa
+function abrirPopupConfirmarRemoverEquipa(nomeEquipa) {
+  equipaParaRemover = nomeEquipa; // Armazena o nome da equipa a ser removida
+  const popup = document.getElementById("popupConfirmarRemoverEquipa");
+  if (popup) {
+    popup.style.display = "block";
+  }
+}
+
+// Fechar o pop-up de confirmação para remover a equipa
+function fecharPopupConfirmarRemoverEquipa() {
+  const popup = document.getElementById("popupConfirmarRemoverEquipa");
+  if (popup) {
+    popup.style.display = "none";
+  }
+}
+
+// Confirmar a remoção da equipa
+function confirmarRemocaoEquipa() {
+  if (!equipaParaRemover) return;
+
+  let equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  equipas = equipas.filter((equipa) => equipa.nome !== equipaParaRemover); // Remover a equipa pelo nome
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  fecharPopupConfirmarRemoverEquipa();
+  fecharPopupGerirEquipa();
+  renderizarEquipas();
+}
+// Adicionar um novo membro à equipa
+function adicionarMembro() {
+  const novoMembro = document.getElementById("novoMembro").value.trim();
+  const nomeEquipa = document.getElementById("gerirEquipaForm").getAttribute("data-equipa");
+
+  if (!novoMembro) {
+    alert("Por favor, insira o nome do novo membro.");
+    return;
+  }
+
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const equipa = equipas.find((e) => e.nome === nomeEquipa);
+
+  equipa.membros.push(novoMembro);
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  abrirPopupGerirEquipa(nomeEquipa);
+  document.getElementById("novoMembro").value = "";
+}
+// Alternar a seleção de amigos
 function toggleSelection(button) {
-    button.classList.toggle("selected");
+  if (button.classList.contains("selected")) {
+    button.classList.remove("selected");
+  } else {
+    button.classList.add("selected");
   }
-  
-  // Criar uma nova equipa
-  function criarEquipa() {
-    const nomeEquipa = document.getElementById("nomeEquipa").value;
-    const amigosSelecionados = Array.from(
-      document.querySelectorAll(".amigos-list .selectable.selected")
-    ).map((button) => button.textContent);
-  
-    if (!nomeEquipa) {
-      alert("Por favor, insira um nome para a equipa.");
-      return;
+}
+
+// Filtrar amigos na lista com base no texto digitado
+function filtrarAmigos() {
+  const input = document.getElementById("pesquisarAmigos").value.toLowerCase();
+  const amigos = document.querySelectorAll(".amigos-list .selectable");
+
+  amigos.forEach((amigo) => {
+    const nome = amigo.textContent.toLowerCase();
+    if (nome.includes(input)) {
+      amigo.style.display = "block";
+    } else {
+      amigo.style.display = "none";
     }
-  
-    alert(`Equipa "${nomeEquipa}" criada com os membros: ${amigosSelecionados.join(", ")}`);
-    fecharPopupCriarEquipa();
-    document.getElementById("criarEquipaForm").reset();
+  });
+}
+// Remover um membro da equipa
+function removerMembro(nomeEquipa, index) {
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const equipa = equipas.find((e) => e.nome === nomeEquipa);
+
+  equipa.membros.splice(index, 1); // Remover o membro pelo índice
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  abrirPopupGerirEquipa(nomeEquipa);
+}
+
+// Salvar alterações na equipa
+function salvarAlteracoes() {
+  const novoNomeEquipa = document.getElementById("novoNomeEquipa").value.trim();
+  const nomeEquipaAtual = document.getElementById("gerirEquipaForm").getAttribute("data-equipa");
+
+  if (!novoNomeEquipa) {
+    alert("Por favor, insira um nome para a equipa.");
+    return;
   }
 
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const equipa = equipas.find((e) => e.nome === nomeEquipaAtual);
+
+  equipa.nome = novoNomeEquipa; // Atualizar o nome da equipa
+  localStorage.setItem("equipas", JSON.stringify(equipas));
+
+  fecharPopupGerirEquipa();
+  renderizarEquipas();
+
+  // Exibir mensagem de sucesso
+  exibirMensagemSucesso("Alterações feitas com sucesso!");
+}
+
+// Função para exibir uma mensagem de sucesso
+function exibirMensagemSucesso(mensagem) {
+  const mensagemSucesso = document.createElement("div");
+  mensagemSucesso.className = "mensagem-sucesso";
+  mensagemSucesso.textContent = mensagem;
+
+  document.body.appendChild(mensagemSucesso);
+
+  // Remover a mensagem após 3 segundos
+  setTimeout(() => {
+    mensagemSucesso.remove();
+  }, 3000);
+}
+// Adicionar um amigo (mantém a funcionalidade existente)
+function adicionarAmigo() {
+  const amigoId = document.getElementById("amigoId").value;
+  const amigoTelefone = document.getElementById("amigoTelefone").value;
+
+  if (!amigoId && !amigoTelefone) {
+    alert("Por favor, insira o ID ou o número de telemóvel do amigo.");
+    return;
+  }
+
+  alert(`Amigo adicionado com sucesso!`);
+  fecharPopupAdicionarAmigo();
+  document.getElementById("adicionarAmigoForm").reset();
+}
   // Abrir o pop-up de confirmação para adicionar amigo
-function abrirPopupConfirmarAdicionarAmigo() {
+  function abrirPopupConfirmarAdicionarAmigo() {
     document.getElementById("popupConfirmarAdicionarAmigo").style.display = "block";
   }
   
@@ -91,109 +308,53 @@ function abrirPopupConfirmarAdicionarAmigo() {
   function fecharPopupConfirmarAdicionarAmigo() {
     document.getElementById("popupConfirmarAdicionarAmigo").style.display = "none";
   }
-  
-  // Abrir o pop-up de confirmação para criar equipa
-  function abrirPopupConfirmarCriarEquipa() {
-    document.getElementById("popupConfirmarCriarEquipa").style.display = "block";
-  }
-  
-  // Fechar o pop-up de confirmação para criar equipa
-  function fecharPopupConfirmarCriarEquipa() {
-    document.getElementById("popupConfirmarCriarEquipa").style.display = "none";
-  }
-  
-  // Modificar a função de adicionar amigo para abrir o pop-up de confirmação
-  function adicionarAmigo() {
-    const amigoId = document.getElementById("amigoId").value;
-    const amigoTelefone = document.getElementById("amigoTelefone").value;
-  
-    if (!amigoId && !amigoTelefone) {
-      alert("Por favor, insira o ID ou o número de telemóvel do amigo.");
-      return;
+  // Abrir o pop-up de Adicionar Amigos
+  function abrirPopupAdicionarAmigo() {
+    const popup = document.getElementById("popupAdicionarAmigo");
+    if (popup) {
+      popup.style.display = "block";
     }
-  
-    // Simular adição de amigo
-    alert(`Amigo adicionado com sucesso!`);
-    fecharPopupAdicionarAmigo();
-    abrirPopupConfirmarAdicionarAmigo();
-    document.getElementById("adicionarAmigoForm").reset();
-  }
-  
-  // Modificar a função de criar equipa para abrir o pop-up de confirmação
-  function criarEquipa() {
-    const nomeEquipa = document.getElementById("nomeEquipa").value;
-    const amigosSelecionados = Array.from(
-      document.querySelectorAll(".amigos-list .selectable.selected")
-    ).map((button) => button.textContent);
-  
-    if (!nomeEquipa) {
-      alert("Por favor, insira um nome para a equipa.");
-      return;
-    }
-  
-    // Simular criação de equipa
-    alert(`Equipa "${nomeEquipa}" criada com os membros: ${amigosSelecionados.join(", ")}`);
-    fecharPopupCriarEquipa();
-    abrirPopupConfirmarCriarEquipa();
-    document.getElementById("criarEquipaForm").reset();
   }
 
-  // Atualizar restrições com base no desporto selecionado
-function atualizarRestricoes() {
+  // Fechar o pop-up de Adicionar Amigos
+  function fecharPopupAdicionarAmigo() {
+    const popup = document.getElementById("popupAdicionarAmigo");
+    if (popup) {
+      popup.style.display = "none";
+    }
+  
+  }
+    // Atualizar restrições com base no desporto selecionado
+  function atualizarRestricoes() {
     const desporto = document.getElementById("desporto").value;
     const restricoes = document.getElementById("restricoesDesporto");
-  
-    if (desporto === "futebol") {
-      restricoes.textContent = "Mínimo: 5 jogadores, Máximo: 10 jogadores.";
+
+    if (desporto === "futebol 11") {
+      restricoes.textContent = "Mínimo: 11 jogadores, Máximo: 22 jogadores.";
     } else if (desporto === "basquetebol") {
       restricoes.textContent = "Mínimo: 5 jogadores, Máximo: 12 jogadores.";
     } else if (desporto === "voleibol") {
       restricoes.textContent = "Mínimo: 6 jogadores, Máximo: 12 jogadores.";
-    } else {
+    } else if (desporto === "futebol 7") {
+      restricoes.textContent = "Mínimo: 7 jogadores, Máximo: 12 jogadores.";
+    }else if (desporto === "futsal") {
+      restricoes.textContent = "Mínimo: 5 jogadores, Máximo: 12 jogadores.";
+    }
+    else if (desporto === "andebol") {
+      restricoes.textContent = "Mínimo: 7 jogadores, Máximo: 14 jogadores.";
+    }else if (desporto == "Padel"){
+      restricoes.textContent = "Mínimo: 2 jogadores, Máximo: 4 jogadores.";
+    }
+    else if (desporto == "Ténis"){
+      restricoes.textContent = "Mínimo: 2 jogador, Máximo: 4 jogadores.";
+    }
+    else if (desporto == "Outro"){
+
       restricoes.textContent = "";
     }
   }
   
-  // Filtrar amigos na lista com base na pesquisa
-  function filtrarAmigos() {
-    const pesquisa = document.getElementById("pesquisarAmigos").value.toLowerCase();
-    const amigos = document.querySelectorAll("#listaAmigos .selectable");
-  
-    amigos.forEach((amigo) => {
-      const nome = amigo.textContent.toLowerCase();
-      amigo.style.display = nome.includes(pesquisa) ? "block" : "none";
-    });
-  }
-  
-  // Alternar seleção de amigos
-  function toggleSelection(button) {
-    button.classList.toggle("selected");
-  }
-  
-  // Criar uma nova equipa
-  function criarEquipa() {
-    const nomeEquipa = document.getElementById("nomeEquipa").value;
-    const desporto = document.getElementById("desporto").value;
-    const amigosSelecionados = Array.from(
-      document.querySelectorAll(".amigos-list .selectable.selected, .amigos-recentes .selectable.selected")
-    ).map((button) => button.textContent);
-  
-    if (!nomeEquipa) {
-      alert("Por favor, insira um nome para a equipa.");
-      return;
-    }
-  
-    if (!desporto) {
-      alert("Por favor, selecione um desporto.");
-      return;
-    }
-  
-    if (amigosSelecionados.length === 0) {
-      alert("Por favor, selecione pelo menos um amigo.");
-      return;
-    }
-  
-    alert(`Equipa "${nomeEquipa}" criada para o desporto "${desporto}" com os membros: ${amigosSelecionados.join(", ")}`);
-    fecharPopupCriarEquipa();
-    document.getElementById("criarEquipaForm").reset();
-  }
+  // Inicializar a página
+document.addEventListener("DOMContentLoaded", () => {
+  renderizarEquipas();
+});

@@ -6,8 +6,6 @@
   <title>Play Smart</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="images/PlaySmart.png" type="image/png" />
-  <style>
-  </style>
 </head>
 <body>
   <header>
@@ -28,7 +26,6 @@
       <div>
         <span class="search-label">Localidade</span>
         <input type="text" id="localidade" placeholder="Para onde?" autocomplete="off" />
-        <ul id="sugestoesLocalidade" class="autocomplete-list"></ul>
       </div>
     </div>
     <div class="search-col search-col-data" onclick="abrirPopup()">
@@ -37,13 +34,12 @@
         <span class="search-value" id="dataHoraResumo">Escolher...</span>
       </div>
     </div>
-    <div class="search-col search-col-comodidades" onclick="abrirPopupComodidades()"> <!-- Adicionar onclick -->
+    <div class="search-col search-col-comodidades" onclick="abrirPopupComodidades()">
       <div>
         <span class="search-label">Comodidades</span>
         <span class="search-value" id="comodidadesResumo">Escolher...</span>
       </div>
     </div>
-    <!-- NOVA SECÇÃO DESPORTO -->
     <div class="search-col search-col-desporto" onclick="abrirPopupDesporto()">
       <div>
         <span class="search-label">Desporto</span>
@@ -65,7 +61,7 @@
     <section class="section">
       <h2>Equipas</h2>
       <div class="cards">
-        <div class="card add-card" onclick="addEquipa()">➕ Criar Equipa</div>
+        <div class="card add-card" onclick="criarEquipa()">➕ Criar Equipa</div>
       </div>
     </section>
   </main>
@@ -77,7 +73,7 @@
       <h2>Criar Equipa</h2>
       <label for="nomeEquipa">Nome:</label>
       <input type="text" id="nomeEquipa" placeholder="Insira o nome da equipa" />
-      <button onclick="criarEquipa()">Criar Equipa</button>
+      <button onclick="salvarEquipa()">Criar Equipa</button>
     </div>
   </div>
 
@@ -154,7 +150,6 @@
           <input type="checkbox" id="comodidadeBebedouro" name="comodidades" value="Bebedouro">
           <label for="comodidadeBebedouro">Iluminação</label>
         </div>
-        <!-- Adicione mais checkboxes conforme necessário -->
       </div>
       <button class="popup-button" onclick="confirmarComodidades()">Confirmar</button>
     </div>
@@ -199,10 +194,8 @@
   <!-- NOVO PAINEL DE NOTIFICAÇÕES (FORA DA SIDEBAR) -->
   <div id="notificationPanel" class="notification-panel">
       <p>Sem notificações novas.</p>
-      <!-- Pode adicionar mais conteúdo aqui no futuro -->
   </div>
 
   <script src="script.js"></script>
 </body>
-
 </html>
