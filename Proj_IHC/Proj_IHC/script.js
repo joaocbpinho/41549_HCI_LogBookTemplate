@@ -571,3 +571,149 @@ function renderizarEquipas() {
 document.addEventListener("DOMContentLoaded", () => {
   renderizarEquipas();
 });
+
+// Abrir o pop-up de adicionar saldo
+function abrirPopupAdicionarSaldo() {
+  const popup = document.getElementById("popupAdicionarSaldo");
+  if (popup) popup.style.display = "block";
+}
+
+// Fechar o pop-up de adicionar saldo
+function fecharPopupAdicionarSaldo() {
+  const popup = document.getElementById("popupAdicionarSaldo");
+  if (popup) popup.style.display = "none";
+}
+
+// Selecionar um valor pré-definido
+function selecionarValor(valor) {
+  const inputSaldo = document.getElementById("valorSaldo");
+  if (inputSaldo) inputSaldo.value = valor;
+}
+
+// Alterar método de pagamento (simulação)
+function alterarMetodoPagamento() {
+  alert("Função para alterar método de pagamento ainda não implementada.");
+}
+
+// Confirmar o depósito
+function confirmarDeposito() {
+  const inputSaldo = document.getElementById("valorSaldo");
+  const valorAdicionado = parseFloat(inputSaldo.value);
+
+  if (isNaN(valorAdicionado) || valorAdicionado <= 0) {
+    alert("Por favor, insira um valor válido.");
+    return;
+  }
+
+  const saldoAtual = parseFloat(localStorage.getItem("saldoAtual")) || 0;
+  const novoSaldo = saldoAtual + valorAdicionado;
+
+  localStorage.setItem("saldoAtual", novoSaldo.toFixed(2)); // Atualiza o saldo no localStorage
+  alert(`Depósito de ${valorAdicionado.toFixed(2)}€ realizado com sucesso!`);
+  fecharPopupAdicionarSaldo();
+  document.addEventListener("DOMContentLoaded", () => {
+    carregarSaldo();
+  });
+}
+
+// Abrir o pop-up de métodos de pagamento
+function abrirPopupMetodoPagamento() {
+  document.getElementById("popupMetodoPagamento").style.display = "block";
+}
+
+// Fechar o pop-up de métodos de pagamento
+function fecharPopupMetodoPagamento() {
+  document.getElementById("popupMetodoPagamento").style.display = "none";
+}
+
+// Selecionar um método de pagamento
+function selecionarMetodoPagamento(metodo, detalhe = "", icone = "") {
+  const metodoSelecionado = document.getElementById("metodoSelecionado");
+  if (metodoSelecionado) {
+    metodoSelecionado.innerHTML = `
+      <div class="metodo-icone">
+        <img src="${icone}" alt="${metodo}" />
+      </div>
+      <div class="metodo-info">
+        <p><strong>${metodo}</strong></p>
+        <p>${detalhe}</p>
+      </div>
+    `;
+  }
+  fecharPopupMetodoPagamento();
+}
+
+// Abrir e fechar pop-ups específicos (MB WAY e Cartão de Crédito)
+function abrirPopupMBWay() {
+  document.getElementById("popupMBWay").style.display = "block";
+}
+
+function fecharPopupMBWay() {
+  document.getElementById("popupMBWay").style.display = "none";
+}
+
+function abrirPopupCartaoCredito() {
+  document.getElementById("popupCartaoCredito").style.display = "block";
+}
+
+function fecharPopupCartaoCredito() {
+  document.getElementById("popupCartaoCredito").style.display = "none";
+}
+
+// Confirmar MB WAY
+function confirmarMBWay() {
+  const numeroTelemovel = document.getElementById("numeroTelemovel").value.trim();
+  if (!/^[0-9]{9}$/.test(numeroTelemovel)) {
+    alert("Por favor, insira um número de telemóvel válido.");
+    return;
+  }
+  selecionarMetodoPagamento("MB WAY", numeroTelemovel, "images/mbway_logo.svg");
+  fecharPopupMBWay();
+}
+
+// Confirmar Cartão de Crédito/Débito
+function confirmarCartaoCredito() {
+  const numeroCartao = document.getElementById("numeroCartao").value.trim();
+  const dataValidade = document.getElementById("dataValidade").value.trim();
+  const cvv = document.getElementById("cvv").value.trim();
+
+  if (!/^[0-9]{16}$/.test(numeroCartao)) {
+    alert("Por favor, insira um número de cartão válido.");
+    return;
+  }
+
+  if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(dataValidade)) {
+    alert("Por favor, insira uma data de validade válida (MM/AA).");
+    return;
+  }
+
+  if (!/^[0-9]{3}$/.test(cvv)) {
+    alert("Por favor, insira um CVV válido (3 dígitos).");
+    return;
+  }
+
+  selecionarMetodoPagamento(
+    "Cartão de Crédito/Débito",
+    `**** **** **** ${numeroCartao.slice(-4)}`,
+    "images/card_logo.svg"
+  );
+  fecharPopupCartaoCredito();
+}
+document.getElementById("dataValidade").addEventListener("input", function (e) {
+  let valor = e.target.value;
+
+  // Remover qualquer caractere que não seja número ou barra
+  valor = valor.replace(/[^0-9\/]/g, "");
+
+  // Adicionar a barra automaticamente após o mês (2 dígitos)
+  if (valor.length === 2 && !valor.includes("/")) {
+    valor = valor + "/";
+  }
+
+  // Limitar o valor a 5 caracteres (MM/AA)
+  if (valor.length > 5) {
+    valor = valor.slice(0, 5);
+  }
+
+  e.target.value = valor;
+});
