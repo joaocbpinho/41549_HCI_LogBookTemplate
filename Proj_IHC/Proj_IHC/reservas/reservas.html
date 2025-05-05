@@ -15,7 +15,8 @@
     </div>
     <div class="header-icons">
       <div id="saldoContainer" onclick="abrirModalSaldo()">
-        <span id="saldoAtual">10,00€</span>
+        <!-- Saldo será carregado pelo JS -->
+        <span id="saldoAtual">0.00€</span>
       </div>
       <button id="profileButton" onclick="openProfileSidebar()">👤</button>
     </div>
@@ -32,52 +33,49 @@
         <span class="profile-id">ID: 123456</span>
       </div>
     </div>
+    <a href="../index/index.html">🏠 Início</a> <!-- Link para Início -->
     <a href="#">🔔 Notificações</a>
     <a href="#">👥 Equipas</a>
     <a href="#">📧 Convites</a>
     <a href="reservas.html">📅 Reservas</a>
     <a href="#">📜 Histórico</a>
-    <a href="#" onclick="fazerLogout()">🚪 Sair</a>
+    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a> <!-- Adicionada classe sidebar-logout -->
   </div>
+
   <main>
     <section class="section">
-      <h2>Reservas Feitas por Ti</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Campo 2</h3>
-          <p><strong>Data:</strong> 10 abril, 22h30 - 23h30</p>
-          <p><strong>Número Convidados:</strong> 10</p>
-          <p><strong>Número Confirmados:</strong> 2</p>
-          <p><strong>Preço Definido:</strong> 4,99€</p>
-          <div class="reserva-actions">
-            <button class="detalhes-btn">Mais Detalhes</button>
-            <button class="cancelar-presenca-btn">Cancelar Presenças</button>
-            <button class="cancelar-reserva-btn">Cancelar Reserva</button>
-          </div>
-        </div>
+      <h2>Minhas Reservas</h2>
+      <!-- Container para as reservas do utilizador -->
+      <div id="listaMinhasReservas" class="cards">
+        <!-- Cards serão inseridos aqui pelo JavaScript -->
+        <p>A carregar reservas...</p>
       </div>
     </section>
 
+    <!-- Removida a secção "Mais Recentes" por agora, pode ser adicionada depois se necessário -->
+    <!--
     <section class="section">
       <h2>Mais Recentes</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Campo 1</h3>
-          <p><strong>Data:</strong> 12 abril, 20h00 - 21h00</p>
-          <p><strong>Número Convidados:</strong> 8</p>
-          <p><strong>Número Confirmados:</strong> 5</p>
-          <p><strong>Preço Definido:</strong> 3,50€</p>
-          <div class="reserva-actions">
-            <button class="detalhes-btn">Mais Detalhes</button>
-            <button class="cancelar-presenca-btn">Cancelar Presenças</button>
-            <button class="cancelar-reserva-btn">Cancelar Reserva</button>
-          </div>
-        </div>
+      <div id="listaReservasRecentes" class="cards">
       </div>
     </section>
+    -->
 
   </main>
 
+  <!-- Modal Saldo (se necessário nesta página) -->
+  <div id="modalAdicionarSaldo" class="modal" style="display: none;"> <!-- Adicionado style display none -->
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalSaldo()">&times;</span>
+      <h2>Adicionar Saldo</h2>
+      <label for="valorSaldo">Valor:</label>
+      <input type="number" id="valorSaldo" placeholder="Insira o valor" />
+      <button onclick="adicionarSaldo()">Adicionar</button>
+    </div>
+  </div>
+
   <script src="reservas.js"></script>
+  <!-- Incluir script.js GERAL se funções como abrirModalSaldo estiverem lá -->
+  <!-- <script src="../index/script.js"></script> -->
 </body>
 </html>

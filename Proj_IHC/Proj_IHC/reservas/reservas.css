@@ -125,6 +125,14 @@
     font-size: 14px;
     color: var(--text-color);
   }
+
+  /* Estilo para mensagens dentro dos containers de cards */
+  .cards p {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-style: italic;
+  }
   
   /* Botões de Ações */
   .reserva-actions {
@@ -143,6 +151,7 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s, color 0.3s;
+    white-space: nowrap; /* Evita que o texto do botão quebre linha */
   }
   
   .reserva-actions button:hover {
@@ -238,4 +247,95 @@
   .profile-id {
     font-size: 0.9em;
     color: #777;
+  }
+
+  .sidebar .sidebar-logout {
+    margin-top: auto; /* Empurra o botão para baixo */
+    margin-bottom: 20px;
+    color: #dc3545;
+    border-left: 3px solid transparent; /* Garante que não tem borda por defeito */
+  }
+
+  .sidebar .sidebar-logout:hover {
+    background-color: #dc3545;
+    color: white;
+    border-left-color: #dc3545; /* Mantém consistência */
+  }
+
+  /* Estilos para Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1002; /* Acima da sidebar overlay */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    background-color: var(--background-color);
+    margin: 15% auto;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #aaa;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .modal-content .close:hover {
+    color: #333;
+  }
+
+  .modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    font-size: 1.4em;
+  }
+
+  .modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+  }
+
+  .modal-content input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    box-sizing: border-box; /* Inclui padding na largura */
+  }
+
+  .modal-content button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1em;
+    transition: background-color 0.2s;
+  }
+
+  .modal-content button:hover {
+    background-color: var(--hover-color);
   }

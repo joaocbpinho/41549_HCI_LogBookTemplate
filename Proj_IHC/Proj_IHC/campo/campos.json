@@ -1,0 +1,46 @@
+[
+    {
+      "id": 1,
+      "nome": "Complexo Desportivo da Gafanha",
+      "localidade": "Aveiro",
+      "desporto": ["Futebol", "Ténis"],
+      "preco_hora": 25.00,
+      "imagem": "../images/campo1.jpg",
+      "comodidades": ["Estacionamento", "Balneários", "Iluminação", "WC"],
+      "descricao": "Excelente complexo com campos de futebol de 7 e campos de ténis.",
+      "morada": "Rua do Desporto, 123, Gafanha da Nazaré"
+    },
+    {
+      "id": 2,
+      "nome": "Arena Padel Gaia",
+      "localidade": "Vila Nova de Gaia",
+      "desporto": ["Padel"],
+      "preco_hora": 20.00,
+      "imagem": "../images/campo_padel.jpg",
+      "comodidades": ["Estacionamento", "Balneários", "Equipamento", "Cafe/Bar", "WC"],
+      "descricao": "Campos de padel indoor e outdoor de alta qualidade.",
+      "morada": "Avenida do Padel, 45, Gaia"
+    },
+    {
+      "id": 3,
+      "nome": "Pavilhão Municipal de Ovar",
+      "localidade": "Ovar",
+      "desporto": ["Basquetebol", "Voleibol", "Futebol"],
+      "preco_hora": 30.00,
+      "imagem": "../images/campo2.jpg",
+      "comodidades": ["Balneários", "WC", "Iluminação"],
+      "descricao": "Pavilhão multiusos para diversas modalidades.",
+      "morada": "Largo do Pavilhão, 1, Ovar"
+    },
+    {
+      "id": 4,
+      "nome": "Clube Ténis de Lisboa",
+      "localidade": "Lisboa",
+      "desporto": ["Ténis"],
+      "preco_hora": 15.00,
+      "imagem": "../images/campo3.jpg",
+      "comodidades": ["Estacionamento", "Balneários", "Cafe/Bar", "WC"],
+      "descricao": "Campos de terra batida no coração de Lisboa.",
+      "morada": "Rua da Raquete, 789, Lisboa"
+    }
+]

@@ -1,0 +1,1130 @@
+/* Paleta de Cores */
+:root {
+  --primary-color: #0078d7;
+  --secondary-color: #f4f4f9;
+  --text-color: #333;
+  --border-color: #ccc;
+  --hover-color: #005a9e;
+  --background-color: #ffffff;
+}
+
+/* Geral */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+#saldoContainer {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  padding: 5px 15px;
+  border: 1px solid white;
+  border-radius: 20px;
+  background-color: var(--hover-color);
+}
+
+#saldoContainer:hover {
+  background-color: var(--primary-color);
+}
+
+/* Secções */
+main {
+  padding: 20px 40px; /* Aumentar padding lateral se desejar mais espaço nas bordas */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 40px; /* Aumentar espaço entre secções */
+}
+
+.section h2 {
+  margin-bottom: 20px; /* Mais espaço abaixo do título */
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  font-size: 1.8em; /* Aumentar tamanho da fonte do título (ex: 1.8em) */
+}
+
+/* --- STYLES FOR CARD GRIDS --- */
+.cards {
+  display: grid;
+  /* Ajuste minmax se necessário, 280px pode ser um bom ponto de partida */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px; /* Espaçamento consistente */
+  padding: 10px 0; /* Padding vertical no container */
+  width: 100%; /* Garante que ocupa a largura disponível */
+  box-sizing: border-box; /* Inclui padding/border na largura total */
+}
+
+/* --- BASE CARD STYLES (Apply to all cards unless overridden) --- */
+.card {
+  background-color: #fff;
+  border-radius: 8px; /* Cantos arredondados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* Sombra mais suave */
+  overflow: hidden; /* Esconde conteúdo que transborda */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex; /* Usa flexbox para controlar conteúdo interno */
+  flex-direction: column; /* Empilha imagem, texto, botão */
+  justify-content: space-between; /* Push button container to the bottom */
+  text-align: left; /* Alinhar texto à esquerda por padrão */
+  padding-bottom: 15px; /* Add some padding at the bottom */
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efeito hover sutil */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); /* Sombra ligeiramente mais forte no hover */
+}
+
+.card img {
+  width: 100%;
+  height: 180px; /* Altura fixa para a imagem */
+  object-fit: cover; /* Garante que a imagem cubra a área sem distorcer */
+  display: block; /* Remove espaço extra abaixo da imagem */
+  border-bottom: 1px solid #eee; /* Linha fina separadora abaixo da imagem */
+}
+
+.card-content {
+  padding: 10px 15px; /* Adjust padding as needed */
+  flex-grow: 1; /* Faz esta área crescer para ocupar espaço */
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Aumenta espaço entre os parágrafos */
+}
+
+.card-content p {
+  margin: 5px 0; /* Add some vertical spacing between text lines */
+}
+
+.card h3 {
+  margin: 0 0 5px 0; /* Menos margem abaixo do título */
+  color: var(--primary-color); /* Usa cor primária */
+  font-size: 1.15em; /* Ligeiramente maior */
+  font-weight: 600; /* Um pouco mais de peso */
+}
+
+.card p {
+  margin: 0; /* Remover margens padrão */
+  font-size: 0.9em; /* Ligeiramente menor */
+  color: #555;
+  line-height: 1.5; /* Melhor espaçamento entre linhas */
+}
+
+.card p strong {
+  color: #333;
+  font-weight: 500; /* Peso médio para o label */
+  margin-right: 5px;
+}
+
+.card .buttons {
+  text-align: center; /* Center the button horizontally */
+  padding: 0 15px; /* Add horizontal padding to align with content */
+  margin-top: 10px; /* Add space above the button container */
+  background-color: #f9f9f9; /* Fundo sutil para a área do botão */
+  border-top: 1px solid #eee; /* Linha separadora */
+  margin-top: auto; /* Empurra para o fundo */
+}
+
+.card .buttons button {
+  background-color: #007bff; /* Cor azul padrão (pode ajustar) */
+  color: white;
+  border: none;
+  padding: 10px 20px; /* Aumenta o padding interno */
+  border-radius: 5px; /* Bordas arredondadas */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transição suave */
+  font-size: 1em; /* Tamanho da fonte */
+  width: 100%; /* Faz o botão ocupar a largura do container .buttons */
+  box-sizing: border-box; /* Garante que padding não aumenta a largura total */
+}
+
+.card .buttons button:hover {
+  background-color: #0056b3; /* Cor ligeiramente mais escura no hover */
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA CARDS DE RESERVA (Sobrescrevem base .card) --- */
+#listaReservas .card {
+  display: block; /* Remove flex */
+  text-align: left;
+  padding: 20px;
+  cursor: pointer;
+  background-color: #fff; /* Garante fundo branco */
+}
+#listaReservas .card img { /* Remove imagem se existir em cards de reserva */
+    display: none;
+}
+#listaReservas .card .card-content {
+  padding: 0; /* Remove padding extra */
+  gap: 5px; /* Espaçamento menor para reservas */
+}
+#listaReservas .card h3 {
+    font-size: 1.1em; /* Tamanho do título para reservas */
+    margin-bottom: 8px;
+}
+#listaReservas .card p {
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+#listaReservas .card .buttons { /* Remove área de botão dos cards de reserva */
+    display: none;
+}
+/* Estilo para o link "Ver todas as reservas" */
+#listaReservas a {
+  grid-column: 1 / -1; /* Faz o link ocupar toda a largura da grid */
+  text-align: center;
+  margin-top: 10px; /* Espaço acima do link */
+  padding: 10px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+#listaReservas a:hover {
+  background-color: #eef; /* Fundo suave no hover */
+  text-decoration: underline;
+}
+
+/* Mensagem quando não há reservas */
+#listaReservas p {
+    grid-column: 1 / -1; /* Ocupa toda a largura */
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+/* --- ESTILOS PARA CARDS DE EQUIPA (Sobrescrevem base .card) --- */
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.card-equipa { /* Usa classe específica, não sobrescreve .card diretamente */
+  background-color: #fff;
+  padding: 20px; /* Mais padding */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 120px; /* Altura mínima */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza conteúdo */
+}
+.card-equipa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+.card-equipa h3 {
+  margin-top: 0;
+  margin-bottom: 8px; /* Menos espaço */
+  color: var(--primary-color);
+  font-size: 1.05em; /* Tamanho ajustado */
+}
+.card-equipa p {
+  font-size: 0.85em; /* Menor */
+  color: #666;
+  margin-bottom: 0;
+}
+/* Card de adicionar equipa */
+.add-card {
+  background-color: #f8f9fa;
+  border: 2px dashed #007bff;
+  color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  min-height: 100px; /* Mantenha a mesma altura mínima */
+}
+
+.add-card:hover {
+  background-color: #e2e6ea;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+/* --- ESTILOS PARA A SECÇÃO DE RESULTADOS (Campos Disponíveis) --- */
+.results {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.results h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8em; /* Consistente com outros títulos de secção */
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+/* Aplica os estilos base .card aos cards dentro de #resultsContainer */
+#resultsContainer .card {
+    /* Herda os estilos de .card definidos acima */
+    /* Não precisa de regras adicionais aqui a menos que queira algo específico */
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: var(--background-color);
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  width: 40%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.modal-content button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Modal de Login */
+#modalLogin .modal-content {
+  background-color: var(--background-color);
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#modalLogin .modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+}
+
+#modalLogin .modal-content button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#modalLogin .modal-content button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Pop-up geral */
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1002; /* Acima de outros modais se necessário */
+  overflow: auto; /* Permite scroll se o conteúdo for grande */
+}
+
+.popup-content {
+  position: relative; /* Mudado de absolute para melhor controlo em alguns casos */
+  margin: 10% auto; /* Centraliza vertical e horizontalmente */
+  background-color: #fff;
+  padding: 25px 30px; /* Padding ajustado */
+  border-radius: 10px;
+  width: 90%;
+  max-width: 450px; /* Largura máxima ajustada */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: left; /* Alinhamento padrão */
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.popup-content .close:hover {
+  color: #333;
+}
+
+.popup-content h2 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: var(--primary-color);
+}
+
+/* Estilos para o Modal Adicionar Saldo */
+#modalAdicionarSaldo .modal-content {
+  max-width: 500px;
+}
+
+.saldo-input-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 20px 0 30px 0; /* Aumenta margem inferior */
+  gap: 5px; /* Espaço entre input e '€' */
+}
+
+.saldo-input-container label {
+  font-size: 16px; /* Tamanho da label */
+  margin-right: 10px;
+  color: #555;
+}
+
+.saldo-input-container input {
+  width: 120px; /* Largura do input */
+  text-align: right; /* Alinha valor à direita */
+  font-size: 24px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.saldo-input-container span { /* Para o símbolo '€' */
+  font-size: 24px;
+  color: #555;
+}
+
+.saldo-opcoes {
+  display: flex;
+  justify-content: center; /* Centraliza os botões */
+  gap: 15px; /* Espaço entre botões */
+  margin: 20px 0 30px 0; /* Margens */
+}
+
+.saldo-opcoes button {
+  background-color: #f0f0f0; /* Fundo mais suave */
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Mais arredondado */
+  padding: 8px 18px; /* Padding ajustado */
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.saldo-opcoes button:hover,
+.saldo-opcoes button.selected { /* Estilo para botão selecionado */
+  background-color: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+/* Secção Método de Pagamento no Modal de Saldo */
+.metodo-pagamento {
+  margin-top: 30px; /* Mais espaço acima */
+  padding-top: 20px; /* Padding acima */
+  border-top: 1px solid #eee; /* Linha separadora */
+}
+
+.metodo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px; /* Espaço abaixo do header */
+}
+
+.metodo-header h3 {
+  margin: 0;
+  font-size: 1.1em; /* Tamanho do título */
+  color: #333;
+}
+
+.alterar-link {
+  color: var(--primary-color); /* Usa cor primária */
+  text-decoration: none;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.alterar-link:hover {
+  text-decoration: underline;
+}
+
+.metodo-detalhes {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaço entre ícone e texto */
+  background-color: #f9f9f9; /* Fundo suave */
+  padding: 10px 15px; /* Padding interno */
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.metodo-icone img {
+  width: 35px; /* Tamanho do ícone */
+  height: auto; /* Altura automática */
+  display: block;
+}
+
+.metodo-info p {
+  margin: 0;
+  font-size: 0.95em; /* Tamanho da fonte */
+  color: #555;
+}
+
+.metodo-info p:first-child { /* Nome do método */
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2px;
+}
+
+/* Botão Depositar */
+.btn-depositar {
+  background-color: #28a745; /* Verde para sucesso/depósito */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px; /* Padding ajustado */
+  font-size: 1.1em; /* Tamanho da fonte */
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 30px; /* Espaço acima do botão */
+  transition: background-color 0.2s ease;
+}
+
+.btn-depositar:hover {
+  background-color: #218838; /* Verde mais escuro no hover */
+}
+
+/* Pop-up Selecionar Método */
+#modalMetodoPagamento .popup-content {
+  max-width: 400px; /* Largura específica */
+}
+
+.metodos-pagamento-lista {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.metodos-pagamento-lista li {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px; /* Padding ajustado */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Mais arredondado */
+  margin-bottom: 12px; /* Espaço entre itens */
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.metodos-pagamento-lista li:hover {
+  background-color: #f8f9fa;
+  border-color: #ccc;
+}
+
+.metodos-pagamento-lista li.selected { /* Estilo para item selecionado */
+  background-color: #eaf2fa; /* Fundo azul claro */
+  border-color: var(--primary-color);
+}
+
+.metodos-pagamento-lista img {
+  width: 40px; /* Tamanho do logo */
+  height: auto;
+  margin-right: 15px; /* Espaço à direita do logo */
+  object-fit: contain; /* Garante que o logo caiba */
+}
+
+.metodos-pagamento-lista span { /* Nome do método */
+  font-size: 1em;
+  color: #333;
+  font-weight: 500;
+}
+
+/* Pop-up Detalhes Cartão */
+#modalDetalhesCartao .popup-content {
+  max-width: 420px; /* Largura específica */
+}
+
+#modalDetalhesCartao label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9em;
+  color: #555;
+}
+
+#modalDetalhesCartao input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box; /* Importante */
+}
+
+.cartao-detalhes {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* Espaço entre campos */
+}
+
+.cartao-detalhes div {
+  flex: 1; /* Ocupa espaço igual */
+}
+
+/* Ajuste específico para o campo CVV que pode ser menor */
+.cartao-detalhes div:last-child {
+  flex: 0 1 80px; /* Não cresce, base de 80px */
+}
+
+.btn-confirmar { /* Botão dentro do modal de cartão */
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px; /* Espaço acima */
+  transition: background-color 0.2s ease;
+}
+
+.btn-confirmar:hover {
+  background-color: var(--hover-color);
+}
+
+/* Estilos específicos para o popup de Comodidades */
+#popupComodidades .popup-content {
+  /* Pode ajustar o padding se necessário */
+  padding: 20px 25px;
+}
+
+#popupComodidades h2 {
+  margin-bottom: 20px; /* Mais espaço abaixo do título */
+  text-align: center;
+}
+
+/* Usar Grid para organizar as checkboxes */
+#popupComodidades .popup-section {
+  display: grid;
+  /* Cria 2 colunas de largura igual, com espaço entre elas */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 20px; /* Espaço vertical e horizontal entre os itens */
+  margin-top: 15px; /* Espaço acima das checkboxes */
+}
+
+/* Estilos para cada container de checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 10px; */ /* Não é mais necessário com grid gap */
+  padding: 5px; /* Pequeno padding interno */
+  border-radius: 4px; /* Cantos ligeiramente arredondados */
+  transition: background-color 0.2s; /* Suaviza o hover */
+}
+
+/* Efeito hover para melhor feedback */
+.checkbox-container:hover {
+  background-color: #f0f0f0; /* Cor de fundo suave no hover */
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px; /* Espaço entre checkbox e label */
+  cursor: pointer;
+  /* Aumentar ligeiramente o tamanho do checkbox */
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-container label {
+  cursor: pointer;
+  flex-grow: 1; /* Faz o label ocupar o espaço restante */
+  font-size: 15px; /* Ajuste o tamanho da fonte se desejar */
+}
+
+/* Ajustar o botão Confirmar */
+#popupComodidades .popup-button {
+  margin-top: 25px; /* Mais espaço acima do botão */
+}
+
+/* Garante que o select no popup de desporto tenha estilos consistentes */
+#popupDesporto .popup-section select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border 0.2s;
+  height: 42px;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
+  padding-right: 30px;
+}
+
+#popupDesporto .popup-section select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+/* Estilos da Barra Lateral */
+.sidebar {
+  height: 100%;
+  width: 0; /* Começa fechada */
+  position: fixed;
+  z-index: 1001; /* Acima do overlay */
+  top: 0;
+  right: 0;
+  background-color: #fff; /* Cor de fundo */
+  overflow-x: hidden; /* Desabilita scroll horizontal */
+  transition: 0.5s; /* Animação suave */
+  padding-top: 20px; /* Ajustar padding superior */
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2); /* Sombra */
+  display: flex; /* Adicionado */
+  flex-direction: column; /* Adicionado */
+}
+
+.sidebar .closebtn {
+  position: absolute;
+  top: 10px; /* Ajustar posição */
+  right: 15px; /* Ajustar posição */
+  font-size: 36px;
+  color: #aaa; /* Cor do botão de fechar */
+  padding: 0; /* Remover padding extra */
+  line-height: 1; /* Alinhar melhor o 'x' */
+}
+
+.sidebar .closebtn:hover {
+    color: #333; /* Cor do botão de fechar ao passar o mouse */
+    background-color: transparent; /* Sem fundo no hover */
+}
+
+/* Secção de Informações do Perfil */
+.profile-info {
+    display: flex; /* Alinha itens horizontalmente */
+    align-items: center; /* Alinha itens verticalmente ao centro */
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    width: 50px; /* Ajustar tamanho se necessário */
+    height: 50px;
+    border-radius: 4px; /* Opcional: cantos ligeiramente arredondados */
+    margin-right: 15px; /* Adicionar espaço à direita da imagem */
+    object-fit: cover;
+    border: 1px solid #ddd;
+    flex-shrink: 0; /* Evita que a imagem encolha */
+}
+
+.profile-text {
+    display: flex;
+    flex-direction: column; /* Empilha nome e ID verticalmente */
+    align-items: flex-start; /* Alinha texto à esquerda */
+}
+
+.profile-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 3px; /* Ajustar espaço entre nome e ID */
+    color: #333;
+    text-align: left; /* Garantir alinhamento à esquerda */
+}
+
+.profile-id {
+    font-size: 0.9em;
+    color: #777;
+    text-align: left; /* Garantir alinhamento à esquerda */
+}
+
+/* Links da Barra Lateral */
+.sidebar a {
+  padding: 15px 15px 15px 25px; /* Aumentado padding vertical (era 12px) */
+  text-decoration: none;
+  font-size: 17px; /* Opcional: Aumentado tamanho da fonte (era 16px) */
+  color: #333;
+  display: block;
+  transition: background-color 0.3s, color 0.3s, border-left 0.3s;
+  white-space: nowrap;
+  text-align: left;
+  border-left: 3px solid transparent;
+}
+
+.sidebar a:hover {
+  background-color: #f0f0f0;
+  color: var(--primary-color);
+  border-left: 3px solid var(--primary-color);
+}
+
+/* Estilos específicos para o botão Sair */
+.sidebar .sidebar-logout {
+  margin-top: auto; /* Empurra o botão para baixo DENTRO DO FLEX CONTAINER */
+  margin-bottom: 20px; /* Adiciona espaço em baixo */
+  color: #dc3545; /* Cor vermelha para o texto */
+  border-left-color: transparent; /* Garante que não tem borda esquerda por defeito */
+}
+
+.sidebar .sidebar-logout:hover {
+  background-color: #dc3545; /* Fundo vermelho no hover */
+  color: white; /* Texto branco no hover */
+  border-left-color: #dc3545; /* Borda esquerda vermelha no hover */
+}
+
+/* NOVOS ESTILOS PARA O PAINEL DE NOTIFICAÇÕES */
+.notification-panel {
+  display: none; /* Começa escondido */
+  position: fixed; /* Fixo na tela */
+  top: 105px; /* Alinhar com o topo da sidebar (ajuste conforme necessário) */
+  right: 250px; /* Posiciona à esquerda da sidebar aberta (largura da sidebar) */
+  width: 220px; /* Largura do painel */
+  height: auto; /* Altura automática ou defina um valor */
+  max-height: calc(100vh - 80px); /* Altura máxima para evitar cobrir tudo */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: -4px 4px 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 1000; /* Abaixo da sidebar, mas acima do overlay */
+  transition: transform 0.5s ease, opacity 0.5s ease; /* Animação */
+  transform: translateX(100%); /* Começa fora da tela à direita */
+  opacity: 0;
+}
+
+.notification-panel.visible {
+  display: block; /* Torna visível */
+  transform: translateX(0); /* Move para a posição correta */
+  opacity: 1;
+}
+
+.notification-panel p {
+  margin: 0;
+  font-size: 0.95em;
+  color: #555;
+  text-align: center;
+}
+
+/* Estilos do Overlay */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  z-index: 1000; /* Abaixo da sidebar */
+  display: none; /* Começa escondido */
+  transition: opacity 0.5s;
+}
+
+/* --- ESTILOS ESPECÍFICOS PARA CARDS DE RESERVA --- */
+
+/* Ajusta o alinhamento dentro dos cards de reserva */
+#listaReservas .card {
+  display: block; /* Remove o display: flex do .card geral */
+  text-align: left; /* Garante alinhamento à esquerda (reforço) */
+  padding: 20px; /* Ajusta padding se necessário, diferente do .card geral */
+  cursor: pointer; /* Indica que é clicável (definido no JS também) */
+}
+
+/* Garante que o conteúdo dentro do card de reserva use o espaço */
+#listaReservas .card .card-content {
+  padding: 0; /* Remove padding extra se o card já tiver */
+}
+
+/* Estilo para o link "Ver todas as reservas" */
+#listaReservas a {
+  grid-column: 1 / -1; /* Faz o link ocupar toda a largura da grid */
+  text-align: center;
+  margin-top: 10px; /* Espaço acima do link */
+  padding: 10px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+#listaReservas a:hover {
+  background-color: #eef; /* Fundo suave no hover */
+  text-decoration: underline;
+}
+
+/* Mensagem quando não há reservas */
+#listaReservas p {
+    grid-column: 1 / -1; /* Ocupa toda a largura */
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+/* Estilos para a secção de equipas (Container PAI) */
+.cards-equipa {
+  padding: 10px 0; /* Mantenha o padding se desejar */
+}
+
+/* Contêiner REAL dos cards (onde a grelha é aplicada) */
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Pode usar 200px ou 240px como na outra secção */
+  gap: 20px; /* Ajuste o espaçamento conforme necessário */
+  padding: 0; /* Remova padding interno se o pai já tiver */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Card de equipa */
+.card-equipa {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-equipa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-equipa h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #0056b3;
+  font-size: 1.1em;
+}
+
+.card-equipa p {
+  font-size: 0.9em;
+  color: #555;
+  margin-bottom: 0;
+}
+
+/* Card de adicionar equipa */
+.add-card {
+  background-color: #f8f9fa;
+  border: 2px dashed #007bff;
+  color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  min-height: 100px; /* Mantenha a mesma altura mínima */
+}
+
+.add-card:hover {
+  background-color: #e2e6ea;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+/* Estilos para a secção de resultados */
+.results {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.results h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.8em; /* Consistente com outros títulos de secção */
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+/* Aplica os estilos base .card aos cards dentro de #resultsContainer */
+#resultsContainer .card {
+    /* Herda os estilos de .card definidos acima */
+    /* Não precisa de regras adicionais aqui a menos que queira algo específico */
+}
+
+/* --- ESTILOS PARA O MODAL DE DETALHES DA EQUIPA --- */
+
+/* Garante que o modal fique acima de outros elementos como o overlay da sidebar */
+#modalDetalhesEquipa {
+  z-index: 1002; /* Valor maior que o overlay (1000) e sidebar (1001) */
+}
+
+/* Ajusta o conteúdo do modal de detalhes da equipa */
+#modalDetalhesEquipa .modal-content {
+  width: 90%; /* Usa percentagem para melhor responsividade */
+  max-width: 450px; /* Define uma largura máxima */
+  padding: 25px 30px; /* Aumenta o padding interno */
+  text-align: left; /* Garante alinhamento à esquerda */
+}
+
+/* Estilo para o título do modal */
+#modalDetalhesEquipa h2 {
+  text-align: center; /* Centraliza o título */
+  margin-bottom: 25px; /* Mais espaço abaixo do título */
+  color: var(--primary-color);
+}
+
+/* Estilo para a área de conteúdo dos detalhes */
+#detalhesEquipaContent {
+  margin-bottom: 20px; /* Espaço antes do botão */
+}
+
+/* Estilo para os parágrafos dentro dos detalhes */
+#detalhesEquipaContent p {
+  margin-bottom: 12px; /* Espaçamento entre linhas de informação */
+  font-size: 1em; /* Tamanho de fonte padrão */
+  color: #555; /* Cor do texto */
+  line-height: 1.5; /* Espaçamento entre linhas */
+}
+
+/* Estilo para o texto em negrito (labels) */
+#detalhesEquipaContent p strong {
+  color: #333; /* Cor mais escura para o label */
+  min-width: 80px; /* Largura mínima para alinhar os valores (ajuste se necessário) */
+  display: inline-block; /* Permite definir largura */
+  margin-right: 5px;
+}
+
+/* Estilo específico para o parágrafo "Membros:" */
+#detalhesEquipaContent p:has(#modalMembrosEquipa) { /* Seleciona o <p> que contém a lista */
+   margin-bottom: 8px; /* Menos espaço antes da lista */
+}
+
+/* Estilo para a lista de membros */
+#modalMembrosEquipa {
+  list-style: disc; /* Usa bolinhas como marcador */
+  padding-left: 25px; /* Adiciona indentação à lista */
+  margin-top: 5px; /* Espaço acima da lista */
+  margin-bottom: 0; /* Remove margem inferior da lista */
+}
+
+/* Estilo para cada item da lista de membros */
+#modalMembrosEquipa li {
+  margin-bottom: 6px; /* Espaço entre os nomes dos membros */
+  font-size: 0.95em; /* Tamanho de fonte ligeiramente menor para membros */
+  color: #444;
+}
+
+/* Estilo para o botão "Gerir Equipa" */
+#modalDetalhesEquipa button {
+  display: block; /* Faz o botão ocupar a linha inteira */
+  width: 100%; /* Largura total */
+  padding: 12px 15px; /* Padding interno */
+  font-size: 1em; /* Tamanho da fonte */
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  margin-top: 15px; /* Espaço acima do botão */
+}
+
+#modalDetalhesEquipa button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Garante que o botão de fechar (X) esteja bem posicionado */
+#modalDetalhesEquipa .close {
+  position: absolute;
+  top: 15px; /* Ajusta a posição vertical */
+  right: 20px; /* Ajusta a posição horizontal */
+  font-size: 24px; /* Tamanho do 'X' */
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+}
+
+#modalDetalhesEquipa .close:hover {
+  color: #333;
+}
