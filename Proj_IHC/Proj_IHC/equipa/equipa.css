@@ -638,6 +638,8 @@ form h3 {
   color: #333;
 }
 
+
+/* Membros List -- Start */ 
 .membros-list button:hover {
   background-color: #e6e6e6;
 }
@@ -645,8 +647,8 @@ form h3 {
 .membros-list {
   max-height: 200px; /* Limit the height of the members list */
   overflow-y: auto; /* Enable scrolling for the members list */
-  border-radius: 26px;
-  padding: 5px;
+  border-radius: 18px;
+  padding: 6px;
   background-color: #f0f0f0;
 }
 
@@ -659,10 +661,10 @@ form h3 {
   display: flex;
   justify-content: space-between; /* Aligns the name and button horizontally */
   align-items: center;
-  padding: 7px;
+  padding: 6px;
   margin-bottom: 2px;
   margin-top: 2px;
-  border-radius: 23px;
+  border-radius: 14px;
   transition: background-color 0.3s;
 }
 
@@ -683,8 +685,8 @@ form h3 {
   background-color: #ff4d4d;
   color: white;
   border: none;
-  padding: 7px;
-  border-radius: 9px;
+  padding: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 11px;
   transition: background-color 0.3s;
@@ -694,3 +696,5 @@ form h3 {
 .membros-list .membro-item .remover-membro-btn:hover {
   background-color: #cc0000;
 }
+
+/* Membros List -- End */
