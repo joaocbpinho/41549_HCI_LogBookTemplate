@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="equipa.css">
   <link rel="icon" href="../images/PlaySmart.png" type="image/png">
 </head>
+
 <body>
   <header>
     <div class="logo">
@@ -35,14 +37,14 @@
       <h2>Nova Equipa</h2>
       <button class="criar-equipa-btn" onclick="abrirPopupCriarEquipa()">+ Criar Nova Equipa</button>
     </section>
-       <!-- Adicionar Amigos -->
-       <section class="section">
-        <h2>Adicionar Amigos</h2>
-        <button class="adicionar-amigo-btn" onclick="abrirPopupAdicionarAmigo()">+ Adicionar Amigos</button>
-      </section>
-  
+    <!-- Adicionar Amigos -->
+    <section class="section">
+      <h2>Adicionar Amigos</h2>
+      <button class="adicionar-amigo-btn" onclick="abrirPopupAdicionarAmigo()">+ Adicionar Amigos</button>
+    </section>
+
   </main>
-  
+
   <!-- Pop-up para Criar Equipa -->
   <div id="popupCriarEquipa" class="popup">
     <div class="popup-content">
@@ -69,28 +71,28 @@
 
         <!-- Elemento para exibir as restrições -->
         <p id="restricoesDesporto" style="color: #555; font-size: 14px; margin-top: 10px;"></p>
-                  <!-- Pesquisa de Amigos -->
-          <label for="pesquisarAmigos">Pesquisar Amigos:</label>
-          <input type="text" id="pesquisarAmigos" placeholder="Digite o nome do amigo" oninput="filtrarAmigos()">
-    
-          <!-- Lista de Amigos -->
-          <h3>Adicionar Amigos</h3>
-          <div class="amigos-list" id="listaAmigos">
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Francisco Pinho</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Guilherme Pina</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Bruno Aguiar</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Miguel Pires</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">António Carlos</button>
-          </div>
-    
-          <!-- Amigos Recentes -->
-          <h3>Amigos Recentes</h3>
-          <div class="amigos-recentes" id="amigosRecentes">
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Joana Silva</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Pedro Costa</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Ana Martins</button>
-            <button type="button" class="selectable" onclick="toggleSelection(this)">Rui Pereira</button>
-          </div>
+        <!-- Pesquisa de Amigos -->
+        <label for="pesquisarAmigos">Pesquisar Amigos:</label>
+        <input type="text" id="pesquisarAmigos" placeholder="Digite o nome do amigo" oninput="filtrarAmigos()">
+
+        <!-- Lista de Amigos -->
+        <h3>Adicionar Amigos</h3>
+        <div class="amigos-list" id="listaAmigos">
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Francisco Pinho</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Guilherme Pina</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Bruno Aguiar</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Miguel Pires</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">António Carlos</button>
+        </div>
+
+        <!-- Amigos Recentes -->
+        <h3>Amigos Recentes</h3>
+        <div class="amigos-recentes" id="amigosRecentes">
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Joana Silva</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Pedro Costa</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Ana Martins</button>
+          <button type="button" class="selectable" onclick="toggleSelection(this)">Rui Pereira</button>
+        </div>
         <div style="text-align: center;">
           <button type="button" class="criar-equipa-btn" onclick="criarEquipa()">Criar Equipa</button>
         </div>
@@ -108,7 +110,21 @@
         <input type="text" id="novoNomeEquipa" placeholder="Insira o novo nome da equipa">
 
         <h3>Membros da Equipa</h3>
-        <div class="membros-list" id="membrosEquipa"></div>
+        <div class="membros-list" id="membrosEquipa">
+          <!-- Dynamically generated members will be added here -->
+          <div class="membro-item">
+            <span>João Silva</span>
+            <button type="button" class="remover-btn" onclick="removerMembro(this)">Remover</button>
+          </div>
+          <div class="membro-item">
+            <span>Maria Costa</span>
+            <button type="button" class="remover-btn" onclick="removerMembro(this)">Remover</button>
+          </div>
+          <div class="membro-item">
+            <span>Pedro Santos</span>
+            <button type="button" class="remover-btn" onclick="removerMembro(this)">Remover</button>
+          </div>
+        </div>
 
         <h3>Adicionar Novo Membro</h3>
         <input type="text" id="novoMembro" placeholder="Insira o nome do novo membro">
@@ -120,11 +136,14 @@
 
         <!-- Botão para remover a equipa -->
         <div style="text-align: center; margin-top: 10px;">
-          <button type="button" class="remover-equipa-btn" onclick="abrirPopupConfirmarRemoverEquipa(document.getElementById('novoNomeEquipa').value)">Remover Equipa</button>
+          <button type="button" class="remover-equipa-btn"
+            onclick="abrirPopupConfirmarRemoverEquipa(document.getElementById('novoNomeEquipa').value)">Remover
+            Equipa</button>
         </div>
       </form>
     </div>
   </div>
+
   <!-- Pop-up para Adicionar Amigos -->
   <div id="popupAdicionarAmigo" class="popup">
     <div class="popup-content">
@@ -139,40 +158,39 @@
       </form>
     </div>
   </div>
-    <!-- Pop-up de Confirmação para Adicionar Amigo -->
+  <!-- Pop-up de Confirmação para Adicionar Amigo -->
   <div id="popupConfirmarAdicionarAmigo" class="popup">
-        <div class="popup-content">
-          <span class="close" onclick="fecharPopupConfirmarAdicionarAmigo()">&times;</span>
-          <h2>Amigo Adicionado</h2>
-          <p>O amigo foi adicionado com sucesso!</p>
-          <button class="ok-btn"onclick="fecharPopupConfirmarAdicionarAmigo()">OK</button>
-        </div>
-  </div>
-    
-  <!-- Pop-up de Confirmação para Remover Equipa -->
-<div id="popupConfirmarRemoverEquipa" class="popup">
-  <div class="popup-content">
-    <span class="close" onclick="fecharPopupConfirmarRemoverEquipa()">&times;</span>
-    <h2>Confirmar Remoção</h2>
-    <p>Tem certeza de que deseja remover esta equipa?</p>
-    <div style="text-align: center;">
-      <button class="confirmar-btn" onclick="confirmarRemocaoEquipa()">Sim</button>
-      <button class="cancelar-btn" onclick="fecharPopupConfirmarRemoverEquipa()">Não</button>
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupConfirmarAdicionarAmigo()">&times;</span>
+      <h2>Amigo Adicionado</h2>
+      <p>O amigo foi adicionado com sucesso!</p>
+      <button class="ok-btn" onclick="fecharPopupConfirmarAdicionarAmigo()">OK</button>
     </div>
   </div>
-</div>
 
-<!-- Pop-up de Erro -->
-<div id="popupErroAdicionarAmigo" class="popup">
-  <div class="popup-content">
-    <span class="close" onclick="fecharPopupErroAdicionarAmigo()">&times;</span>
-    <h2>Erro</h2>
-    <p id="mensagemErroAdicionarAmigo">Ocorreu um erro ao adicionar o amigo.</p>
-    <button class="mensagem-erro" onclick="fecharPopupErroAdicionarAmigo()">OK</button>
+  <!-- Pop-up de Confirmação para Remover Equipa -->
+  <div id="popupConfirmarRemoverEquipa" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupConfirmarRemoverEquipa()">&times;</span>
+      <h2>Confirmar Remoção</h2>
+      <p>Tem certeza de que deseja remover esta equipa?</p>
+      <div style="text-align: center;">
+        <button class="confirmar-btn" onclick="confirmarRemocaoEquipa()">Sim</button>
+        <button class="cancelar-btn" onclick="fecharPopupConfirmarRemoverEquipa()">Não</button>
+      </div>
+    </div>
   </div>
-</div>
+
+  <!-- Pop-up de Erro -->
+  <div id="popupErroAdicionarAmigo" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharPopupErroAdicionarAmigo()">&times;</span>
+      <h2>Erro</h2>
+      <p id="mensagemErroAdicionarAmigo">Ocorreu um erro ao adicionar o amigo.</p>
+      <button class="mensagem-erro" onclick="fecharPopupErroAdicionarAmigo()">OK</button>
+    </div>
+  </div>
   <script src="equipa.js"></script>
 </body>
+
 </html>
-
-

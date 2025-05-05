@@ -10,7 +10,7 @@
 
 /* Geral */
 body {
-  font-family: 'Roboto', Arial, sans-serif;
+  font-family: "Roboto", Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--secondary-color);
@@ -125,7 +125,9 @@ main {
 }
 
 /* Botões Gerais */
-.criar-equipa-btn, .adicionar-amigo-btn, .confirmar-btn {
+.criar-equipa-btn,
+.adicionar-amigo-btn,
+.confirmar-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
@@ -136,7 +138,9 @@ main {
   transition: background-color 0.3s;
 }
 
-.criar-equipa-btn:hover, .adicionar-amigo-btn:hover, .confirmar-btn:hover {
+.criar-equipa-btn:hover,
+.adicionar-amigo-btn:hover,
+.confirmar-btn:hover {
   background-color: var(--hover-color);
 }
 
@@ -177,17 +181,6 @@ main {
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-}
-
-.popup-content {
-  background: var(--background-color);
-  border-radius: 10px;
-  max-width: 500px;
-  width: 90%;
-  margin: 100px auto;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
 }
 
 .popup-content h2 {
@@ -249,18 +242,6 @@ form#adicionarAmigoForm button:hover {
   z-index: 1000;
 }
 
-.popup-content {
-  background: var(--background-color);
-  border-radius: 10px;
-  max-width: 360px;
-  width: 90%;
-  margin: 80px auto;
-  padding:16px 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-
-  position: relative;
-}
-
 .popup-content h2 {
   margin-top: 0;
   color: var(--primary-color);
@@ -305,36 +286,35 @@ form#adicionarAmigoForm button:hover {
 #nomeEquipa,
 #desporto,
 #pesquisarAmigos {
-width: 100%;
-height: 40px; /* altura controlada */
-padding: 6px 10px;
-font-size: 14px;
-line-height: 1.4;
-border: 1px solid var(--border-color);
-border-radius: 6px;
-background-color: #f9f9f9;
-color: var(--text-color);
-box-sizing: border-box;
-transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  height: 40px; /* altura controlada */
+  padding: 6px 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: var(--text-color);
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 #nomeEquipa:focus,
 #desporto:focus,
 #pesquisarAmigos:focus {
-border-color: var(--primary-color);
-box-shadow: 0 0 5px rgba(0, 120, 215, 0.4);
-outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px rgba(0, 120, 215, 0.4);
+  outline: none;
 }
 
 /* Específico para o select com ícone */
 #desporto {
-appearance: none;
-background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
-background-repeat: no-repeat;
-background-position: right 12px center;
-background-size: 12px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23555' d='M6 8.5L1 3.5h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
 }
-
 
 /* Ajuste para os rótulos (labels) */
 form label {
@@ -355,14 +335,16 @@ form h3 {
 }
 
 /* Ajuste para a lista de amigos */
-.amigos-list, .amigos-recentes {
+.amigos-list,
+.amigos-recentes {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
 
-.amigos-list .selectable, .amigos-recentes .selectable {
+.amigos-list .selectable,
+.amigos-recentes .selectable {
   flex: 1 1 calc(50% - 10px);
   text-align: center;
   padding: 10px;
@@ -375,13 +357,15 @@ form h3 {
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
-.amigos-list .selectable:hover, .amigos-recentes .selectable:hover {
+.amigos-list .selectable:hover,
+.amigos-recentes .selectable:hover {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
 }
 
-.amigos-list .selectable.selected, .amigos-recentes .selectable.selected {
+.amigos-list .selectable.selected,
+.amigos-recentes .selectable.selected {
   background-color: var(--primary-color);
   color: white;
   border-color: var(--primary-color);
@@ -404,19 +388,7 @@ form h3 {
   background-color: var(--hover-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-/* Estilo para o pop-up de Gerir Equipa */
-.popup-content {
-  background: white;
-  border-radius: 10px;
-  max-width: 500px;
-  width: 90%;
-  margin: 100px auto;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-  text-align: left;
-  font-family: Arial, sans-serif;
-}
+
 
 .popup-content h2 {
   margin-top: 0;
@@ -439,41 +411,6 @@ form h3 {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
-}
-
-.popup-content .membros-list {
-  margin-bottom: 15px;
-}
-
-.membro-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 10px;
-  margin-bottom: 5px;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.membro-item span {
-  font-size: 14px;
-  color: #333;
-}
-
-.membro-item .remover-membro-btn {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background-color 0.3s;
-}
-
-.membro-item .remover-membro-btn:hover {
-  background-color: #cc0000;
 }
 
 .popup-content .adicionar-membro-btn {
@@ -542,7 +479,8 @@ form h3 {
     opacity: 0;
     transform: translateY(-10px);
   }
-  10%, 90% {
+  10%,
+  90% {
     opacity: 1;
     transform: translateY(0);
   }
@@ -609,18 +547,6 @@ form h3 {
   z-index: 1000;
 }
 
-.popup-content {
-  background: white;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  margin: 100px auto;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  position: relative;
-  text-align: center;
-}
-
 .popup-content h2 {
   margin-top: 0;
   color: #333;
@@ -677,5 +603,94 @@ form h3 {
 }
 
 .popup-content .ok-btn:hover {
+  background-color: #cc0000;
+}
+
+/* Popup Styling */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+  position: relative;
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.membros-list button:hover {
+  background-color: #e6e6e6;
+}
+
+.membros-list {
+  max-height: 200px; /* Limit the height of the members list */
+  overflow-y: auto; /* Enable scrolling for the members list */
+  border-radius: 26px;
+  padding: 5px;
+  background-color: #f0f0f0;
+}
+
+/* Hide the scrollbar */
+.membros-list::-webkit-scrollbar {
+  display: none; /* Hides the scrollbar in WebKit browsers (Chrome, Safari, Edge) */
+}
+
+.membros-list .membro-item {
+  display: flex;
+  justify-content: space-between; /* Aligns the name and button horizontally */
+  align-items: center;
+  padding: 7px;
+  margin-bottom: 2px;
+  margin-top: 2px;
+  border-radius: 23px;
+  transition: background-color 0.3s;
+}
+
+.membros-list .membro-item:hover {
+  background-color: #dedede;
+}
+
+.membros-list .membro-item span {
+  flex: 1; /* Ensures the name takes up available space */
+  font-size: 14px;
+  color: #333;
+  word-wrap: break-word; /* Handles long names */
+  text-align: left;
+  font-weight: bold;
+}
+
+.membros-list .membro-item .remover-membro-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 7px;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 11px;
+  transition: background-color 0.3s;
+  font-weight: bold;
+}
+
+.membros-list .membro-item .remover-membro-btn:hover {
   background-color: #cc0000;
 }
