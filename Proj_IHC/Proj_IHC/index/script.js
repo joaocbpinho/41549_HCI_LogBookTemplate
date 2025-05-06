@@ -295,9 +295,66 @@ function definirValorSaldo(valor) {
 // ========== EVENT LISTENER DOMContentLoaded (Principal) ==========
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Inicializar saldo (global para todas as páginas)
+  const saldoContainer = document.getElementById("saldoContainer");
+  if (saldoContainer) {
+    let saldoSpan = saldoContainer.querySelector('span#saldoAtual');
+    if (!saldoSpan) { // Se o span não existir dentro do container, cria-o
+      saldoSpan = document.createElement('span');
+      saldoSpan.id = 'saldoAtual';
+      // Adiciona algum texto placeholder ou formatação inicial se desejar
+      saldoContainer.appendChild(saldoSpan);
+    }
+    
+    const saldoGuardado = localStorage.getItem('saldoUsuario');
+    if (saldoGuardado !== null) {
+      saldoSpan.textContent = `${parseFloat(saldoGuardado).toFixed(2)}€`;
+    } else {
+      const saldoInicial = 0.00;
+      localStorage.setItem('saldoUsuario', saldoInicial.toString());
+      saldoSpan.textContent = `${saldoInicial.toFixed(2)}€`;
+    }
+  } else {
+    console.warn("Elemento saldoContainer não encontrado no DOM. O saldo não será exibido/atualizado por script.js.");
+  }
+
+  // Inicializar nome do utilizador na sidebar (global)
+  const nomeUtilizadorSidebar = document.querySelector("#profileSidebar .profile-name");
+  if (nomeUtilizadorSidebar) {
+    const nomeGuardado = localStorage.getItem('nomeUtilizador');
+    if (nomeGuardado) {
+      nomeUtilizadorSidebar.textContent = nomeGuardado;
+    }
+  }
+  
   console.log("DOM carregado para script.js (principal)");
 
-  carregarEExibirReservasIndex(); // Esta chamada agora executará a função de reservas/reservasindex.js
+  // Verificar a página atual
+  const currentPagePath = window.location.pathname;
+  const currentPageFile = currentPagePath.split('/').pop();
+
+  // Executar funções específicas do index.html apenas se estivermos nessa página
+  if (currentPageFile === "index.html" || currentPageFile === "") {
+    if (typeof carregarEExibirReservasIndex === "function") {
+      try {
+        carregarEExibirReservasIndex();
+      } catch (e) {
+        console.error("Erro ao executar carregarEExibirReservasIndex:", e);
+      }
+    }
+
+    if (typeof carregarEExibirEquipasIndex === "function") {
+      try {
+        carregarEExibirEquipasIndex();
+      } catch (e) {
+        console.error("Erro ao executar carregarEExibirEquipasIndex:", e);
+      }
+    }
+
+    if (typeof inicializarPesquisa === "function") {
+      inicializarPesquisa();
+    }
+  }
 
   const saldoGuardado = localStorage.getItem('saldoUsuario');
   const saldoAtualEl = document.getElementById("saldoAtual");

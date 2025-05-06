@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reservas - Play Smart</title>
   <link rel="stylesheet" href="reservas.css">
+  <link rel="stylesheet" href="../index/styles.css"> <!-- ADICIONAR ESTA LINHA PARA ESTILOS GLOBAIS -->
   <link rel="icon" href="../images/PlaySmart.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Se precisar de Font Awesome -->
 </head>
 <body>
   <header>
@@ -15,31 +17,30 @@
     </div>
     <div class="header-icons">
       <div id="saldoContainer" onclick="abrirModalSaldo()">
-        <!-- Saldo será carregado pelo JS -->
-        <span id="saldoAtual">0.00€</span>
+        <!-- O span para saldoAtual será populado pelo script.js global -->
       </div>
       <button id="profileButton" onclick="openProfileSidebar()">👤</button>
     </div>
   </header>
 
-  <!-- Sidebar -->
+  <!-- Sidebar (Mantida a estrutura, mas as funções de abrir/fechar serão do script.js global) -->
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeProfileSidebar()"></div>
   <div id="profileSidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeProfileSidebar()">&times;</a>
     <div class="profile-info">
-      <img src="../images/persona1_joao.png" alt="Foto de Perfil" class="profile-pic">
+      <img src="../images/default_profile.png" alt="Foto de Perfil" class="profile-pic"> <!-- Caminho da imagem de perfil padrão -->
       <div class="profile-text">
-        <span class="profile-name">João Silva</span>
-        <span class="profile-id">ID: 123456</span>
+        <span class="profile-name">Utilizador</span> <!-- Será populado pelo script.js global -->
+        <span class="profile-id">#12345</span> <!-- Será populado pelo script.js global -->
       </div>
     </div>
-    <a href="../index/index.html">🏠 Início</a> <!-- Link para Início -->
-    <a href="#">🔔 Notificações</a>
-    <a href="#">👥 Equipas</a>
-    <a href="#">📧 Convites</a>
-    <a href="reservas.html">📅 Reservas</a>
-    <a href="#">📜 Histórico</a>
-    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a> <!-- Adicionada classe sidebar-logout -->
+    <a href="../index/index.html">🏠 Início</a>
+    <a href="javascript:void(0)" onclick="toggleNotificationPanel(event)">🔔 Notificações</a> <!-- Chama função global -->
+    <a href="../equipa/equipa.html">👥 Equipas</a>
+    <!-- <a href="#">📧 Convites</a> -->
+    <a href="reservas.html">📅 Minhas Reservas</a>
+    <!-- <a href="#">📜 Histórico</a> -->
+    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a> <!-- Chama função global -->
   </div>
 
   <main>
@@ -51,31 +52,93 @@
         <p>A carregar reservas...</p>
       </div>
     </section>
-
-    <!-- Removida a secção "Mais Recentes" por agora, pode ser adicionada depois se necessário -->
-    <!--
-    <section class="section">
-      <h2>Mais Recentes</h2>
-      <div id="listaReservasRecentes" class="cards">
-      </div>
-    </section>
-    -->
-
   </main>
 
-  <!-- Modal Saldo (se necessário nesta página) -->
-  <div id="modalAdicionarSaldo" class="modal" style="display: none;"> <!-- Adicionado style display none -->
+  <!-- Modal Adicionar Saldo (COPIADO DE INDEX.HTML / CAMPO.HTML) -->
+  <div id="modalAdicionarSaldo" class="modal">
     <div class="modal-content">
       <span class="close" onclick="fecharModalSaldo()">&times;</span>
       <h2>Adicionar Saldo</h2>
-      <label for="valorSaldo">Valor:</label>
-      <input type="number" id="valorSaldo" placeholder="Insira o valor" />
-      <button onclick="adicionarSaldo()">Adicionar</button>
+      <div class="saldo-input-container">
+        <label for="valorSaldo">Valor a adicionar:</label>
+        <input type="number" id="valorSaldo" placeholder="0.00" min="0.01" step="0.01">
+        <span>€</span>
+      </div>
+      <div class="saldo-opcoes">
+        <button onclick="definirValorSaldo(5)">+5€</button>
+        <button onclick="definirValorSaldo(10)">+10€</button>
+        <button onclick="definirValorSaldo(20)">+20€</button>
+        <button onclick="definirValorSaldo(50)">+50€</button>
+      </div>
+
+      <div class="metodo-pagamento">
+        <div class="metodo-header">
+          <h3>Método de Pagamento</h3>
+          <a href="#" class="alterar-link" onclick="abrirModalMetodosPagamento()">Alterar</a>
+        </div>
+        <div class="metodo-detalhes" id="metodoAtualDisplay">
+          <div class="metodo-icone">
+            <img src="../images/visa_icon.png" alt="Visa" id="metodoIconeAtual">
+          </div>
+          <div class="metodo-info">
+            <p id="metodoNomeAtual">Visa</p>
+            <p id="metodoDetalheAtual">**** 1234</p>
+          </div>
+        </div>
+      </div>
+      <button class="btn-depositar" onclick="adicionarSaldo()">Depositar</button>
     </div>
   </div>
 
+  <!-- Modal para Selecionar Método de Pagamento (COPIADO DE INDEX.HTML / CAMPO.HTML) -->
+  <div id="modalMetodoPagamento" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharModalMetodosPagamento()">&times;</span>
+      <h2>Selecionar Método de Pagamento</h2>
+      <ul class="metodos-pagamento-lista">
+        <li onclick="selecionarMetodo('visa')">
+          <img src="../images/visa_icon.png" alt="Visa">
+          <span>Visa</span>
+        </li>
+        <li onclick="selecionarMetodo('mastercard')">
+          <img src="../images/mastercard_icon.png" alt="Mastercard">
+          <span>Mastercard</span>
+        </li>
+        <li onclick="selecionarMetodo('mbway')">
+          <img src="../images/mbway_icon.png" alt="MB WAY">
+          <span>MB WAY</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal para Detalhes do Cartão (COPIADO DE INDEX.HTML / CAMPO.HTML) -->
+  <div id="modalDetalhesCartao" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharModalDetalhesCartao()">&times;</span>
+      <h2>Detalhes do Cartão</h2>
+      <label for="numeroCartao">Número do Cartão:</label>
+      <input type="text" id="numeroCartao" placeholder="xxxx xxxx xxxx xxxx">
+      <div class="cartao-detalhes">
+        <div>
+          <label for="validadeCartao">Validade (MM/AA):</label>
+          <input type="text" id="validadeCartao" placeholder="MM/AA">
+        </div>
+        <div>
+          <label for="cvvCartao">CVV:</label>
+          <input type="text" id="cvvCartao" placeholder="123">
+        </div>
+      </div>
+      <button class="btn-confirmar" onclick="confirmarDetalhesCartao()">Confirmar</button>
+    </div>
+  </div>
+
+  <!-- Painel de Notificações (COPIADO DE INDEX.HTML / CAMPO.HTML) -->
+  <div id="notificationPanel" class="notification-panel">
+      <p>Sem notificações novas.</p>
+  </div>
+
+  <script src="../index/script.js"></script> <!-- ADICIONAR ESTA LINHA PARA SCRIPTS GLOBAIS -->
   <script src="reservas.js"></script>
-  <!-- Incluir script.js GERAL se funções como abrirModalSaldo estiverem lá -->
-  <!-- <script src="../index/script.js"></script> -->
 </body>
 </html>

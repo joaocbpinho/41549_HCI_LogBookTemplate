@@ -2,9 +2,9 @@ let todasReservas = [];
 let todosCampos = []; // Irá guardar os dados de campos.json
 
 // Variáveis para guardar seleções do modal de reserva
-let selectedDate = null;
-let selectedTime = null;
-let selectedAmenities = [];
+let selectedDate = null; // Deve ser um objeto Date
+let selectedTime = null; // Deve ser uma string como "HH:MM - HH:MM"
+let selectedAmenities = []; // Deve ser um array de strings com os nomes das comodidades
 
 // Variáveis globais para o carrossel dinâmico
 let campoAtualImagens = [];
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (campoId) {
         carregarDadosCampoEConfigurarPagina(campoId);
-        carregarReservas(campoId);
+        carregarReservas(campoId); // Carrega reservas específicas desta página
     } else {
         console.error('ID do campo não encontrado na URL.');
         document.querySelector('.campo-section h1').textContent = "Campo Inválido";
@@ -224,6 +224,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// Função auxiliar para formatar a data (adicione se não tiver uma similar)
+function formatarDataParaReserva(dateObj) {
+    if (!dateObj) return '';
+    // Se selectedDate já for uma string formatada, ajuste conforme necessário
+    if (typeof dateObj === 'string') return dateObj; 
+    
+    // Se selectedDate for um objeto Date
+    const dia = String(dateObj.getDate()).padStart(2, '0');
+    const mes = String(dateObj.getMonth() + 1).padStart(2, '0'); // Meses são 0-indexed
+    const ano = dateObj.getFullYear();
+    return `${dia}/${mes}/${ano}`;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
     const reservaModal = document.getElementById("reservaModal");
@@ -382,105 +395,121 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.realizarPagamento = async function () {
-        if (!selectedDate || !selectedTime) {
-            alert("Por favor, selecione uma data e um horário para a reserva.");
+        const dataParaReserva = selectedDate;
+        const horarioParaReserva = selectedTime;
+        const comodidadesParaReserva = selectedAmenities;
+
+        if (!dataParaReserva || !horarioParaReserva) {
+            alert("Por favor, selecione data e horário a partir do calendário e da lista de horários no modal de reserva.");
             return;
         }
+
+        const userIdLogado = "prototipoUser"; // Simulação de utilizador logado
 
         const urlParams = new URLSearchParams(window.location.search);
-        let campoId = urlParams.get('id'); 
-        let precoPorHora = 0;
+        const campoId = urlParams.get('id');
+        let campoAtual = null;
 
-        if (!campoId) {
-            console.warn("ID do campo não encontrado na URL.");
-            const tituloCampoElement = document.querySelector('.campo-section h1');
-            if (tituloCampoElement && todosCampos.length > 0) {
-                const nomeCampoPagina = tituloCampoElement.textContent;
-                const campoEncontrado = todosCampos.find(c => c.nome === nomeCampoPagina);
-                if (campoEncontrado) {
-                    campoId = campoEncontrado.id.toString();
-                    precoPorHora = parseFloat(campoEncontrado.preco_hora);
-                }
-            }
-        } else {
-            if (todosCampos.length === 0) {
-                 try {
+        if (campoId && todosCampos.length > 0) {
+            campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
+        } else if (campoId) {
+            try {
+                if (todosCampos.length === 0) {
                     const response = await fetch('campos.json');
-                    if (!response.ok) throw new Error('Falha ao buscar campos para preço.');
+                    if (!response.ok) throw new Error('Falha ao buscar campos.json');
                     todosCampos = await response.json();
-                } catch (error) {
-                    console.error("Erro ao carregar campos para obter preço:", error);
-                    alert("Erro ao obter informações do preço do campo. Tente novamente.");
-                    return;
                 }
+                campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
+            } catch (error) {
+                console.error("Erro ao tentar carregar campo para pagamento:", error);
+                alert("Erro crítico ao carregar dados do campo. A reserva não pode ser processada.");
+                return;
             }
-            const campoAtual = todosCampos.find(c => c.id === parseInt(campoId));
-            if (campoAtual) {
-                precoPorHora = parseFloat(campoAtual.preco_hora);
-            } else {
-                 console.error("Campo não encontrado no JSON para obter preço, usando ID:", campoId);
-                 alert("Não foi possível encontrar os detalhes do preço para este campo.");
-                 return;
+        }
+
+        if (!campoAtual) {
+            alert("Erro ao carregar dados do campo para processar a reserva. Tente novamente ou selecione o campo novamente.");
+            return;
+        }
+
+        const precoCampo = parseFloat(campoAtual.preco_hora);
+        if (isNaN(precoCampo)) {
+            alert("Erro: Preço do campo inválido.");
+            return;
+        }
+
+        // Lógica de Saldo - AGORA USA A CHAVE 'saldoUsuario' consistentemente
+        let saldoAtualNumerico;
+        const saldoGuardado = localStorage.getItem('saldoUsuario'); // Usar 'saldoUsuario'
+
+        if (saldoGuardado === null) {
+            saldoAtualNumerico = 0.00; // Se não existe, começa com 0 ou um valor inicial padrão
+            localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString()); // Guardar valor inicial
+            console.log("Saldo não encontrado. Inicializando com 0.00€.");
+        } else {
+            saldoAtualNumerico = parseFloat(saldoGuardado);
+            if (isNaN(saldoAtualNumerico)) {
+                console.warn("Valor de saldo inválido no localStorage. Reinicializando com 0.00€.");
+                saldoAtualNumerico = 0.00;
+                localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString());
             }
         }
         
-        if (!campoId) {
-            console.error("ID do campo não pôde ser determinado. Reserva cancelada.");
-            alert("Erro: Não foi possível identificar o campo para a reserva.");
-            return; 
-        }
-        if (precoPorHora <= 0) {
-            alert("Preço do campo inválido ou não encontrado. Não é possível realizar a reserva.");
-            return;
-        }
-
-        const userIdLogado = localStorage.getItem('userId');
-        if (!userIdLogado) {
-            alert("Utilizador não autenticado. Por favor, faça login para reservar.");
-            return;
-        }
-
-        let saldoUtilizador = parseFloat(localStorage.getItem('saldoUsuario') || "0");
-
-        if (saldoUtilizador < precoPorHora) {
-            alert(`Saldo insuficiente (${saldoUtilizador.toFixed(2)}€). O preço da reserva é ${precoPorHora.toFixed(2)}€. Por favor, adicione saldo.`);
-            return;
-        }
+        // Atualiza o elemento visual do saldo (o script.js global também faz isso, mas podemos garantir aqui também)
+        const saldoAtualEl = document.getElementById("saldoContainer"); // O container principal
+        const saldoSpan = saldoAtualEl ? saldoAtualEl.querySelector('span#saldoAtual') : null; // O span dentro dele
         
-        const novoSaldo = saldoUtilizador - precoPorHora;
-        localStorage.setItem('saldoUsuario', novoSaldo.toFixed(2));
-        const saldoAtualEl = document.getElementById("saldoAtual");
-        if (saldoAtualEl) saldoAtualEl.textContent = `${novoSaldo.toFixed(2)}€`;
-
-        let horaInicio = 'N/D';
-        let horaFim = 'N/D';
-        if (selectedTime && selectedTime.includes(' - ')) {
-            const partesHorario = selectedTime.split(' - ');
-            horaInicio = partesHorario[0].trim();
-            horaFim = partesHorario[1].trim();
-        } else if (selectedTime) { 
-            horaInicio = selectedTime.trim();
+        if (saldoSpan) { // Se o span existir (deve ser criado pelo script.js global)
+             saldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
+        } else if (saldoAtualEl && !saldoSpan) { // Se o container existe mas o span não, criar e adicionar
+            const novoSaldoSpan = document.createElement('span');
+            novoSaldoSpan.id = 'saldoAtual';
+            novoSaldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
+            saldoAtualEl.innerHTML = ''; // Limpar antes de adicionar, caso haja texto antigo
+            saldoAtualEl.appendChild(novoSaldoSpan);
         }
+
+
+        if (saldoAtualNumerico < precoCampo) {
+            alert(`Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoCampo.toFixed(2)}€.`);
+            // A função abrirModalSaldo() é global e já está disponível
+            if (typeof abrirModalSaldo === "function") {
+                abrirModalSaldo();
+            }
+            return;
+        }
+
+        saldoAtualNumerico -= precoCampo;
+        localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString()); // Usar 'saldoUsuario'
+
+        if (saldoSpan) { // Atualizar o span se ele existe
+            saldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
+        } else if (saldoAtualEl) { // Ou recriar se necessário
+            const novoSaldoSpan = document.createElement('span');
+            novoSaldoSpan.id = 'saldoAtual';
+            novoSaldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
+            saldoAtualEl.innerHTML = '';
+            saldoAtualEl.appendChild(novoSaldoSpan);
+        }
+
+
+        const dataFormatada = formatarDataParaReserva(dataParaReserva);
 
         const novaReserva = {
-            id: Date.now().toString(),
-            userId: userIdLogado,
-            campoId: campoId.toString(),
-            nomeCampo: document.querySelector('.campo-section h1') ? document.querySelector('.campo-section h1').textContent : "Nome Indisponível",
-            data: `${selectedDate.getDate().toString().padStart(2, '0')}/${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}/${selectedDate.getFullYear()}`,
-            horaInicio: horaInicio,
-            horaFim: horaFim,
-            comodidades: selectedAmenities,
-            precoPago: precoPorHora,
-            estado: "Confirmada",
+            id: Date.now(),
+            campoId: campoAtual.id,
+            nomeCampo: campoAtual.nome,
+            data: dataFormatada,
+            horario: horarioParaReserva,
+            preco: precoCampo,
+            comodidades: comodidadesParaReserva,
+            userId: userIdLogado
         };
 
         todasReservas.push(novaReserva);
         guardarReservasNoLocalStorage();
 
-        alert(`Reserva realizada com sucesso! Novo saldo: ${novoSaldo.toFixed(2)}€`);
-        console.log("Nova reserva adicionada:", novaReserva);
-        console.log("Todas as reservas agora:", todasReservas);
+        alert(`Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Novo saldo: ${saldoAtualNumerico.toFixed(2)}€`);
         
         fecharReserva();
     };
