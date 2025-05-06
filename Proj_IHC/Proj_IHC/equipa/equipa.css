@@ -140,10 +140,7 @@ main {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.popup-content h2 {
-  margin-top: 0;
-  color: var(--primary-color);
-}
+
 
 .popup-content .close:hover {
   color: #333;
@@ -178,12 +175,6 @@ form#adicionarAmigoForm button:hover {
   background-color: var(--hover-primary-color);
 }
 
-.popup-content h2 {
-  margin-top: 0;
-  color: var(--primary-color);
-  font-size: 24px;
-}
-
 .popup-content p {
   font-size: 16px;
   color: var(--text-color);
@@ -212,6 +203,7 @@ form#adicionarAmigoForm button:hover {
 /* Campos de input e select com altura mais ajustada */
 #nomeEquipa,
 #novoNomeEquipa,
+#pesquisarAmigos,
 #novoMembro,
 #desporto,
 #pesquisarAmigos 
@@ -237,6 +229,7 @@ form#adicionarAmigoForm button:hover {
 
 #membrosEquipa:hover,
 #nomeEquipa:focus,
+#pesquisarAmigos:focus,
 #novoNomeEquipa:focus,
 #novoMembro:focus,
 #desporto:focus,
@@ -310,12 +303,6 @@ form h3 {
   border-color: var(--primary-color);
 }
 
-.popup-content h2 {
-  margin-top: 0;
-  color: #333;
-  font-size: 24px;
-  text-align: center;
-}
 
 .popup-content label {
   font-weight: bold;
@@ -385,40 +372,36 @@ form h3 {
   }
 }
 
-/* Mensagem de Sucesso */
-.mensagem-sucesso {
-  position: fixed;
-  top: 70px; /* Position the top edge at the vertical midpoint of the viewport */
-  right: 15%;
-  left: 15%; /* Position the left edge at the horizontal midpoint of the viewport */
-  background-color: var(--green-color);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  font-size: 16px;
-  animation: fadeInOut 3s ease-in-out;
-  z-index: 1000; /* Ensure it appears above other content */
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Mensagem de Erro */
+/* Mensagem de Sucesso e Erro - Base Styles */
+.mensagem-sucesso,
 .mensagem-erro {
   position: fixed;
-  top: 70px; /* Position the top edge at the vertical midpoint of the viewport */
-  right: 15%;
-  left: 15%; /* Position the left edge at the horizontal midpoint of the viewport */
-  background-color: var(--red-color);
-  color: white;
+  top: 70px; /* Adjust as needed to be below your header */
+  left: 0; /* Stretch from the left edge of the viewport */
+  right: 0; /* Stretch to the right edge of the viewport */
+  margin-left: auto; /* Distribute extra space to the left */
+  margin-right: auto; /* Distribute extra space to the right */
+  max-width: fit-content; /* Ensures the box is only as wide as its content */
+  /* transform: translateX(-50%); */ /* This line is removed/commented out */
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   font-size: 16px;
   animation: fadeInOut 3s ease-in-out;
-  z-index: 1000; /* Ensure it appears above other content */
+  z-index: 1000;
   text-align: center;
   font-weight: bold;
+  color: white; /* Default text color, can be overridden */
+}
+
+/* Mensagem de Sucesso - Specific Color */
+.mensagem-sucesso {
+  background-color: var(--green-color); /* Make sure --green-color is defined */
+}
+
+/* Mensagem de Erro - Specific Color */
+.mensagem-erro {
+  background-color: var(--red-color); /* Make sure --red-color is defined */
 }
 
 .popup-content input[type="text"]:focus {
@@ -427,11 +410,7 @@ form h3 {
   outline: none;
 }
 
-.popup-content h2 {
-  margin-top: 0;
-  color: #333;
-  font-size: 24px;
-}
+
 
 .popup-content p {
   color: #555;
@@ -484,13 +463,6 @@ form h3 {
 
 .popup-content .ok-btn:hover {
   background-color: #cc0000;
-}
-
-/* Popup Styling */
-.popup-content h2 {
-  margin-top: 0;
-  font-size: 24px;
-  color: #333;
 }
 
 /* Membros List -- Start */

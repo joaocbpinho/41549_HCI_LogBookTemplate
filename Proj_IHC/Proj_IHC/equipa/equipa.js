@@ -278,18 +278,30 @@ function removerMembro(nomeEquipa, index) {
 function salvarAlteracoes() {
   const novoNomeEquipa = document.getElementById("novoNomeEquipa").value.trim();
   const nomeEquipaAtual = document.getElementById("gerirEquipaForm").getAttribute("data-equipa");
+  const form = document.getElementById("gerirEquipaForm"); // Get the form element
 
   if (!novoNomeEquipa) {
-    exibirMensagemErro("Por favor, insira um nome para a equipa.");
+    exibirMensagemErro("Por favor, insira um nome para a equipa.", form); // Pass the correct form element
     return;
   }
 
   const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
   const equipa = equipas.find((e) => e.nome === nomeEquipaAtual);
 
-  equipa.nome = novoNomeEquipa; // Atualizar o nome da equipa
-  localStorage.setItem("equipas", JSON.stringify(equipas));
+  // Check if the new team name already exists (excluding the current team being edited)
+  const nomeDuplicado = equipas.some(
+    (e) => e.nome.toLowerCase() === novoNomeEquipa.toLowerCase() && e.nome !== nomeEquipaAtual
+  );
 
+  if (nomeDuplicado) {
+    exibirMensagemErro("Já existe uma equipa com este nome.", form);
+    return;
+  }
+
+  if (equipa) {
+    equipa.nome = novoNomeEquipa; // Atualizar o nome da equipa
+    localStorage.setItem("equipas", JSON.stringify(equipas));
+  }
   fecharPopupGerirEquipa();
   renderizarEquipas();
 
