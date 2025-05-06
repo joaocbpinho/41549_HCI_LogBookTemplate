@@ -1,14 +1,4 @@
-/* Paleta de Cores */
-:root {
-  --primary-color: #0078d7;
-  --secondary-color: #f4f4f9;
-  --text-color: #333;
-  --border-color: #ccc;
-  --hover-color: #005a9e;
-  --background-color: #e8e8e8;
-  --green-color: #28a745;
-  --red-color: #dc3545;
-}
+
 
 /* Geral */
 body {
@@ -55,7 +45,7 @@ header {
   padding: 5px 15px;
   border: 1px solid white;
   border-radius: 20px;
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 #saldoContainer:hover {
@@ -131,7 +121,7 @@ main {
 .confirmar-btn:hover,
 .criar-equipa-btn:hover,
 .gerir-btn:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -150,31 +140,9 @@ main {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.selectable:hover {
-  background-color: var(--hover-color);
-  color: white;
-}
-
-/* Estilo para amigos selecionados */
-.selectable.selected {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  font-weight: bold;
-}
-
 .popup-content h2 {
   margin-top: 0;
   color: var(--primary-color);
-}
-
-.popup-content .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #aaa;
 }
 
 .popup-content .close:hover {
@@ -207,9 +175,8 @@ form#adicionarAmigoForm button {
 }
 
 form#adicionarAmigoForm button:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
-
 
 .popup-content h2 {
   margin-top: 0;
@@ -221,15 +188,6 @@ form#adicionarAmigoForm button:hover {
   font-size: 16px;
   color: var(--text-color);
   margin: 15px 0;
-}
-
-.popup-content .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #aaa;
 }
 
 .popup-content .close:hover {
@@ -248,27 +206,39 @@ form#adicionarAmigoForm button:hover {
 }
 
 .popup-content .confirmar-btn:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 /* Campos de input e select com altura mais ajustada */
 #nomeEquipa,
+#novoNomeEquipa,
+#novoMembro,
 #desporto,
-#pesquisarAmigos {
+#pesquisarAmigos 
+#membrosEquipa {
   width: 100%;
   height: 40px; /* altura controlada */
   padding: 6px 10px;
   font-size: 14px;
   line-height: 1.4;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(0, 0, 0, 0);
   border-radius: 6px;
-  background-color: #f9f9f9;
+  background-color: var(--background-color-darker);
   color: var(--text-color);
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
+#novoMembro {
+  width: 73%;
+}
+
+#membrosEquipa:hover,
 #nomeEquipa:focus,
+#novoNomeEquipa:focus,
+#novoMembro:focus,
 #desporto:focus,
 #pesquisarAmigos:focus {
   border-color: var(--primary-color);
@@ -320,7 +290,7 @@ form h3 {
   font-size: 14px;
   border: 1.5px solid var(--border-color);
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--background-color);
   color: var(--text-color);
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s, color 0.3s;
@@ -340,9 +310,6 @@ form h3 {
   border-color: var(--primary-color);
 }
 
-
-
-
 .popup-content h2 {
   margin-top: 0;
   color: #333;
@@ -353,21 +320,13 @@ form h3 {
 .popup-content label {
   font-weight: bold;
   display: block;
-  margin-bottom: 5px;
+  margin: 5px;
   color: #555;
-}
-
-.popup-content input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .popup-content .adicionar-membro-btn {
-  background-color: #007bff;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -381,8 +340,9 @@ form h3 {
   background-color: #0056b3;
 }
 
-.popup-content .salvar-alteracoes-btn {
-  background-color: #28a745;
+.popup-content .salvar-alteracoes-btn,
+.popup-content .remover-equipa-btn {
+  background-color: var(--green-color);
   color: white;
   border: none;
   padding: 10px 15px;
@@ -394,22 +354,35 @@ form h3 {
   display: block;
   width: 100%;
 }
-
-.popup-content .salvar-alteracoes-btn:hover {
-  background-color: #218838;
+.popup-content .remover-equipa-btn {
+  background-color: var(--red-color);
 }
 
-.popup-content .close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  cursor: pointer;
-  color: #aaa;
+.popup-content .salvar-alteracoes-btn:hover {
+  background-color: var(--darkgreen-color);
+}
+.popup-content .remover-equipa-btn:hover {
+  background-color: var(--darkred-color);
 }
 
 .popup-content .close:hover {
   color: #333;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10%,
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
 /* Mensagem de Sucesso */
@@ -430,21 +403,6 @@ form h3 {
   font-weight: bold;
 }
 
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  10%,
-  90% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
 /* Mensagem de Erro */
 .mensagem-erro {
   position: fixed;
@@ -462,41 +420,12 @@ form h3 {
   text-align: center;
   font-weight: bold;
 }
-/* Ajuste para caixas de entrada no pop-up */
-.popup-content input[type="text"] {
-  width: 100%;
-  height: 35px; /* Altura fixa */
-  padding: 5px 10px; /* Espaçamento interno */
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box; /* Inclui padding e borda no tamanho total */
-}
 
 .popup-content input[type="text"]:focus {
   border-color: #007bff; /* Cor da borda ao focar */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Efeito de foco */
   outline: none;
 }
-
-/* Botão para remover equipa */
-.remover-equipa-btn {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  width: 100%;
-}
-
-.remover-equipa-btn:hover {
-  background-color: #cc0000;
-}
-
 
 .popup-content h2 {
   margin-top: 0;
@@ -558,48 +487,19 @@ form h3 {
 }
 
 /* Popup Styling */
-.popup {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  align-content: center;
-}
-
-.popup-content {
-  position: relative;
-  background-color: #fff;
-  margin: 5%;
-  padding: 20px;
-  border-radius: 10px;
-  max-height: 80vh; /* Limit the height to 80% of the viewport */
-  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
 .popup-content h2 {
   margin-top: 0;
   font-size: 24px;
   color: #333;
 }
 
-
-/* Membros List -- Start */ 
-.membros-list button:hover {
-  background-color: #e6e6e6;
-}
-
+/* Membros List -- Start */
 .membros-list {
   max-height: 200px; /* Limit the height of the members list */
   overflow-y: auto; /* Enable scrolling for the members list */
-  border-radius: 18px;
+  border-radius: 6px;
   padding: 6px;
-  background-color: #f0f0f0;
+  background-color: var(--background-color-darker);
 }
 
 /* Hide the scrollbar */
@@ -619,20 +519,21 @@ form h3 {
 }
 
 .membros-list .membro-item:hover {
-  background-color: #dedede;
+  background-color: var(--background-color-darker-hover); /* Change background color on hover */
+  
 }
 
 .membros-list .membro-item span {
   flex: 1; /* Ensures the name takes up available space */
   font-size: 14px;
-  color: #333;
+  color: var(--text-color);
   word-wrap: break-word; /* Handles long names */
   text-align: left;
   font-weight: bold;
 }
 
 .membros-list .membro-item .remover-membro-btn {
-  background-color: #ff4d4d;
+  background-color: var(--red-color);
   color: white;
   border: none;
   padding: 6px;
@@ -644,7 +545,31 @@ form h3 {
 }
 
 .membros-list .membro-item .remover-membro-btn:hover {
-  background-color: #cc0000;
+  background-color: var(--darkred-color);
 }
 
 /* Membros List -- End */
+
+
+
+.add-member-form-group {
+  display: flex; /* Aligns items in a row */
+  align-items: center; /* Vertically aligns items if they have different heights */
+  gap: 8px; /* Adds a small space between the input and the button */
+  margin-top: 5px; /* Optional: Adjust top spacing as needed */
+  margin-bottom: 10px; /* Optional: Adjust bottom spacing as needed */
+}
+
+/* Ensure input#novoMembro within this group takes available space and overrides previous width */
+.add-member-form-group input#novoMembro {
+  flex-grow: 1; /* Allows the input field to take up available horizontal space */
+  width: auto; /* Overrides any previous fixed width (like width: 73%) to let flexbox manage it */
+  min-width: 0; /* Allows the input to shrink if necessary, preventing overflow issues */
+  /* Existing styles for #novoMembro (padding, border, height, etc.) will still apply */
+}
+
+/* Ensure the button within this group does not shrink */
+.add-member-form-group .adicionar-membro-btn {
+  flex-shrink: 0; /* Prevents the button from shrinking if space is tight */
+  /* Existing styles for .adicionar-membro-btn will still apply */
+}

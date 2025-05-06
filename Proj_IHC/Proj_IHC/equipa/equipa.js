@@ -85,22 +85,18 @@ function criarEquipa() {
     return;
   }
 
+  // Verificar se o nome da equipa já existe
+  const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
+  const nomeDuplicado = equipas.some((e) => e.nome.toLowerCase() === nomeEquipa.toLowerCase());
+  if (nomeDuplicado) {
+    exibirMensagemErro("Já existe uma equipa com este nome.", form);
+    return;
+  }
+  
   if (!desporto) {
     exibirMensagemErro("Por favor, selecione um desporto.", form);
     return;
   }
-  if (amigosSelecionados.length === 0) {
-    exibirMensagemErro("Por favor, selecione pelo menos um amigo.");
-    return;
-  }
-   // Verificar se o nome da equipa já existe
-   const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
-   const nomeDuplicado = equipas.some((e) => e.nome.toLowerCase() === nomeEquipa.toLowerCase());
-   if (nomeDuplicado) {
-     exibirMensagemErro("Já existe uma equipa com este nome. Escolha outro nome.", form);
-     return;
-   }
- 
   // Definir os limites de jogadores com base no desporto
  
 // Normalizar o valor do desporto para evitar problemas de capitalização ou espaços extras

@@ -8,7 +8,8 @@
   <link rel="stylesheet" href="equipa.css">
   <link rel="stylesheet" href="../index/styles.css"> <!-- ADICIONAR ESTA LINHA PARA ESTILOS GLOBAIS -->
   <link rel="icon" href="../images/PlaySmart.png" type="image/png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Se precisar de Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Se precisar de Font Awesome -->
 </head>
 
 <body>
@@ -108,9 +109,8 @@
       <span class="close" onclick="fecharPopupGerirEquipa()">&times;</span>
       <h2>Gerir Equipa</h2>
       <form id="gerirEquipaForm">
-        <label for="novoNomeEquipa">Nome da Equipa:</label>
+        <h3 for="novoNomeEquipa">Nome da Equipa</h3>
         <input type="text" id="novoNomeEquipa" placeholder="Insira o novo nome da equipa">
-
         <h3>Membros da Equipa</h3>
         <div class="membros-list" id="membrosEquipa">
           <!-- Dynamically generated members will be added here -->
@@ -129,16 +129,15 @@
         </div>
 
         <h3>Adicionar Novo Membro</h3>
-        <input type="text" id="novoMembro" placeholder="Insira o nome do novo membro">
-        <button type="button" class="adicionar-membro-btn" onclick="adicionarMembro()">Adicionar</button>
-
-        <div style="text-align: center;">
-          <button type="button" class="salvar-alteracoes-btn" onclick="salvarAlteracoes()">Salvar Alterações</button>
+        <div class="add-member-form-group">
+          <input type="text" id="novoMembro" placeholder="Insira o nome do novo membro">
+          <button type="button" class="adicionar-membro-btn" onclick="adicionarMembro()">Adicionar</button>
         </div>
 
-        <!-- Botão para remover a equipa -->
-        <div style="text-align: center; margin-top: 10px;">
-          <button type="button" class="remover-equipa-btn"
+        <div class="add-member-form-group">
+          <button type="button" class="salvar-alteracoes-btn" onclick="salvarAlteracoes()">Salvar Alterações</button>
+          
+            <button type="button" class="remover-equipa-btn"
             onclick="abrirPopupConfirmarRemoverEquipa(document.getElementById('novoNomeEquipa').value)">Remover
             Equipa</button>
         </div>
@@ -292,7 +291,7 @@
 
   <!-- Painel de Notificações (COPIADO DE INDEX.HTML) -->
   <div id="notificationPanel" class="notification-panel">
-      <p>Sem notificações novas.</p>
+    <p>Sem notificações novas.</p>
   </div>
 
   <script src="../index/script.js"></script> <!-- ADICIONAR ESTA LINHA PARA SCRIPTS GLOBAIS -->

@@ -1,11 +1,17 @@
 /* Paleta de Cores */
 :root {
-  --primary-color: #0078d7;
-  --secondary-color: #f4f4f9;
-  --text-color: #333;
-  --border-color: #ccc;
-  --hover-color: #005a9e;
-  --background-color: #ffffff;
+  --primary-color: hwb(207 0% 16%);
+  --hover-primary-color: hwb(207 0% 36%);
+  --secondary-color: hwb(240 96% 2%);
+  --text-color: hwb(0 20% 80%);
+  --border-color: hwb(0 80% 20%);
+  --background-color: hwb(210 97% 2%);
+  --background-color-darker: hwb(0 90% 10%);
+  --background-color-darker-hover: hwb(0 80% 20%);
+  --green-color: hwb(134 16% 35%);
+  --darkgreen-color: hwb(134 16% 55%);
+  --red-color: hwb(354 21% 14%);
+  --darkred-color: hwb(354 21% 34%);
 }
 
 /* Geral */
@@ -281,18 +287,21 @@ main {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1002; /* Acima de outros modais se necessário */
   overflow: auto; /* Permite scroll se o conteúdo for grande */
+  z-index: 1000;
+  align-content: center;
 }
 
 .popup-content {
   position: relative; /* Mudado de absolute para melhor controlo em alguns casos */
-  margin: 10% auto; /* Centraliza vertical e horizontalmente */
-  background-color: #fff;
-  padding: 25px 30px; /* Padding ajustado */
+  margin: auto; /* Centraliza vertical e horizontalmente */
+  background-color: var(--background-color);
+  padding: 20px; /* Padding ajustado */
   border-radius: 10px;
-  width: 90%;
   max-width: 450px; /* Largura máxima ajustada */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   text-align: left; /* Alinhamento padrão */
+  max-height: 80vh; /* Limit the height to 80% of the viewport */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
 }
 
 .popup-content .close {
