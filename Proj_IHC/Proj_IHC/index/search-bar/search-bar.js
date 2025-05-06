@@ -438,8 +438,11 @@ function renderizarResultados(resultados) {
             card.className = "card";
 
             let imagePath = '../images/placeholder.jpg'; // Default placeholder
-            if (resultado.imagem) {
-                imagePath = '../images/' + resultado.imagem;
+            // MODIFICAÇÃO IMPORTANTE: Usar o array 'imagens' e pegar a primeira
+            if (Array.isArray(resultado.imagens) && resultado.imagens.length > 0) {
+                imagePath = resultado.imagens[0];
+            } else if (resultado.imagem) { // Fallback para o campo 'imagem' antigo se existir
+                imagePath = resultado.imagem;
             }
 
             // Determina qual desporto mostrar: o filtrado ou o primeiro do campo
@@ -451,8 +454,8 @@ function renderizarResultados(resultados) {
                 <img src="${imagePath}" alt="${resultado.nome || 'Campo Desportivo'}">
                 <div class="card-content">
                     <p>${resultado.nome || 'Campo Desportivo'}</p>
-                    <p>${resultado.localidade || 'N/D'}-${desportoParaMostrar}</p>
-                    <p>Preço/hora-${precoStr}</p>
+                    <p>${resultado.localidade || 'N/D'} - ${desportoParaMostrar}</p>
+                    <p>Preço/hora - ${precoStr}</p>
                 </div>
                 <div class="buttons">
                   <button onclick="irParaDetalhes(${resultado.id})">Mais Detalhes</button>
@@ -468,7 +471,7 @@ function renderizarResultados(resultados) {
 // Função para navegar para a página de detalhes do campo
 function irParaDetalhes(campoId) {
     // Caminho relativo ao index.html
-    const url = `campo/campo.html?id=${campoId}`;
+    const url = `../campo/campo.html?id=${campoId}`;
     window.location.href = url;
 }
 // Torna a função acessível globalmente para ser chamada pelo onclick no HTML

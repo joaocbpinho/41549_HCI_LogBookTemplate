@@ -5,10 +5,11 @@
       "localidade": "Aveiro",
       "desporto": ["Futebol", "Ténis"],
       "preco_hora": 25.00,
-      "imagem": "../images/campo1.jpg",
+      "imagens": ["../images/campo1.jpg", "../images/campo_futebol_vista_aerea.jpg"],
       "comodidades": ["Estacionamento", "Balneários", "Iluminação", "WC"],
       "descricao": "Excelente complexo com campos de futebol de 7 e campos de ténis.",
-      "morada": "Rua do Desporto, 123, Gafanha da Nazaré"
+      "morada": "Rua do Desporto, 123, Gafanha da Nazaré",
+      "capacidade": 14
     },
     {
       "id": 2,
@@ -16,10 +17,11 @@
       "localidade": "Vila Nova de Gaia",
       "desporto": ["Padel"],
       "preco_hora": 20.00,
-      "imagem": "../images/campo_padel.jpg",
+      "imagens": ["../images/campo_padel.jpg"],
       "comodidades": ["Estacionamento", "Balneários", "Equipamento", "Cafe/Bar", "WC"],
       "descricao": "Campos de padel indoor e outdoor de alta qualidade.",
-      "morada": "Avenida do Padel, 45, Gaia"
+      "morada": "Avenida do Padel, 45, Gaia",
+      "capacidade": 4
     },
     {
       "id": 3,
@@ -27,10 +29,11 @@
       "localidade": "Ovar",
       "desporto": ["Basquetebol", "Voleibol", "Futebol"],
       "preco_hora": 30.00,
-      "imagem": "../images/campo2.jpg",
+      "imagens": ["../images/campo2.jpg", "../images/pavilhao_interior.jpg"],
       "comodidades": ["Balneários", "WC", "Iluminação"],
       "descricao": "Pavilhão multiusos para diversas modalidades.",
-      "morada": "Largo do Pavilhão, 1, Ovar"
+      "morada": "Largo do Pavilhão, 1, Ovar",
+      "capacidade": 20
     },
     {
       "id": 4,
@@ -38,9 +41,10 @@
       "localidade": "Lisboa",
       "desporto": ["Ténis"],
       "preco_hora": 15.00,
-      "imagem": "../images/campo3.jpg",
+      "imagens": ["../images/campo3.jpg"],
       "comodidades": ["Estacionamento", "Balneários", "Cafe/Bar", "WC"],
       "descricao": "Campos de terra batida no coração de Lisboa.",
-      "morada": "Rua da Raquete, 789, Lisboa"
+      "morada": "Rua da Raquete, 789, Lisboa",
+      "capacidade": 4
     }
 ]
