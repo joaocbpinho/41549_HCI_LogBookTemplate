@@ -26,16 +26,16 @@ async function carregarCampos() {
 // Função para carregar as reservas do localStorage
 async function carregarReservas() {
     try {
-        const reservasGuardadas = localStorage.getItem('todasReservas');
+        const reservasGuardadas = localStorage.getItem('todasReservas'); // Chave correta
         if (reservasGuardadas) {
             todasReservas = JSON.parse(reservasGuardadas);
-            console.log("Reservas carregadas do localStorage:", todasReservas);
+            console.log("[reservas.js] Reservas carregadas do localStorage:", todasReservas);
         } else {
             todasReservas = [];
-            console.log("Nenhuma reserva no localStorage. Iniciando com array vazio.");
+            console.log("[reservas.js] Nenhuma reserva no localStorage. Iniciando com array vazio.");
         }
     } catch (error) {
-        console.error("Erro ao carregar/processar reservas do localStorage:", error);
+        console.error("[reservas.js] Erro ao carregar/processar reservas do localStorage:", error);
         todasReservas = [];
     }
     return Promise.resolve();
@@ -56,67 +56,78 @@ function guardarReservasNoLocalStorage() {
 function renderizarMinhasReservas(containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`Container com ID '${containerId}' não encontrado para renderizar reservas.`);
+        console.error(`[reservas.js] Container com ID '${containerId}' não encontrado para renderizar reservas.`);
         return;
     }
 
     container.innerHTML = ''; // Limpa 'A carregar...' ou conteúdo antigo
 
-    const userIdLogado = localStorage.getItem('userId') || '123456'; // Usar 'userIdLogado' se for essa a chave
-    const minhasReservas = todasReservas.filter(reserva => reserva.userId === userIdLogado);
+    // ***** ALTERAÇÃO IMPORTANTE: Usar o mesmo userId que campo.js usa para guardar *****
+    const userIdLogado = "prototipoUser"; // Para corresponder ao que campo.js guarda
+    // Idealmente, o userId viria de um sistema de login consistente e guardado em localStorage.getItem('userIdLogado') por exemplo.
+    console.log(`[reservas.js] Filtrando reservas para userId: ${userIdLogado}`);
 
-    // Ordenar por data e hora (mais recentes primeiro)
+    const minhasReservas = todasReservas.filter(reserva => reserva.userId === userIdLogado);
+    console.log(`[reservas.js] Reservas encontradas para este user:`, minhasReservas);
+
     minhasReservas.sort((a, b) => {
-        const dataA = new Date(`${a.data}T${a.horaInicio || '00:00'}`);
-        const dataB = new Date(`${b.data}T${b.horaInicio || '00:00'}`);
-        return dataB - dataA;
+        try {
+            const dataPartA = a.data.split('/'); // DD/MM/YYYY
+            const horaPartA = a.horario ? a.horario.split(' - ')[0] : '00:00'; // HH:MM
+            const dataHoraA = new Date(`${dataPartA[2]}-${dataPartA[1]}-${dataPartA[0]}T${horaPartA}:00`);
+
+            const dataPartB = b.data.split('/');
+            const horaPartB = b.horario ? b.horario.split(' - ')[0] : '00:00';
+            const dataHoraB = new Date(`${dataPartB[2]}-${dataPartB[1]}-${dataPartB[0]}T${horaPartB}:00`);
+
+            if (isNaN(dataHoraA.getTime()) || isNaN(dataHoraB.getTime())) { // Verificar se as datas são válidas
+                console.warn("[reservas.js] Data inválida encontrada durante a ordenação:", a, b);
+                return 0;
+            }
+            return dataHoraB - dataHoraA; // Mais recentes primeiro
+        } catch (e) {
+            console.warn("[reservas.js] Erro ao ordenar datas de reserva:", a.data, b.data, e);
+            return 0;
+        }
     });
 
     if (minhasReservas.length === 0) {
-        container.innerHTML = '<p>Nenhuma reserva encontrada.</p>';
+        container.innerHTML = '<p>Nenhuma reserva encontrada para este utilizador.</p>';
         return;
     }
 
     minhasReservas.forEach(reserva => {
-        const campoDetalhes = todosCampos.find(campo => campo.id && reserva.campoId && campo.id.toString() === reserva.campoId.toString());
-        const nomeCampo = campoDetalhes ? campoDetalhes.nome : 'Campo Desconhecido';
+        const nomeCampo = reserva.nomeCampo || (todosCampos.find(campo => campo.id && String(reserva.campoId) === String(campo.id))?.nome || 'Campo Desconhecido');
 
-        let dataFormatada = reserva.data;
+        let dataFormatada = reserva.data; // Formato DD/MM/YYYY
         try {
-            let dataParaObjeto = reserva.data;
-            if (reserva.data.includes('/')) {
-                const partes = reserva.data.split('/');
-                if (partes.length === 3) {
-                    dataParaObjeto = `${partes[2]}-${partes[1]}-${partes[0]}`;
+            const partesData = reserva.data.split('/');
+            if (partesData.length === 3) {
+                const dataObj = new Date(partesData[2], parseInt(partesData[1]) - 1, partesData[0]);
+                if (!isNaN(dataObj.getTime())) {
+                    dataFormatada = dataObj.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
                 }
             }
-            const dataObj = new Date(dataParaObjeto + 'T00:00:00');
-            if (!isNaN(dataObj)) {
-                dataFormatada = dataObj.toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' });
-            } else {
-                console.warn("Data inválida para formatação:", reserva.data);
-            }
-        } catch (e) {
-            console.warn("Erro ao formatar data:", reserva.data, e);
+        } catch(e) {
+            console.warn("[reservas.js] Não foi possível re-formatar a data da reserva:", reserva.data, e);
         }
 
         const card = document.createElement('div');
         card.className = 'card';
-        const precoTexto = (reserva.precoDefinido !== undefined && reserva.precoDefinido !== null)
-            ? parseFloat(reserva.precoDefinido).toFixed(2) + '€'
+        const precoTexto = (reserva.preco !== undefined && reserva.preco !== null)
+            ? parseFloat(reserva.preco).toFixed(2) + '€'
             : 'N/D';
+        
+        const comodidadesTexto = reserva.comodidades && reserva.comodidades.length > 0 ? reserva.comodidades.join(', ') : 'Nenhuma especificada';
 
         card.innerHTML = `
             <h3>${nomeCampo}</h3>
             <p><strong>Data:</strong> ${dataFormatada}</p>
-            <p><strong>Hora:</strong> ${reserva.hora || (reserva.horaInicio && reserva.horaFim ? `${reserva.horaInicio} - ${reserva.horaFim}` : 'N/D')}</p>
-            <p><strong>Desporto:</strong> ${reserva.desporto || 'N/D'}</p>
-            <p><strong>Número Convidados:</strong> ${reserva.numConvidados !== undefined ? reserva.numConvidados : 'N/D'}</p>
-            <p><strong>Número Confirmados:</strong> ${reserva.numConfirmados !== undefined ? reserva.numConfirmados : 'N/D'}</p>
-            <p><strong>Preço Definido:</strong> ${precoTexto}</p>
+            <p><strong>Horário:</strong> ${reserva.horario || 'N/D'}</p> <!-- Usar reserva.horario -->
+            <p><strong>Preço:</strong> ${precoTexto}</p>
+            <p><strong>Comodidades Solicitadas:</strong> ${comodidadesTexto}</p>
             <div class="reserva-actions">
                 <button class="detalhes-btn" data-reserva-id="${reserva.id}">Mais Detalhes</button>
-                <button class="cancelar-presenca-btn" data-reserva-id="${reserva.id}">Gerir Presenças</button>
                 <button class="cancelar-reserva-btn" data-reserva-id="${reserva.id}">Cancelar Reserva</button>
             </div>
         `;
@@ -165,29 +176,29 @@ function cancelarPresencas(event) {
 
 function cancelarReserva(event) {
     const reservaId = event.target.dataset.reservaId;
-    const reservaParaCancelar = todasReservas.find(r => r.id && r.id.toString() === reservaId);
+    const reservaParaCancelar = todasReservas.find(r => r.id && String(r.id) === reservaId);
 
     if (!reservaParaCancelar) {
-        alert(`Reserva ID: ${reservaId} não encontrada para cancelamento.`);
+        alert(`[reservas.js] Reserva ID: ${reservaId} não encontrada para cancelamento.`);
         return;
     }
 
-    const userIdLogado = localStorage.getItem('userId') || '123456';
+    const userIdLogado = "prototipoUser"; // ***** ALTERAÇÃO IMPORTANTE *****
     if (reservaParaCancelar.userId !== userIdLogado) {
-        alert("Apenas o criador da reserva pode cancelá-la.");
+        alert("[reservas.js] Apenas o criador da reserva pode cancelá-la.");
         return;
     }
 
-    if (confirm(`Tem a certeza que quer CANCELAR a reserva ID: ${reservaId}? Esta ação não pode ser desfeita.`)) {
+    if (confirm(`[reservas.js] Tem a certeza que quer CANCELAR a reserva ID: ${reservaId}? Esta ação não pode ser desfeita.`)) {
         const originalLength = todasReservas.length;
-        todasReservas = todasReservas.filter(reserva => !(reserva.id && reserva.id.toString() === reservaId));
+        todasReservas = todasReservas.filter(reserva => !(reserva.id && String(reserva.id) === reservaId));
 
         if (todasReservas.length < originalLength) {
-            guardarReservasNoLocalStorage();
-            alert(`Reserva ID: ${reservaId} cancelada!`);
-            renderizarMinhasReservas('listaMinhasReservas');
+            guardarReservasNoLocalStorage(); // Função já existente em reservas.js
+            alert(`[reservas.js] Reserva ID: ${reservaId} cancelada!`);
+            renderizarMinhasReservas('listaMinhasReservas'); // Re-renderizar
         } else {
-            alert(`Erro ao tentar cancelar a reserva ID: ${reservaId}. A reserva não foi removida.`);
+            alert(`[reservas.js] Erro ao tentar cancelar a reserva ID: ${reservaId}. A reserva não foi removida.`);
         }
     }
 }

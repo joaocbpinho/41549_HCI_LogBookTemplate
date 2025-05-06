@@ -8,7 +8,9 @@ async function carregarEExibirReservasIndex() {
   listaReservasContainer.innerHTML = '<p>A carregar as suas próximas reservas...</p>';
   listaReservasContainer.classList.remove('cards');
 
-  const userIdLogado = localStorage.getItem('userId') || '123456';
+  const userIdLogado = "prototipoUser"; // Para corresponder ao que campo.js guarda
+  // Em um sistema real, isso viria de um login consistente:
+  // const userIdLogado = localStorage.getItem('userIdLogado'); 
 
   if (!userIdLogado) {
     listaReservasContainer.innerHTML = '<p>Faça login para ver as suas reservas.</p>';
@@ -24,12 +26,13 @@ async function carregarEExibirReservasIndex() {
     let todasReservas = [];
     if (reservasGuardadas) {
       todasReservas = JSON.parse(reservasGuardadas);
-      console.log("Reservas carregadas do localStorage para Index:", todasReservas);
+      console.log("[reservasindex.js] Reservas carregadas do localStorage para Index:", todasReservas);
     } else {
-      console.log("Nenhuma reserva encontrada no localStorage para a página Index.");
+      console.log("[reservasindex.js] Nenhuma reserva encontrada no localStorage para a página Index.");
     }
 
     const reservasUsuario = todasReservas.filter(reserva => reserva.userId === userIdLogado);
+    console.log(`[reservasindex.js] Filtrando para userId: ${userIdLogado}, encontradas:`, reservasUsuario);
 
     const agora = new Date();
 
@@ -37,7 +40,6 @@ async function carregarEExibirReservasIndex() {
     function criarObjetoDateDaReserva(dataStr, horaInicioStr) {
         try {
             if (!dataStr || !horaInicioStr || !dataStr.includes('/') || !horaInicioStr.includes(':')) {
-                console.warn('Formato de data ou horaInicio ausente/inválido:', dataStr, horaInicioStr);
                 return null; // Retorna null para indicar falha
             }
 
@@ -45,7 +47,6 @@ async function carregarEExibirReservasIndex() {
             const partesHora = horaInicioStr.split(':'); // Espera [HH, MM]
 
             if (partesData.length !== 3 || partesHora.length !== 2) {
-                console.warn('Formato de data ou horaInicio inválido após split:', dataStr, horaInicioStr);
                 return null;
             }
 
@@ -56,41 +57,39 @@ async function carregarEExibirReservasIndex() {
             const minuto = parseInt(partesHora[1]);
 
             if (isNaN(ano) || isNaN(mes) || isNaN(dia) || isNaN(hora) || isNaN(minuto)) {
-                console.warn('Componentes de data/hora inválidos (NaN):', dataStr, horaInicioStr);
                 return null;
             }
 
             const dataObj = new Date(ano, mes, dia, hora, minuto);
             if (isNaN(dataObj.getTime())) {
-                console.warn('Objeto Date final é inválido:', dataStr, horaInicioStr, "Construído como:", dataObj.toString());
                 return null;
             }
             return dataObj;
         } catch (e) {
-            console.error('Erro ao criar objeto Date da reserva:', dataStr, horaInicioStr, e);
+            console.error('[reservasindex.js] Erro ao criar objeto Date da reserva:', dataStr, horaInicioStr, e);
             return null;
         }
     }
 
     const reservasFuturas = reservasUsuario.filter(reserva => {
-        let horaDeInicioParaUsar = reserva.horaInicio; // Tenta usar a nova propriedade primeiro
+        let horaDeInicioParaUsar = reserva.horario ? reserva.horario.split(' - ')[0].trim() : null; 
 
-        // Fallback para o formato antigo se horaInicio não existir e 'hora' existir
-        if (horaDeInicioParaUsar === undefined && reserva.hora && typeof reserva.hora === 'string' && reserva.hora.includes(' - ')) {
-            console.warn("Reserva com formato antigo detectada. Tentando extrair hora de início de 'reserva.hora':", reserva.hora);
-            horaDeInicioParaUsar = reserva.hora.split(' - ')[0].trim();
+        if (!horaDeInicioParaUsar) {
+            console.warn("[reservasindex.js] Reserva sem 'horario' definido ou em formato incorreto:", reserva);
+            return false;
         }
-
+        
         const dataReserva = criarObjetoDateDaReserva(reserva.data, horaDeInicioParaUsar);
         return dataReserva && dataReserva > agora;
     });
 
     reservasFuturas.sort((a, b) => {
-        const dataA = criarObjetoDateDaReserva(a.data, a.horaInicio);
-        const dataB = criarObjetoDateDaReserva(b.data, b.horaInicio);
+        const horaInicioA = a.horario ? a.horario.split(' - ')[0].trim() : null;
+        const horaInicioB = b.horario ? b.horario.split(' - ')[0].trim() : null;
 
-        // Se alguma data for inválida, trata como igual para evitar erros de sort,
-        // ou pode optar por colocar inválidas no final/início.
+        const dataA = criarObjetoDateDaReserva(a.data, horaInicioA);
+        const dataB = criarObjetoDateDaReserva(b.data, horaInicioB);
+
         if (!dataA && !dataB) return 0;
         if (!dataA) return 1; // Coloca 'a' (inválida) depois de 'b'
         if (!dataB) return -1; // Coloca 'b' (inválida) antes de 'a'
@@ -120,20 +119,21 @@ function renderizarListaReservasIndex(reservasParaMostrar, camposInfo, container
     container.classList.add('cards'); 
     reservasParaMostrar.forEach(reserva => {
       const campoDetalhes = camposInfo.find(campo => campo.id.toString() === reserva.campoId.toString());
-      const nomeCampo = campoDetalhes ? campoDetalhes.nome : 'Campo Desconhecido';
+      const nomeCampo = reserva.nomeCampo || (campoDetalhes ? campoDetalhes.nome : 'Campo Desconhecido'); // Usa nomeCampo da reserva se existir
 
       const cardReserva = document.createElement('div');
       cardReserva.className = 'card'; 
 
-      let dataFormatada = reserva.data; // Formato DD/MM/YYYY
-      const horaInicioDisplay = reserva.horaInicio || (reserva.hora && reserva.hora.split(' - ')[0].trim()) || 'N/D';
-      const horaFimDisplay = reserva.horaFim || (reserva.hora && reserva.hora.split(' - ')[1].trim()) || 'N/D';
+      let dataFormatada = reserva.data; 
+      const horarioDisplay = reserva.horario || 'N/D';
+      const desportoDisplay = reserva.desporto || (campoDetalhes ? campoDetalhes.desportos?.join(', ') : 'N/D'); // Pega desporto do campo se não houver na reserva
+
       cardReserva.innerHTML = `
         <div class="card-content">
           <h3>${nomeCampo}</h3>
           <p><strong>Data:</strong> ${dataFormatada}</p>
-          <p><strong>Hora:</strong> ${horaInicioDisplay} - ${horaFimDisplay}</p>
-          <p><strong>Desporto:</strong> ${reserva.desporto || 'N/D'}</p>
+          <p><strong>Hora:</strong> ${horarioDisplay}</p>
+          <p><strong>Desporto:</strong> ${desportoDisplay}</p>
         </div>
       `;
       container.appendChild(cardReserva);
