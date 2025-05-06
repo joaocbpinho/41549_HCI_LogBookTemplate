@@ -1,0 +1,174 @@
+/* --- ESTILOS PARA CARDS DE EQUIPA --- */
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-equipa { /* Usa classe específica, não sobrescreve .card diretamente */
+  background-color: #fff;
+  padding: 20px; /* Mais padding */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 120px; /* Altura mínima */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza conteúdo */
+  /* Herda .card base styles, so no need to repeat all of them */
+}
+
+.card-equipa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-equipa h3 {
+  margin-top: 0;
+  margin-bottom: 8px; /* Menos espaço */
+  color: var(--primary-color);
+  font-size: 1.05em; /* Tamanho ajustado */
+}
+
+.card-equipa p {
+  font-size: 0.85em; /* Menor */
+  color: #666;
+  margin-bottom: 0;
+}
+
+/* Card de adicionar equipa (usado em #listaEquipas) */
+/* This .add-card style is specific to its use in the teams section */
+#listaEquipas .add-card {
+  background-color: #f8f9fa;
+  border: 2px dashed #007bff;
+  color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  min-height: 100px; /* Mantenha a mesma altura mínima que outros .add-card se houver */
+  /* Pode herdar de um .card base se a estrutura HTML gerada incluir a classe .card */
+}
+
+#listaEquipas .add-card:hover {
+  background-color: #e2e6ea;
+  border-color: #0056b3;
+  color: #0056b3;
+}
+
+/* Estilos para a secção de equipas container */
+.cards-equipa { /* Este é o container de #listaEquipas */
+  padding: 10px 0;
+}
+
+
+/* --- ESTILOS PARA O MODAL DE DETALHES DA EQUIPA --- */
+/* O Modal HTML permanece em index.html, mas os estilos são movidos para cá */
+
+/* Garante que o modal fique acima de outros elementos como o overlay da sidebar */
+#modalDetalhesEquipa {
+  z-index: 1002; /* Valor maior que o overlay (1000) e sidebar (1001) */
+}
+
+/* Ajusta o conteúdo do modal de detalhes da equipa */
+#modalDetalhesEquipa .modal-content {
+  width: 90%; /* Usa percentagem para melhor responsividade */
+  max-width: 450px; /* Define uma largura máxima */
+  padding: 25px 30px; /* Aumenta o padding interno */
+  text-align: left; /* Garante alinhamento à esquerda */
+}
+
+/* Estilo para o título do modal */
+#modalDetalhesEquipa h2 {
+  text-align: center; /* Centraliza o título */
+  margin-bottom: 25px; /* Mais espaço abaixo do título */
+  color: var(--primary-color);
+}
+
+/* Estilo para a área de conteúdo dos detalhes */
+#detalhesEquipaContent {
+  margin-bottom: 20px; /* Espaço antes do botão */
+}
+
+/* Estilo para os parágrafos dentro dos detalhes */
+#detalhesEquipaContent p {
+  margin-bottom: 12px; /* Espaçamento entre linhas de informação */
+  font-size: 1em; /* Tamanho de fonte padrão */
+  color: #555; /* Cor do texto */
+  line-height: 1.5; /* Espaçamento entre linhas */
+}
+
+/* Estilo para o texto em negrito (labels) */
+#detalhesEquipaContent p strong {
+  color: #333; /* Cor mais escura para o label */
+  min-width: 80px; /* Largura mínima para alinhar os valores (ajuste se necessário) */
+  display: inline-block; /* Permite definir largura */
+  margin-right: 5px;
+}
+
+/* Estilo específico para o parágrafo "Membros:" */
+#detalhesEquipaContent p:has(#modalMembrosEquipa) { /* Seleciona o <p> que contém a lista */
+   margin-bottom: 8px; /* Menos espaço antes da lista */
+}
+
+/* Estilo para a lista de membros */
+#modalMembrosEquipa {
+  list-style: disc; /* Usa bolinhas como marcador */
+  padding-left: 25px; /* Adiciona indentação à lista */
+  margin-top: 5px; /* Espaço acima da lista */
+  margin-bottom: 0; /* Remove margem inferior da lista */
+}
+
+/* Estilo para cada item da lista de membros */
+#modalMembrosEquipa li {
+  margin-bottom: 6px; /* Espaço entre os nomes dos membros */
+  font-size: 0.95em; /* Tamanho de fonte ligeiramente menor para membros */
+  color: #444;
+}
+
+/* Estilo para o botão "Gerir Equipa" */
+#modalDetalhesEquipa button {
+  display: block; /* Faz o botão ocupar a linha inteira */
+  width: 100%; /* Largura total */
+  padding: 12px 15px; /* Padding interno */
+  font-size: 1em; /* Tamanho da fonte */
+  font-weight: bold;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s ease;
+  margin-top: 15px; /* Espaço acima do botão */
+}
+
+#modalDetalhesEquipa button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Garante que o botão de fechar (X) esteja bem posicionado */
+#modalDetalhesEquipa .close {
+  position: absolute;
+  top: 15px; /* Ajusta a posição vertical */
+  right: 20px; /* Ajusta a posição horizontal */
+  font-size: 24px; /* Tamanho do 'X' */
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+}
+
+#modalDetalhesEquipa .close:hover {
+  color: #333;
+}

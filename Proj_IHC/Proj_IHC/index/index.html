@@ -6,6 +6,8 @@
   <title>Play Smart</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="search-bar/search-bar.css"> <!-- Corrigido o caminho -->
+  <link rel="stylesheet" href="reservas/reservasindex.css"> <!-- ADICIONADO LINK CSS -->
+  <link rel="stylesheet" href="equipas/equipasindex.css"> <!-- NOVO LINK CSS EQUIPAS -->
   <link rel="icon" href="../images/PlaySmart.png" type="image/png" />
 </head>
 <body>
@@ -67,9 +69,9 @@
     </section>
     <section class="section">
       <h2>Equipas</h2>
-      <div class="cards-equipa">  <!-- Container com display: grid -->
+      <div class="cards-equipa">  <!-- Container -->
         <div id="listaEquipas">
-          <!-- Cards das equipas e o card 'Adicionar Equipa' são inseridos aqui -->
+          <!-- Cards das equipas e o card 'Adicionar Equipa' são inseridos aqui pelo equipasindex.js -->
         </div>
       </div>
     </section>
@@ -205,7 +207,7 @@
   <!-- Modal para Detalhes da Equipa -->
   <div id="modalDetalhesEquipa" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="fecharModalDetalhesEquipa()">&times;</span>
+      <span class="close" onclick="fecharModalDetalhesEquipa()">&times;</span> <!-- onclick será tratado por equipasindex.js se o listener for adicionado lá -->
       <h2>Detalhes da Equipa</h2>
       <div id="detalhesEquipaContent">
         <p><strong>Nome:</strong> <span id="modalNomeEquipa"></span></p>
@@ -215,8 +217,7 @@
           <!-- Membros serão listados aqui -->
         </ul>
       </div>
-      <!-- Opcional: Botão para ir para a página de gestão completa -->
-      <button onclick="irParaPaginaEquipa()">Gerir Equipa</button>
+      <button onclick="irParaPaginaEquipa()">Gerir Equipa</button> <!-- onclick será tratado por equipasindex.js se o listener for adicionado lá -->
     </div>
   </div>
 
@@ -298,5 +299,7 @@
 
   <script src="script.js"></script>
   <script src="search-bar/search-bar.js"></script>
+  <script src="reservas/reservasindex.js"></script> <!-- ADICIONADO SCRIPT -->
+  <script src="equipas/equipasindex.js"></script> <!-- NOVO SCRIPT EQUIPAS -->
 </body>
 </html>

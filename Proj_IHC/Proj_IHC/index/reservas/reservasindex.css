@@ -1,0 +1,83 @@
+/* Estilos específicos para a secção de reservas no Index */
+
+#listaReservas {
+  /* Se houver estilos diretos para #listaReservas como container, coloque aqui */
+  /* Exemplo: display: grid; já está em .cards, então pode não ser necessário aqui */
+}
+
+/* Estilos para os cards dentro de #listaReservas */
+#listaReservas .card {
+  display: block; /* Remove flex se herdado e não desejado para estes cards */
+  text-align: left;
+  padding: 15px; /* Ajuste o padding conforme necessário */
+  /* background-color: #fff;  Já definido em .card geral */
+  /* cursor: default; Se não forem individualmente clicáveis para outra ação */
+}
+
+/* Se os cards de reserva não devem ter imagem */
+#listaReservas .card img {
+  display: none;
+}
+
+/* Conteúdo do card de reserva */
+#listaReservas .card .card-content {
+  padding: 0; /* Remove padding extra se o card já tiver */
+  gap: 5px;
+}
+
+#listaReservas .card h3 {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  /* color: var(--primary-color); Já definido em .card geral */
+}
+
+#listaReservas .card p {
+  font-size: 0.9em;
+  line-height: 1.4;
+  /* color: #555; Já definido em .card geral */
+}
+
+/* Se os cards de reserva não tiverem botões */
+#listaReservas .card .buttons {
+  display: none;
+}
+
+/* Estilo para o card/link "Ver todas as reservas" */
+#listaReservas .view-all-reservas-card {
+  padding: 15px; /* Ajuste o padding */
+  /* Herda estilos de .card e .add-card (incluindo min-height, border, etc) */
+  /* Garante que o conteúdo interno do .add-card ainda se centralize se for flex */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; /* Para o conteúdo de texto dentro dele */
+}
+
+#listaReservas .view-all-reservas-card .add-card-content {
+  font-weight: bold;
+}
+
+/* Mensagem quando não há reservas (filho direto <p> de #listaReservas) */
+#listaReservas > p {
+  text-align: center;
+  color: #666;
+  padding: 0; /* Reduzido o padding vertical, o gap do flex container tratará do espaçamento */
+  margin: 0;
+  width: 100%; /* Faz a mensagem ocupar a largura disponível no contexto flex para melhor centralização */
+  max-width: 400px; /* Evita que a mensagem fique demasiado larga em ecrãs grandes */
+}
+
+/* Estilos para #listaReservas quando NÃO tem a classe .cards (ou seja, sem reservas reais) */
+#listaReservas:not(.cards) {
+  display: flex;
+  flex-direction: column; /* Empilha a mensagem e o card "Ver todas" */
+  align-items: center;   /* Centraliza-os horizontalmente */
+  gap: 15px;             /* Espaço entre a mensagem e o card "Ver todas" */
+  padding: 20px 0;       /* Adiciona algum padding vertical ao container */
+}
+
+#listaReservas:not(.cards) .view-all-reservas-card {
+  width: 280px; /* Define uma largura fixa para o card, similar aos cards na grelha */
+  min-height: 100px; /* Garante uma altura mínima consistente com .add-card */
+  /* display: flex, justify-content e align-items já definidos acima para esta classe */
+}
