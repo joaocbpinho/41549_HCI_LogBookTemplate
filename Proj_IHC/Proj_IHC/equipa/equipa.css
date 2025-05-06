@@ -5,7 +5,9 @@
   --text-color: #333;
   --border-color: #ccc;
   --hover-color: #005a9e;
-  --background-color: #ffffff;
+  --background-color: #e8e8e8;
+  --green-color: #28a745;
+  --red-color: #dc3545;
 }
 
 /* Geral */
@@ -109,39 +111,28 @@ main {
   margin-bottom: 10px;
 }
 
+/* Botões Gerais */
+.adicionar-amigo-btn,
+.confirmar-btn,
+.criar-equipa-btn,
 .gerir-btn {
   background-color: var(--primary-color);
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s;
-}
-
-.gerir-btn:hover {
-  background-color: var(--hover-color);
-}
-
-/* Botões Gerais */
-.criar-equipa-btn,
-.adicionar-amigo-btn,
-.confirmar-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.3s;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.criar-equipa-btn:hover,
 .adicionar-amigo-btn:hover,
-.confirmar-btn:hover {
+.confirmar-btn:hover,
+.criar-equipa-btn:hover,
+.gerir-btn:hover {
   background-color: var(--hover-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Botões Selecionáveis */
@@ -170,17 +161,6 @@ main {
   color: white;
   border: none;
   font-weight: bold;
-}
-/* Pop-ups */
-.popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
 }
 
 .popup-content h2 {
@@ -230,17 +210,6 @@ form#adicionarAmigoForm button:hover {
   background-color: var(--hover-color);
 }
 
-/* Pop-ups de Confirmação */
-.popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
 
 .popup-content h2 {
   margin-top: 0;
@@ -371,23 +340,7 @@ form h3 {
   border-color: var(--primary-color);
 }
 
-/* Ajuste para o botão Criar Equipa */
-.criar-equipa-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  transition: background-color 0.3s, box-shadow 0.3s;
-}
 
-.criar-equipa-btn:hover {
-  background-color: var(--hover-color);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
 
 
 .popup-content h2 {
@@ -462,16 +415,19 @@ form h3 {
 /* Mensagem de Sucesso */
 .mensagem-sucesso {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #28a745;
+  top: 70px; /* Position the top edge at the vertical midpoint of the viewport */
+  right: 15%;
+  left: 15%; /* Position the left edge at the horizontal midpoint of the viewport */
+  background-color: var(--green-color);
   color: white;
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   font-size: 16px;
-  z-index: 1000;
   animation: fadeInOut 3s ease-in-out;
+  z-index: 1000; /* Ensure it appears above other content */
+  text-align: center;
+  font-weight: bold;
 }
 
 @keyframes fadeInOut {
@@ -491,14 +447,20 @@ form h3 {
 }
 /* Mensagem de Erro */
 .mensagem-erro {
-  color: #ff4d4d;
-  background-color: #ffe6e6;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ff4d4d;
+  position: fixed;
+  top: 70px; /* Position the top edge at the vertical midpoint of the viewport */
+  right: 15%;
+  left: 15%; /* Position the left edge at the horizontal midpoint of the viewport */
+  background-color: var(--red-color);
+  color: white;
+  padding: 10px 20px;
   border-radius: 5px;
-  font-size: 14px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  animation: fadeInOut 3s ease-in-out;
+  z-index: 1000; /* Ensure it appears above other content */
   text-align: center;
+  font-weight: bold;
 }
 /* Ajuste para caixas de entrada no pop-up */
 .popup-content input[type="text"] {
@@ -535,17 +497,6 @@ form h3 {
   background-color: #cc0000;
 }
 
-/* Estilo para o pop-up de confirmação */
-.popup {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
 
 .popup-content h2 {
   margin-top: 0;
@@ -617,16 +568,15 @@ form h3 {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
+  align-content: center;
 }
 
 .popup-content {
   position: relative;
   background-color: #fff;
-  margin: 5% auto;
+  margin: 5%;
   padding: 20px;
   border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
   max-height: 80vh; /* Limit the height to 80% of the viewport */
   overflow-y: auto; /* Enable vertical scrolling if content exceeds max height */
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
