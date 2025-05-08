@@ -1,3 +1,4 @@
+
 let todasReservas = [];
 let todosCampos = []; // Irá guardar os dados de campos.json
 
@@ -12,7 +13,127 @@ let currentImageIndex = 0;
 const campoImageElement = document.getElementById("campoImage");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+let equipasSelecionadas = []; // Armazena as equipas selecionadas
 
+function carregarEquipasParaCampo(desportosCampo) {
+    console.log("🔄 Função carregarEquipasParaCampo chamada com desportos:", desportosCampo);
+
+    const equipasGuardadas = localStorage.getItem('equipas');
+    const convidarContainer = document.querySelector('.convidar-container');
+    console.log("✅ Desportos do campo (original):", desportosCampo);
+    console.log("📦 Equipas no localStorage (string):", equipasGuardadas);
+
+    if (!equipasGuardadas || !convidarContainer) {
+        console.warn("Nenhuma equipa encontrada ou container de equipas não disponível.");
+        return;
+    }
+
+    const equipas = JSON.parse(equipasGuardadas);
+
+    const equipasFiltradas = equipas.filter(equipa => {
+        const desportoEquipa = equipa.desporto.trim().toLowerCase();
+    
+        // Inclui sempre equipas com desporto "Outro"
+        if (desportoEquipa === "outro") {
+            return true;
+        }
+    
+        // Verifica se o desporto da equipa corresponde a algum desporto do campo
+        return desportosCampo.some(desportoCampo =>
+            desportoEquipa === desportoCampo.trim().toLowerCase()
+        );
+    });
+
+    console.log("🎯 Equipas filtradas:", equipasFiltradas);
+
+    // Limpar e renderizar
+    convidarContainer.innerHTML = '';
+
+    equipasFiltradas.forEach(equipa => {
+        const button = document.createElement('button');
+        button.className = 'convidar-btn';
+        button.textContent = equipa.nome;
+
+        button.onclick = () => {
+            if (equipasSelecionadas.includes(equipa)) {
+                equipasSelecionadas = equipasSelecionadas.filter(e => e !== equipa);
+                button.classList.remove('selecionada');
+                console.log(`Equipa "${equipa.nome}" desmarcada.`);
+            } else {
+                equipasSelecionadas.push(equipa);
+                button.classList.add('selecionada');
+                console.log(`Equipa "${equipa.nome}" selecionada!`);
+            }
+        };
+
+        convidarContainer.appendChild(button);
+    });
+
+    // Botão de adicionar nova equipa
+    const addButton = document.createElement('button');
+    addButton.className = 'convidar-btn';
+    addButton.textContent = '+';
+    addButton.onclick = () => {
+        window.location.href = "../equipa/equipa.html";
+    };
+    convidarContainer.appendChild(addButton);
+}
+
+function selecionarEquipa(equipa) {
+    exibirMensagem("sucesso",`Equipa "${equipa.nome}" selecionada! Convites serão enviados aos membros aquando a reserva.`);
+};
+
+function exibirMensagem(tipo, mensagem) {
+    const mensagemDiv = document.createElement("div");
+    mensagemDiv.className = `mensagem-${tipo}`; // "mensagem-sucesso" ou "mensagem-erro"
+    mensagemDiv.textContent = mensagem;
+
+    document.body.appendChild(mensagemDiv);
+
+    // Remover a mensagem após 3 segundos
+    setTimeout(() => {
+        mensagemDiv.remove();
+    }, 3000);
+}
+
+window.abrirEquipamentoModal = function (desporto) {
+    const equipamentoModal = document.getElementById("equipamentoModal");
+    const equipamentoLista = equipamentoModal.querySelector(".equipamento-lista");
+
+    equipamentoLista.innerHTML = ''; // Limpa a lista antes de adicionar
+
+    // Adicione os equipamentos dinamicamente com base no desporto
+    const equipamentos = {
+        Futebol: ["Bolas", "Coletes", "Cones"],
+        Ténis: ["Raquetes", "Bolas de Ténis", "Rede"],
+        Padel: ["Raquetes de Padel", "Bolas de Padel"],
+        Basquetebol: ["Bolas de Basquetebol", "Tabela", "Coletes"],
+        Voleibol: ["Bolas de Voleibol", "Rede"],
+        Andebol: ["Bolas de Andebol", "Coletes"]
+    };
+
+    const equipamentosDesporto = equipamentos[desporto] || ["Equipamento padrão"];
+
+    // Adicionar os equipamentos à lista
+    equipamentosDesporto.forEach(equipamento => {
+        const li = document.createElement("li");
+        li.textContent = equipamento;
+        li.onclick = () => selecionarEquipamento(equipamento);
+        equipamentoLista.appendChild(li);
+    });
+
+    equipamentoModal.style.display = "block"; // Exibe o modal
+};
+
+window.fecharEquipamentoModal = function () {
+    const equipamentoModal = document.getElementById("equipamentoModal");
+    equipamentoModal.style.display = "none"; // Fecha o modal
+};
+
+function selecionarEquipamento(equipamento) {
+    exibirMensagem("sucesso", `Equipamento "${equipamento}" selecionado!`);
+    window.fecharEquipamentoModal();
+}
 async function carregarReservas(campoIdParaFiltrar) {
     try {
         const reservasGuardadas = localStorage.getItem('todasReservas');
@@ -58,13 +179,17 @@ async function carregarDadosCampoEConfigurarPagina(id) {
         }
 
         const campoSelecionado = todosCampos.find(campo => campo.id === parseInt(id));
+        console.log("Campo selecionado:", campoSelecionado); // Verifica o campo carregado
 
         if (campoSelecionado) {
             document.title = `${campoSelecionado.nome} - Play Smart`;
-
+            console.log("Função chamada para o desporto:", campoSelecionado.desporto);
+            carregarEquipasParaCampo(campoSelecionado.desporto);
+        
             const campoTituloElement = document.querySelector('.campo-section h1');
             if (campoTituloElement) {
                 campoTituloElement.textContent = campoSelecionado.nome;
+                
             }
 
             campoAtualImagens = campoSelecionado.imagens && campoSelecionado.imagens.length > 0 ? campoSelecionado.imagens : ['../images/default_campo.png'];
@@ -77,7 +202,17 @@ async function carregarDadosCampoEConfigurarPagina(id) {
                     <h2><i class="fas fa-info-circle"></i> Informações do Campo</h2>
                     <p id="campoDescricao"><i class="fas fa-futbol"></i> ${campoSelecionado.descricao || 'Descrição não disponível.'}</p>
                     <div id="campoComodidadesLista">
-                        ${campoSelecionado.comodidades ? campoSelecionado.comodidades.map(c => `<p><i class="fas fa-check-circle"></i> ${c}</p>`).join('') : '<p>Nenhuma comodidade listada.</p>'}
+                        ${campoSelecionado.comodidades ? campoSelecionado.comodidades.map(c => {
+                            let iconClass = 'fa-question-circle'; // Ícone padrão caso não seja identificado
+                            if (c.toLowerCase().includes('balneário')) iconClass = 'fa-shower';
+                            else if (c.toLowerCase().includes('equipamento')) iconClass = 'fa-shirt';
+                            else if (c.toLowerCase().includes('estacionamento')) iconClass = 'fa-parking';
+                            else if (c.toLowerCase().includes('iluminação')) iconClass = 'fa-lightbulb';
+                            else if (c.toLowerCase().includes('wc')) iconClass = 'fa-restroom';
+                            else if (c.toLowerCase().includes('bar')) iconClass = 'fa-martini-glass';
+        
+                            return `<p><i class="fas ${iconClass}"></i> ${c}</p>`;
+                        }).join('') : '<p>Nenhuma comodidade listada.</p>'}
                     </div>
                     <p id="campoCapacidade"><i class="fas fa-users"></i> Capacidade: ${campoSelecionado.capacidade || 'N/A'} jogadores</p>
                     <p id="campoPreco"><i class="fas fa-euro-sign"></i> Preço por hora: ${parseFloat(campoSelecionado.preco_hora).toFixed(2)}€</p>
@@ -140,20 +275,20 @@ window.mostrarDirecoes = function(endereco) {
     if (endereco) {
         window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`, '_blank');
     } else {
-        alert("Endereço não disponível para mostrar direções.");
+        exibirMensagem("erro","Endereço não disponível para mostrar direções.");
     }
 }
 
 window.copiarEndereco = function(endereco) {
     if (endereco) {
         navigator.clipboard.writeText(endereco).then(() => {
-            alert('Endereço copiado!');
+            exibirMensagem("sucesso",'Endereço copiado!');
         }).catch(err => {
             console.error('Erro ao copiar endereço: ', err);
-            alert('Erro ao copiar endereço.');
+            exibirMensagem("erro",'Erro ao copiar endereço.');
         });
     } else {
-        alert("Endereço não disponível para copiar.");
+        exibirMensagem("erro","Endereço não disponível para copiar.");
     }
 }
 
@@ -380,10 +515,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (comodidadesModalEl) {
             selectedAmenities = Array.from(comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada"))
                 .map(el => el.getAttribute("data-nome"));
-            alert(`Comodidades confirmadas: ${selectedAmenities.join(", ") || "Nenhuma"}`);
+    
+            // Adicionar preço adicional para "Equipamento"
+            let precoAdicional = 0;
+            if (selectedAmenities.includes("Equipamento")) {
+                precoAdicional += 1; // Exemplo: 5€ por equipamento
+                exibirMensagem("sucesso","Preço adicional de 1€ adicionado para Equipamento.");
+            }
+    
+            exibirMensagem("sucesso",`Comodidades confirmadas: ${selectedAmenities.join(", ") || "Nenhuma"}`);
             fecharComodidades();
         }
     };
+    
   
     const closeComodidadesBtn = comodidadesModalEl ? comodidadesModalEl.querySelector('.close') : null;
     if (closeComodidadesBtn) {
@@ -398,18 +542,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const dataParaReserva = selectedDate;
         const horarioParaReserva = selectedTime;
         const comodidadesParaReserva = selectedAmenities;
-
+    
         if (!dataParaReserva || !horarioParaReserva) {
-            alert("Por favor, selecione data e horário a partir do calendário e da lista de horários no modal de reserva.");
+            exibirMensagem("erro", "Por favor, selecione data e horário a partir do calendário e da lista de horários no modal de reserva.");
             return;
         }
-
+    
         const userIdLogado = "prototipoUser"; // Simulação de utilizador logado
-
+    
         const urlParams = new URLSearchParams(window.location.search);
         const campoId = urlParams.get('id');
         let campoAtual = null;
-
+    
         if (campoId && todosCampos.length > 0) {
             campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
         } else if (campoId) {
@@ -422,79 +566,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
             } catch (error) {
                 console.error("Erro ao tentar carregar campo para pagamento:", error);
-                alert("Erro crítico ao carregar dados do campo. A reserva não pode ser processada.");
+                exibirMensagem("erro", "Erro crítico ao carregar dados do campo. A reserva não pode ser processada.");
                 return;
             }
         }
-
+    
         if (!campoAtual) {
-            alert("Erro ao carregar dados do campo para processar a reserva. Tente novamente ou selecione o campo novamente.");
+            exibirMensagem("erro", "Erro ao carregar dados do campo para processar a reserva. Tente novamente ou selecione o campo novamente.");
             return;
         }
-
+    
         const precoCampo = parseFloat(campoAtual.preco_hora);
-        if (isNaN(precoCampo)) {
-            alert("Erro: Preço do campo inválido.");
+        const precoDividido = precoCampo / 2;
+    
+        // Lógica de Saldo
+        let saldoAtualNumerico = parseFloat(localStorage.getItem('saldoUsuario')) || 0.00;
+    
+        if (saldoAtualNumerico < precoDividido) {
+            exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoDividido.toFixed(2)}€.`);
+            abrirModalSaldo();
             return;
         }
-
-        // Lógica de Saldo - AGORA USA A CHAVE 'saldoUsuario' consistentemente
-        let saldoAtualNumerico;
-        const saldoGuardado = localStorage.getItem('saldoUsuario'); // Usar 'saldoUsuario'
-
-        if (saldoGuardado === null) {
-            saldoAtualNumerico = 0.00; // Se não existe, começa com 0 ou um valor inicial padrão
-            localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString()); // Guardar valor inicial
-            console.log("Saldo não encontrado. Inicializando com 0.00€.");
-        } else {
-            saldoAtualNumerico = parseFloat(saldoGuardado);
-            if (isNaN(saldoAtualNumerico)) {
-                console.warn("Valor de saldo inválido no localStorage. Reinicializando com 0.00€.");
-                saldoAtualNumerico = 0.00;
-                localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString());
-            }
-        }
-        
-        // Atualiza o elemento visual do saldo (o script.js global também faz isso, mas podemos garantir aqui também)
-        const saldoAtualEl = document.getElementById("saldoContainer"); // O container principal
-        const saldoSpan = saldoAtualEl ? saldoAtualEl.querySelector('span#saldoAtual') : null; // O span dentro dele
-        
-        if (saldoSpan) { // Se o span existir (deve ser criado pelo script.js global)
-             saldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
-        } else if (saldoAtualEl && !saldoSpan) { // Se o container existe mas o span não, criar e adicionar
-            const novoSaldoSpan = document.createElement('span');
-            novoSaldoSpan.id = 'saldoAtual';
-            novoSaldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
-            saldoAtualEl.innerHTML = ''; // Limpar antes de adicionar, caso haja texto antigo
-            saldoAtualEl.appendChild(novoSaldoSpan);
-        }
-
-
-        if (saldoAtualNumerico < precoCampo) {
-            alert(`Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoCampo.toFixed(2)}€.`);
-            // A função abrirModalSaldo() é global e já está disponível
-            if (typeof abrirModalSaldo === "function") {
-                abrirModalSaldo();
-            }
-            return;
-        }
-
-        saldoAtualNumerico -= precoCampo;
-        localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString()); // Usar 'saldoUsuario'
-
-        if (saldoSpan) { // Atualizar o span se ele existe
-            saldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
-        } else if (saldoAtualEl) { // Ou recriar se necessário
-            const novoSaldoSpan = document.createElement('span');
-            novoSaldoSpan.id = 'saldoAtual';
-            novoSaldoSpan.textContent = saldoAtualNumerico.toFixed(2) + '€';
-            saldoAtualEl.innerHTML = '';
-            saldoAtualEl.appendChild(novoSaldoSpan);
-        }
-
-
+    
+        saldoAtualNumerico -= precoDividido;
+        localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString());
+    
         const dataFormatada = formatarDataParaReserva(dataParaReserva);
-
+    
         const novaReserva = {
             id: Date.now(),
             campoId: campoAtual.id,
@@ -503,17 +601,23 @@ document.addEventListener("DOMContentLoaded", () => {
             horario: horarioParaReserva,
             preco: precoCampo,
             comodidades: comodidadesParaReserva,
-            userId: userIdLogado
+            userId: userIdLogado,
+            equipasConvidadas: equipasSelecionadas.map(e => e.nome) // Adiciona as equipas convidadas
         };
-
+    
         todasReservas.push(novaReserva);
         guardarReservasNoLocalStorage();
-
-        alert(`Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Novo saldo: ${saldoAtualNumerico.toFixed(2)}€`);
-        
+    
+        // Enviar convites para os membros das equipas selecionadas
+        equipasSelecionadas.forEach(equipa => {
+            equipa.membros.forEach(membro => {
+                console.log(`Convite enviado para ${membro} da equipa "${equipa.nome}".`);
+            });
+        });
+    
+        exibirMensagem("sucesso", `Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Novo saldo: ${saldoAtualNumerico.toFixed(2)}€`);
         fecharReserva();
     };
-
     const closeReservaBtn = reservaModal.querySelector('.modal-content > .close');
     if (closeReservaBtn) {
         closeReservaBtn.onclick = fecharReserva;
@@ -522,8 +626,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (confirmarReservaBtn) {
         confirmarReservaBtn.onclick = realizarPagamento;
     }
-});
 
-window.selecionarComodidade = function(element) {
-    element.classList.toggle("selecionada");
-};
+
+    window.selecionarComodidade = function(element) {
+        element.classList.toggle("selecionada");
+}
+
+
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const campoId = urlParams.get('id');
+
+    if (campoId) {
+        carregarDadosCampoEConfigurarPagina(campoId);
+    } else {
+        console.error('ID do campo não encontrado na URL.');
+    }
+});

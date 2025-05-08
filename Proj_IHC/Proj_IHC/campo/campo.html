@@ -83,8 +83,7 @@
                 <div class="convidar-amigos">
                   <h2>Convidar Equipas</h2>
                   <div class="convidar-container">
-                    <button class="convidar-btn">Equipa 1</button>
-                    <button class="convidar-btn">+</button>
+                    <!-- Botões de equipas serão adicionados dinamicamente aqui -->
                   </div>
                 </div>
               
@@ -93,6 +92,17 @@
                 </div>
               </div>
             </section>
+          </div>
+        </div>
+        <!-- Modal para Escolher Equipamento -->
+        <div id="equipamentoModal" class="modal">
+          <div class="modal-content">
+              <span class="close" onclick="fecharEquipamentoModal()">&times;</span>
+              <h2>Escolher Equipamento</h2>
+              <ul class="equipamento-lista">
+                  <!-- Equipamentos serão adicionados dinamicamente -->
+              </ul>
+              <button onclick="confirmarEquipamento()">Confirmar</button>
           </div>
         </div>
        

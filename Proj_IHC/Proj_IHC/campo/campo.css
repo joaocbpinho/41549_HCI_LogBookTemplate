@@ -1,13 +1,18 @@
+/* Paleta de Cores */
 :root {
-  --primary-color: #0078d7;
-  --secondary-color: #f4f4f9;
-  --text-color: #333;
-  --hover-color: #005a9e;
-  --background-color: #ffffff;
-  --border-color: #ccc;
+  --primary-color: hwb(207 0% 16%);
+  --hover-primary-color: hwb(207 0% 36%);
+  --secondary-color: hwb(240 96% 2%);
+  --text-color: hwb(0 20% 80%);
+  --border-color: hwb(0 80% 20%);
+  --background-color: hwb(210 97% 2%);
+  --background-color-darker: hwb(0 90% 10%);
+  --background-color-darker-hover: hwb(0 80% 20%);
+  --green-color: hwb(134 16% 35%);
+  --darkgreen-color: hwb(134 16% 55%);
+  --red-color: hwb(354 21% 14%);
+  --darkred-color: hwb(354 21% 34%);
 }
-
-
 body {
   font-family: 'Roboto', Arial, sans-serif;
   margin: 0;
@@ -460,4 +465,194 @@ header .logo img {
 
 .modal-content .close:hover {
   color: var(--primary-color);
+}
+
+/* Mensagens de Sucesso e Erro */
+.mensagem-sucesso {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4caf50; /* Verde para sucesso */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 14px;
+}
+
+.mensagem-erro {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #f44336; /* Vermelho para erro */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  font-size: 14px;
+}
+
+/* Modal de Equipamentos */
+#equipamentoModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro com transparência */
+}
+
+#equipamentoModal .modal-content {
+  background-color: var(--background-color);
+  margin: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%; /* Ajuste para telas menores */
+  max-width: 600px; /* Limite de largura */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+  overflow-y: auto; /* Permitir scroll se o conteúdo for muito grande */
+  max-height: 90%; /* Limitar a altura */
+}
+
+#equipamentoModal .equipamento-lista {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#equipamentoModal .equipamento-lista li {
+  padding: 10px;
+  border: 1px solid var(--primary-color);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+#equipamentoModal .equipamento-lista li:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+#equipamentoModal .equipamento-lista li i {
+  font-size: 18px;
+}
+
+/* Botões de Convidar Equipas */
+.convidar-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.convidar-btn:hover {
+  background-color: var(--hover-color);
+}
+
+.convidar-btn.selecionada {
+  background-color: var(--success-color); /* Cor para indicar seleção */
+  color: white;
+  font-weight: bold;
+}
+/* Modal de Reserva */
+.modal-content {
+  max-height: 90%; /* Limitar a altura do modal */
+  overflow-y: auto; /* Permitir scroll no conteúdo */
+}
+
+/* Lista de Horários */
+.horarios-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  padding: 10px;
+  background-color: var(--background-color);
+}
+
+.horario-slot {
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.horario-slot:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.horario-slot.selected {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.horario-slot.ocupado {
+  background-color: #ffdddd !important; /* Cor de fundo para indicar ocupado */
+  color: #aaa !important; /* Cor do texto para indicar ocupado */
+  cursor: not-allowed !important;
+  text-decoration: line-through;
+}
+
+.horario-slot.ocupado:hover {
+  background-color: #ffdddd !important; /* Mantém a cor no hover */
+  color: #aaa !important;
+}
+/* Calendário */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.calendar-day:hover {
+  background-color: var(--hover-color);
+  color: white;
+}
+
+.calendar-day.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.calendar-day.disabled {
+  color: #ccc;
+  text-decoration: line-through;
+  cursor: not-allowed !important; /* Garante que o cursor não muda no hover */
+  background-color: #f0f0f0 !important; /* Garante que o background não muda no hover */
+}
+
+.calendar-day.empty {
+  background-color: transparent;
+  border: none;
+  cursor: default;
 }
