@@ -33,11 +33,20 @@ header {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos para o link do logo */
+.logo-link {
+  text-decoration: none; /* Remove o sublinhado do link */
+  color: inherit; /* Faz com que o link herde a cor do texto do seu pai (a div .logo) */
+  display: flex; /* Para manter o alinhamento se a div .logo já for flex */
+  align-items: center; /* Para manter o alinhamento vertical */
+}
+
 .logo {
   display: flex;
   align-items: center;
   font-size: 24px;
   font-weight: bold;
+  /* A cor do texto do logo já deve estar definida aqui ou no header */
 }
 
 .logo-img {
