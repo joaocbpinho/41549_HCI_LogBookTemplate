@@ -1,5 +1,30 @@
 // ========== FUNÇÕES GLOBAIS (MODAIS, SIDEBAR, RENDERIZAÇÃO INICIAL) ==========
 
+// --- Funções para Exibir Mensagens Customizadas ---
+function exibirMensagemSucesso(mensagem) {
+  const mensagemEl = document.createElement("div");
+  mensagemEl.className = "mensagem-sucesso"; // Make sure .mensagem-sucesso is styled in your CSS
+  mensagemEl.textContent = mensagem;
+  document.body.appendChild(mensagemEl);
+
+  // Remover a mensagem após 3 segundos
+  setTimeout(() => {
+    mensagemEl.remove();
+  }, 3000);
+}
+
+function exibirMensagemErro(mensagem) {
+  const mensagemEl = document.createElement("div");
+  mensagemEl.className = "mensagem-erro"; // Make sure .mensagem-erro is styled in your CSS
+  mensagemEl.textContent = mensagem;
+  document.body.appendChild(mensagemEl);
+
+  // Remover a mensagem após 3 segundos
+  setTimeout(() => {
+    mensagemEl.remove();
+  }, 3000);
+}
+
 // --- Funções Modais (Saldo, Login, Criar Equipa) ---
 function abrirModalSaldo() {
   const modal = document.getElementById("modalAdicionarSaldo");
@@ -15,12 +40,12 @@ function adicionarSaldo() {
   if (!valorInput || !saldoAtualEl) return;
 
   if (!metodoPagamentoAtual) {
-    alert("Por favor, selecione um método de pagamento antes de depositar.");
+    exibirMensagemErro("Por favor, selecione um método de pagamento antes de depositar.");
     abrirModalMetodosPagamento();
     return;
   }
   if (metodoPagamentoAtual === 'visa' && !detalhesMetodo.final) {
-    alert("Por favor, confirme os detalhes do cartão.");
+    exibirMensagemErro("Por favor, confirme os detalhes do cartão.");
     abrirModalDetalhesCartao();
     return;
   }
@@ -40,9 +65,9 @@ function adicionarSaldo() {
     valorInput.value = '';
     document.querySelectorAll('.saldo-opcoes button').forEach(btn => btn.classList.remove('selected'));
     fecharModalSaldo();
-    alert(`Depósito de ${valorSaldo.toFixed(2)}€ realizado com sucesso via ${metodoPagamentoAtual}!`);
+    exibirMensagemSucesso(`Depósito de ${valorSaldo.toFixed(2)}€ realizado com sucesso via ${metodoPagamentoAtual}!`);
   } else {
-    alert("Por favor, insira um valor de saldo válido.");
+    exibirMensagemErro("Por favor, insira um valor de saldo válido.");
   }
 }
 
@@ -67,7 +92,7 @@ function fecharModalLogin() {
 }
 function fazerLogin() {
   const user = document.getElementById('username').value;
-  alert(`Login simulado para: ${user}`);
+  exibirMensagemSucesso(`Login simulado para: ${user}`);
   fecharModalLogin();
 }
 
@@ -93,7 +118,7 @@ function closeProfileSidebar() {
 }
 
 function fazerLogout() {
-  alert("Logout efetuado! (simulação)");
+  exibirMensagemSucesso("Logout efetuado! (simulação)");
   closeProfileSidebar();
 }
 
@@ -239,12 +264,13 @@ function confirmarDetalhesCartao() {
     console.log("Detalhes do cartão confirmados (simulação):", detalhesMetodo);
     atualizarMetodoPagamentoUI();
     fecharModalDetalhesCartao();
+    exibirMensagemSucesso("Detalhes do cartão confirmados com sucesso!");
     document.getElementById('numeroCartao').value = '';
     document.getElementById('nomeTitular').value = '';
     document.getElementById('dataValidade').value = '';
     document.getElementById('cvv').value = '';
   } else {
-    alert("Por favor, preencha todos os detalhes do cartão corretamente.");
+    exibirMensagemErro("Por favor, preencha todos os detalhes do cartão corretamente.");
   }
 }
 
@@ -272,7 +298,7 @@ function atualizarMetodoPagamentoUI() {
       detalheEl.textContent = 'Pagamento via conta PayPal';
       break;
     default:
-      iconeEl.src = '../images/default-payment.png';
+      iconeEl.src = '../images/card_logo.svg';
       nomeEl.textContent = 'Nenhum selecionado';
       detalheEl.textContent = '';
       break;

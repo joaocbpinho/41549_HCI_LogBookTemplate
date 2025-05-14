@@ -545,3 +545,24 @@ form h3 {
   flex-shrink: 0; /* Prevents the button from shrinking if space is tight */
   /* Existing styles for .adicionar-membro-btn will still apply */
 }
+
+
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-equipa-2 {
+  margin-top: 0;
+  margin-bottom: 8px; /* Menos espaço */
+  color: var(--primary-color);
+  font-size: 1.05em; /* Tamanho ajustado */
+  flex-grow: 1; /* Allow the h3 to take up available space in the middle */
+  display: flex; /* To use align-items for vertical centering of text inside h3 */
+  align-items: center; /* Vertically center text if h3 has more height */
+  justify-content: center; /* Horizontally center text (redundant if text-align: center on parent) */
+}

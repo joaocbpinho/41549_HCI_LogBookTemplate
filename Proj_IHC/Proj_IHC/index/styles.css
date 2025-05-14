@@ -385,8 +385,7 @@ main {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.saldo-opcoes button:hover,
-.saldo-opcoes button.selected { /* Estilo para botão selecionado */
+.saldo-opcoes button:hover { /* Estilo para botão selecionado */
   background-color: var(--primary-color);
   color: #fff;
   border-color: var(--primary-color);
@@ -568,7 +567,7 @@ main {
 }
 
 .btn-confirmar:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 /* Estilos específicos para o popup de Comodidades */
@@ -680,6 +679,7 @@ main {
 .sidebar .closebtn:hover {
     color: #333; /* Cor do botão de fechar ao passar o mouse */
     background-color: transparent; /* Sem fundo no hover */
+    border-left: 0px;
 }
 
 /* Secção de Informações do Perfil */
@@ -799,3 +799,41 @@ main {
   display: none; /* Começa escondido */
   transition: opacity 0.5s;
 }
+
+/* In styles.css or another global CSS file */
+.mensagem-sucesso,
+.mensagem-erro {
+  position: fixed;
+  top: 70px; /* Or your preferred top position */
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  z-index: 2000; /* Ensure it's above other elements like popups */
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  max-width: 80%; /* Prevent it from being too wide */
+  box-sizing: border-box;
+}
+
+.mensagem-sucesso {
+  background-color: #28a745; /* Green */
+}
+
+.mensagem-erro {
+  background-color: #dc3545; /* Red */
+}
+
+/* Animation for fade in/out (optional but nice) */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translate(-50%, -10px); }
+  10%, 90% { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.mensagem-sucesso, .mensagem-erro {
+  animation: fadeInOut 3s ease-in-out forwards; /* 'forwards' can be removed if you prefer it to just disappear */
+}
+

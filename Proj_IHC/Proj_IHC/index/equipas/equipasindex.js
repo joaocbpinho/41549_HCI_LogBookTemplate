@@ -65,7 +65,7 @@ function renderizarEquipas() {
     // Adiciona a classe base .card para herdar estilos e .card-equipa para estilos específicos
     card.className = "card card-equipa"; 
     card.innerHTML = `
-      <div class="card-content">
+      <div class="card-equipa-content">
         <h3>${equipa.nome || 'Equipa sem nome'}</h3>
         <p><strong>Desporto:</strong> ${desportoFormatado}</p>
       </div>

@@ -44,7 +44,7 @@
 
 /* Estilo para o card/link "Ver todas as reservas" */
 #listaReservas .view-all-reservas-card {
-  padding: 15px; /* Ajuste o padding */
+  padding: 20px; /* Ajuste o padding */
   /* Herda estilos de .card e .add-card (incluindo min-height, border, etc) */
   /* Garante que o conteúdo interno do .add-card ainda se centralize se for flex */
   display: flex;
@@ -71,13 +71,14 @@
 #listaReservas:not(.cards) {
   display: flex;
   flex-direction: column; /* Empilha a mensagem e o card "Ver todas" */
-  align-items: center;   /* Centraliza-os horizontalmente */
+  align-items: left;   /* Centraliza-os horizontalmente */
   gap: 15px;             /* Espaço entre a mensagem e o card "Ver todas" */
   padding: 20px 0;       /* Adiciona algum padding vertical ao container */
+  
 }
 
 #listaReservas:not(.cards) .view-all-reservas-card {
-  width: 280px; /* Define uma largura fixa para o card, similar aos cards na grelha */
-  min-height: 100px; /* Garante uma altura mínima consistente com .add-card */
+  width: 310px; /* Define uma largura fixa para o card, similar aos cards na grelha */
+  min-height: 150px; /* Garante uma altura mínima consistente com .add-card */
   /* display: flex, justify-content e align-items já definidos acima para esta classe */
 }

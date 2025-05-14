@@ -10,7 +10,7 @@
     margin: 30px auto; /* Mantido */
     padding: 0 10px; /* Mantido */
     gap: 0; /* Mantido */
-    /* overflow: hidden; */ /* REMOVA OU COMENTE ESTA LINHA */
+    overflow: hidden;
     grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto; /* Mantido */
   }
   
@@ -29,7 +29,7 @@
   
   .search-col:hover,
   .search-col:focus-within {
-    background: #f0f6ff; /* tom suave azulado, podes ajustar */
+    background: var(--background-color); /* tom suave azulado, podes ajustar */
     transition: background 0.2s;
   }
   
@@ -55,7 +55,7 @@
   
   .search-value {
     font-size: 16px;
-    color: #222;
+    color: grey;
     font-weight: normal; /* Tira o negrito */
   }
   
@@ -85,12 +85,12 @@
   }
   
   .search-bar-btn:hover {
-    background: var(--hover-color); /* Use a variável */
+    background: var(--hover-primary-color); /* Use a variável */
   }
   
   /* Localidade ocupa mais espaço */
   .search-col-localidade {
-    flex: 2.2;
+    /* flex: 2.2; */
     min-width: 200px;
     position: relative; /* Necessário para posicionar a lista de sugestões */
   }

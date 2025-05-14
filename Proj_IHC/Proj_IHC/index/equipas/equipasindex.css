@@ -22,6 +22,17 @@
   justify-content: center;
   align-items: center; /* Centraliza conteúdo */
   /* Herda .card base styles, so no need to repeat all of them */
+  height: 150px;
+}
+
+.card-equipa-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes name to top, desporto to bottom */
+  align-items: center; /* Centraliza conteúdo horizontalmente */
+  width: 100%;
+  height: 100%; /* Make it fill the parent card-equipa */
+  text-align: center; /* Ensures text within children is centered */
 }
 
 .card-equipa:hover {
@@ -34,6 +45,10 @@
   margin-bottom: 8px; /* Menos espaço */
   color: var(--primary-color);
   font-size: 1.05em; /* Tamanho ajustado */
+  flex-grow: 1; /* Allow the h3 to take up available space in the middle */
+  display: flex; /* To use align-items for vertical centering of text inside h3 */
+  align-items: center; /* Vertically center text if h3 has more height */
+  justify-content: center; /* Horizontally center text (redundant if text-align: center on parent) */
 }
 
 .card-equipa p {
@@ -51,13 +66,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  padding: 20px;
   border-radius: 8px;
   text-align: center;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-  min-height: 100px; /* Mantenha a mesma altura mínima que outros .add-card se houver */
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  height: 150px; /* Mantenha a mesma altura mínima que outros .add-card se houver */
   /* Pode herdar de um .card base se a estrutura HTML gerada incluir a classe .card */
 }
 
@@ -155,7 +170,7 @@
 }
 
 #modalDetalhesEquipa button:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color); /* Cor ao passar o mouse */
 }
 
 /* Garante que o botão de fechar (X) esteja bem posicionado */
