@@ -135,12 +135,23 @@ function renderizarMinhasReservas(containerId) {
             console.warn("[reservas.js] Reserva sem ID, gerando um temporário para o botão:", reserva);
         }
 
+        const equipasGuardadas = carregarEquipas();
+        const totalMembros = Array.isArray(reserva.equipasConvidadas) && reserva.equipasConvidadas.length > 0
+            ? reserva.equipasConvidadas.reduce((total, equipaNome) => {
+                const equipa = equipasGuardadas.find(e => e.nome.trim().toLowerCase() === equipaNome.trim().toLowerCase());
+                return total + (Array.isArray(equipa?.membros) ? equipa.membros.length : 0);
+            }, 1) // Inclui o utilizador
+            : 1;
+
+        const confirmadosTexto = `${reserva.numConfirmados || 2} / ${totalMembros} membros`;
+
         card.innerHTML = `
             <h3>${nomeCampo}</h3>
             <p><strong>Data:</strong> ${dataFormatada}</p>
             <p><strong>Horário:</strong> ${reserva.horario || 'N/D'}</p>
             <p><strong>Preço:</strong> ${precoTexto}</p>
             <p><strong>Comodidades Solicitadas:</strong> ${comodidadesTexto}</p>
+            <p><strong>Confirmados:</strong> ${confirmadosTexto}</p>
             <div class="reserva-actions">
                 <button class="detalhes-btn" data-reserva-id="${reservaIdParaBotao}">Mais Detalhes</button>
                 <button class="cancelar-reserva-btn" data-reserva-id="${reservaIdParaBotao}">Cancelar Reserva</button>
@@ -182,13 +193,29 @@ function abrirDetalhesReserva(event) {
                 }
             }
         } catch(e) { /* usa data original se falhar */ }
-        
-        document.getElementById('detalheData').textContent = dataFormatadaModal;
-        document.getElementById('detalheHorario').textContent = reserva.horario || 'N/D';
-        document.getElementById('detalhePreco').textContent = (reserva.preco !== undefined && reserva.preco !== null) ? parseFloat(reserva.preco).toFixed(2) + '€' : 'N/D';
-        document.getElementById('detalheComodidades').textContent = reserva.comodidades && reserva.comodidades.length > 0 ? reserva.comodidades.join(', ') : 'Nenhuma';
-        document.getElementById('detalheNumConfirmados').textContent = reserva.numConfirmados !== undefined ? reserva.numConfirmados : 'N/D';
-        document.getElementById('detalheEquipaConvidada').textContent = reserva.equipaConvidadaNome || 'Nenhuma';
+        console.log("[reservas.js] Equipas convidadas na reserva:", reserva.equipasConvidadas);
+
+        const equipasGuardadas = carregarEquipas();
+        let equipasConvidadasTexto = 'Nenhuma';
+
+        if (equipasGuardadas && Array.isArray(reserva.equipasConvidadas)) {
+            equipasConvidadasTexto = reserva.equipasConvidadas.map(equipaNome => {
+                const equipa = equipasGuardadas.find(e => e.nome.trim().toLowerCase() === equipaNome.trim().toLowerCase());
+                return equipa ? equipa.nome : `${equipaNome} (não encontrada)`;
+            }).join(', ');
+        }
+
+        const totalMembros = Array.isArray(reserva.equipasConvidadas) && reserva.equipasConvidadas.length > 0
+            ? reserva.equipasConvidadas.reduce((total, equipaNome) => {
+                const equipa = equipasGuardadas.find(e => e.nome.trim().toLowerCase() === equipaNome.trim().toLowerCase());
+                return total + (Array.isArray(equipa?.membros) ? equipa.membros.length : 0);
+            }, 1) // Inclui o utilizador
+            : 1;
+
+        const confirmadosTexto = `${reserva.numConfirmados || 2} / ${totalMembros} membros`;
+
+        document.getElementById('detalheNumConfirmados').textContent = confirmadosTexto;
+        document.getElementById('detalheEquipaConvidada').textContent = equipasConvidadasTexto;
         document.getElementById('detalheReservaId').textContent = reserva.id;
 
         modalDetalhesReserva.style.display = "block";
@@ -197,7 +224,6 @@ function abrirDetalhesReserva(event) {
         if (!modalDetalhesReserva) console.error("Modal de detalhes da reserva não encontrado no DOM.");
     }
 }
-
 // Nova função para fechar o modal de confirmação de cancelamento
 function fecharModalConfirmarCancelar() {
     if (modalConfirmarCancelar) {
@@ -206,7 +232,6 @@ function fecharModalConfirmarCancelar() {
     reservaIdParaCancelar = null; // Limpa o ID ao fechar
 }
 
-// Função que efetivamente processa o cancelamento após confirmação
 function processarCancelamentoDefinitivo() {
     if (!reservaIdParaCancelar) {
         console.error("[reservas.js] ID da reserva para cancelar não está definido ao processar.");
@@ -223,7 +248,7 @@ function processarCancelamentoDefinitivo() {
         return;
     }
     
-    // Re-verificar o utilizador (embora já deva ter sido feito ao abrir o modal)
+    // Re-verificar o utilizador
     const userIdLogado = "prototipoUser"; // Ajustar se tiver login real
     if (reservaParaCancelar.userId !== userIdLogado) {
         alert("[reservas.js] Apenas o criador da reserva pode cancelá-la.");
@@ -231,21 +256,54 @@ function processarCancelamentoDefinitivo() {
         reservaIdParaCancelar = null;
         return;
     }
+    console.log(JSON.parse(localStorage.getItem('equipas')));
+    // Calcular o número de membros
+    const equipasGuardadas = localStorage.getItem('equipas');
+    let numeroDeMembros = 1; // Inclui o utilizador que fez a reserva
 
+    if (equipasGuardadas && Array.isArray(reservaParaCancelar.equipasConvidadas)) {
+        const todasEquipas = JSON.parse(equipasGuardadas);
+        console.log("[reservas.js] Todas as equipas carregadas do localStorage:", todasEquipas);
+
+        numeroDeMembros += reservaParaCancelar.equipasConvidadas.reduce((total, equipaNome) => {
+            const equipa = todasEquipas.find(e => e.nome.trim().toLowerCase() === equipaNome.trim().toLowerCase());
+            if (!equipa) {
+                console.warn(`[reservas.js] Equipa não encontrada: ${equipaNome}`);
+            }
+            return total + (Array.isArray(equipa?.membros) ? equipa.membros.length : 0);
+        }, 0);
+    }
+    console.log("Número total de membros (incluindo o utilizador):", numeroDeMembros);
+
+    // Calcular a parte paga pelo utilizador
+    const partePagaPeloUtilizador = parseFloat(reservaParaCancelar.preco) / numeroDeMembros;
+
+    // Atualizar o saldo do utilizador
+    let saldoAtualNumerico = parseFloat(localStorage.getItem('saldoUsuario')) || 0.00;
+    saldoAtualNumerico += partePagaPeloUtilizador; // Devolve apenas a parte paga pelo utilizador
+    localStorage.setItem('saldoUsuario', saldoAtualNumerico.toFixed(2));
+
+    // Atualizar o saldo no DOM
+    const saldoAtualEl = document.getElementById("saldoAtual");
+    if (saldoAtualEl) {
+        saldoAtualEl.textContent = `${saldoAtualNumerico.toFixed(2)}€`;
+    }
+
+    // Remover a reserva do array
     const originalLength = todasReservas.length;
     todasReservas = todasReservas.filter(reserva => !(reserva.id && String(reserva.id) === reservaIdParaCancelar));
 
     if (todasReservas.length < originalLength) {
         guardarReservasNoLocalStorage();
-        alert(`[reservas.js] Reserva ID: ${reservaIdParaCancelar} cancelada com sucesso!`);
+        exibirMensagem("sucesso", `Reserva ID: ${reservaIdParaCancelar} cancelada com sucesso! ${partePagaPeloUtilizador.toFixed(2)}€ devolvidos ao saldo.`);
         renderizarMinhasReservas('listaMinhasReservas');
     } else {
         alert(`[reservas.js] Erro ao tentar cancelar a reserva ID: ${reservaIdParaCancelar}. A reserva não foi removida ou já não existia.`);
     }
+
     fecharModalConfirmarCancelar(); // Fecha o modal após a ação
     reservaIdParaCancelar = null;   // Limpa o ID
 }
-
 function cancelarPresencas(event) {
     const reservaId = event.target.dataset.reservaId;
     const reservaIndex = todasReservas.findIndex(r => r.id && r.id.toString() === reservaId);
@@ -269,7 +327,6 @@ function cancelarPresencas(event) {
         renderizarMinhasReservas('listaMinhasReservas');
     }
 }
-
 function cancelarReserva(event) {
     console.log("[reservas.js] Botão 'Cancelar Reserva' clicado, abrindo modal de confirmação.");
     const idDaReserva = event.target.dataset.reservaId;
@@ -309,7 +366,6 @@ function cancelarReserva(event) {
         }
     }
 }
-
 // ========== INICIALIZAÇÃO E EVENT LISTENERS ==========
 
 function adicionarEventListenersAcoes() {
@@ -366,7 +422,33 @@ async function inicializarPaginaReservas() {
         }
     }
 }
+function exibirMensagem(tipo, mensagem) {
+    const mensagemDiv = document.createElement("div");
+    mensagemDiv.className = `mensagem-${tipo}`; // "mensagem-sucesso" ou "mensagem-erro"
+    mensagemDiv.textContent = mensagem;
+  
+    document.body.appendChild(mensagemDiv);
+  
+    // Remover a mensagem após 3 segundos
+    setTimeout(() => {
+        mensagemDiv.remove();
+    }, 3000);
+  }
 
+function carregarEquipas() {
+    try {
+        const equipasGuardadas = localStorage.getItem('equipas');
+        if (equipasGuardadas) {
+            return JSON.parse(equipasGuardadas);
+        } else {
+            console.warn("[reservas.js] Nenhuma equipa encontrada no localStorage.");
+            return [];
+        }
+    } catch (error) {
+        console.error("[reservas.js] Erro ao carregar equipas do localStorage:", error);
+        return [];
+    }
+}
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM carregado para reservas.js");
     inicializarPaginaReservas();
