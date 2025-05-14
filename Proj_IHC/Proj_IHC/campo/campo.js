@@ -96,35 +96,87 @@ function exibirMensagem(tipo, mensagem) {
     }, 3000);
 }
 
-window.abrirEquipamentoModal = function (desporto) {
-    const equipamentoModal = document.getElementById("equipamentoModal");
-    const equipamentoLista = equipamentoModal.querySelector(".equipamento-lista");
+window.abrirEquipamentos = function () {
+    const comodidadesModalEl = document.getElementById("comodidadesModal");
+    if (comodidadesModalEl) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const campoId = urlParams.get('id');
+        const campoSelecionado = todosCampos.find(campo => campo.id === parseInt(campoId));
 
-    equipamentoLista.innerHTML = ''; // Limpa a lista antes de adicionar
+        if (campoSelecionado) {
+            const equipamentos = {
+                Futebol: [
+                    { nome: "Bolas", icone: "fas fa-futbol" },
+                    { nome: "Coletes", icone: "fas fa-shirt" },
+                    { nome: "Cones", icone: "../images/cone.png" } // Caminho para o PNG
+                ],
+                Ténis: [
+                    { nome: "Raquetes", icone: "fas fa-table-tennis" },
+                    { nome: "Bolas de Ténis", icone: "fas fa-futbol" },
+                    { nome: "Rede", icone: "fas fa-border-all" }
+                ],
+                Padel: [
+                    { nome: "Raquetes de Padel", icone: "fas fa-table-tennis" },
+                    { nome: "Bolas de Padel", icone: "fas fa-futbol" }
+                ],
+                Basquetebol: [
+                    { nome: "Bolas de Basquetebol", icone: "fas fa-basketball-ball" },
+                    { nome: "Tabela", icone: "fas fa-square" },
+                    { nome: "Coletes", icone: "fas fa-shirt" }
+                ],
+                Voleibol: [
+                    { nome: "Bolas de Voleibol", icone: "fas fa-volleyball-ball" },
+                    { nome: "Rede", icone: "fas fa-border-all" }
+                ],
+                Andebol: [
+                    { nome: "Bolas de Andebol", icone: "fas fa-futbol" },
+                    { nome: "Coletes", icone: "fas fa-shirt" }
+                ]
+            };
 
-    // Adicione os equipamentos dinamicamente com base no desporto
-    const equipamentos = {
-        Futebol: ["Bolas", "Coletes", "Cones"],
-        Ténis: ["Raquetes", "Bolas de Ténis", "Rede"],
-        Padel: ["Raquetes de Padel", "Bolas de Padel"],
-        Basquetebol: ["Bolas de Basquetebol", "Tabela", "Coletes"],
-        Voleibol: ["Bolas de Voleibol", "Rede"],
-        Andebol: ["Bolas de Andebol", "Coletes"]
-    };
+            const equipamentosDesporto = equipamentos[campoSelecionado.desporto[0]] || [];
 
-    const equipamentosDesporto = equipamentos[desporto] || ["Equipamento padrão"];
+            const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
+            listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
 
-    // Adicionar os equipamentos à lista
-    equipamentosDesporto.forEach(equipamento => {
-        const li = document.createElement("li");
-        li.textContent = equipamento;
-        li.onclick = () => selecionarEquipamento(equipamento);
-        equipamentoLista.appendChild(li);
-    });
+            // Adicionar os equipamentos específicos do desporto
+            equipamentosDesporto.forEach(equipamento => {
+                const li = document.createElement("li");
+                li.className = "equipamento";
+                li.setAttribute("data-nome", equipamento.nome);
+                li.onclick = function () {
+                    this.classList.toggle("selecionada");
+                };
 
-    equipamentoModal.style.display = "block"; // Exibe o modal
+                // Verificar se o ícone é uma imagem PNG ou um ícone Font Awesome
+                if (equipamento.icone.endsWith(".png")) {
+                    const img = document.createElement("img");
+                    img.src = equipamento.icone;
+                    img.alt = equipamento.nome;
+                    img.style.width = "24px"; // Ajuste o tamanho da imagem conforme necessário
+                    img.style.height = "24px";
+                    img.style.marginRight = "10px";
+                    li.appendChild(img);
+                } else {
+                    const icon = document.createElement("i");
+                    icon.className = equipamento.icone;
+                    li.appendChild(icon);
+                }
+
+                li.appendChild(document.createTextNode(` ${equipamento.nome}`));
+                listaComodidades.appendChild(li);
+            });
+
+            // Atualizar o título do modal para "Equipamentos"
+            const modalTitle = comodidadesModalEl.querySelector("h2");
+            modalTitle.textContent = "Equipamentos";
+        }
+
+        comodidadesModalEl.style.display = "block";
+    } else {
+        console.error("Modal de comodidades não encontrado no DOM.");
+    }
 };
-
 window.fecharEquipamentoModal = function () {
     const equipamentoModal = document.getElementById("equipamentoModal");
     equipamentoModal.style.display = "none"; // Fecha o modal
@@ -382,22 +434,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.abrirReserva = function () {
-        selectedDate = null;
-        selectedTime = null;
-        selectedAmenities = [];
-        document.querySelectorAll('#reservaModal .calendar-day.active').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('#reservaModal .horario-slot.selected').forEach(el => el.classList.remove('selected'));
-        const comodidadesModalEl = document.getElementById("comodidadesModal");
-        if (comodidadesModalEl) {
-            comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada").forEach(el => el.classList.remove('selecionada'));
+        const reservaModal = document.getElementById("reservaModal");
+        if (reservaModal) {
+            // Resetar seleções anteriores
+            selectedDate = null;
+            selectedTime = null;
+            selectedAmenities = [];
+            document.querySelectorAll('#reservaModal .calendar-day.active').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('#reservaModal .horario-slot.selected').forEach(el => el.classList.remove('selected'));
+            const comodidadesModalEl = document.getElementById("comodidadesModal");
+            if (comodidadesModalEl) {
+                comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada").forEach(el => el.classList.remove('selecionada'));
+            }
+    
+            // Exibir o modal de reserva
+            reservaModal.style.display = "block";
+        } else {
+            console.error("Modal de reserva não encontrado no DOM.");
         }
-        reservaModal.style.display = "block";
     };
 
     window.fecharReserva = function () {
-        reservaModal.style.display = "none";
+        const reservaModal = document.getElementById("reservaModal");
+        if (reservaModal) {
+            reservaModal.style.display = "none";
+        } else {
+            console.error("Modal de reserva não encontrado no DOM.");
+        }
     };
-
     const calendarGridModal = reservaModal.querySelector(".calendar-grid");
     const calendarioMesAnoModal = reservaModal.querySelector("#calendarioMesAno");
     const prevMonthBtnModal = reservaModal.querySelector("#prevMonth");
@@ -504,9 +568,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const comodidadesModalEl = document.getElementById("comodidadesModal");
 
     window.abrirComodidades = function () {
-        if (comodidadesModalEl) comodidadesModalEl.style.display = "block";
+        const comodidadesModalEl = document.getElementById("comodidadesModal");
+        if (comodidadesModalEl) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const campoId = urlParams.get('id');
+            const campoSelecionado = todosCampos.find(campo => campo.id === parseInt(campoId));
+    
+            if (campoSelecionado) {
+                const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
+                listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
+    
+                // Adicionar todas as comodidades do campo
+                if (campoSelecionado.comodidades && campoSelecionado.comodidades.length > 0) {
+                    campoSelecionado.comodidades.forEach(comodidade => {
+                        const li = document.createElement("li");
+                        li.className = "comodidade";
+                        li.setAttribute("data-nome", comodidade);
+                        li.onclick = function () {
+                            this.classList.toggle("selecionada");
+                        };
+    
+                        let iconClass = "fa-question-circle"; // Ícone padrão
+                        if (comodidade.toLowerCase().includes("balneário")) iconClass = "fa-shower";
+                        else if (comodidade.toLowerCase().includes("equipamento")) iconClass = "fa-shirt";
+                        else if (comodidade.toLowerCase().includes("estacionamento")) iconClass = "fa-parking";
+                        else if (comodidade.toLowerCase().includes("iluminação")) iconClass = "fa-lightbulb";
+                        else if (comodidade.toLowerCase().includes("wc")) iconClass = "fa-restroom";
+    
+                        li.innerHTML = `<i class="fas ${iconClass}"></i> ${comodidade}`;
+                        listaComodidades.appendChild(li);
+                    });
+                } else {
+                    listaComodidades.innerHTML = '<li>Nenhuma comodidade disponível.</li>';
+                }
+    
+                // Atualizar o título do modal para "Comodidades"
+                const modalTitle = comodidadesModalEl.querySelector("h2");
+                modalTitle.textContent = "Comodidades";
+            }
+    
+            comodidadesModalEl.style.display = "block";
+        } else {
+            console.error("Modal de comodidades não encontrado no DOM.");
+        }
     };
-
     window.fecharComodidades = function () {
         if (comodidadesModalEl) comodidadesModalEl.style.display = "none";
     };
@@ -520,10 +625,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let precoAdicional = 0;
             if (selectedAmenities.includes("Equipamento")) {
                 precoAdicional += 1; // Exemplo: 5€ por equipamento
-                exibirMensagem("sucesso","Preço adicional de 1€ adicionado para Equipamento.");
+                exibirMensagem("sucesso", "Preço adicional de 1€ adicionado para Equipamento.");
             }
     
-            exibirMensagem("sucesso",`Comodidades confirmadas: ${selectedAmenities.join(", ") || "Nenhuma"}`);
+            exibirMensagem("sucesso", `Comodidades confirmadas: ${selectedAmenities.join(", ") || "Nenhuma"}`);
             fecharComodidades();
         }
     };
@@ -577,19 +682,80 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     
         const precoCampo = parseFloat(campoAtual.preco_hora);
-        const precoDividido = precoCampo / 2;
+        let precoFinal = precoCampo;
+    
+        // Dividir o custo entre os membros da equipa selecionada
+        let membrosTotais = [];
+        equipasSelecionadas.forEach(equipa => {
+            if (Array.isArray(equipa.membros) && equipa.membros.length > 0) {
+                membrosTotais = membrosTotais.concat(equipa.membros);
+            } else {
+                console.warn(`A equipa "${equipa.nome}" não possui membros ou o campo "membros" está incorreto.`);
+            }
+        });
+        console.log("Membros totais (incluindo o utilizador logado):", membrosTotais);
+        // Adicionar o utilizador que está a fazer a reserva
+        const utilizadorLogado = "prototipoUser"; // Simulação de utilizador logado
+        membrosTotais.push(utilizadorLogado);
+    
+        const numeroDeMembros = membrosTotais.length;
+    
+        // Adicionar taxa de reserva de equipamento
+        let taxaEquipamento = 0;
+
+        // Calcular a taxa de equipamento
+        comodidadesParaReserva.forEach(comodidade => {
+            if (["Bolas", "Cones", "Coletes"].includes(comodidade)) {
+                // Equipamento coletivo: taxa dividida entre todos os membros
+                taxaEquipamento += 1 / numeroDeMembros;
+                console.log(`Taxa coletiva para ${comodidade}:`, 1 / numeroDeMembros);
+            } else if (["Raquetes", "Rede"].includes(comodidade)) {
+                // Equipamento individual: taxa paga apenas pelo utilizador
+                taxaEquipamento += 1;
+                console.log(`Taxa individual para ${comodidade}:`, 1);
+            }
+        });
+
+        // Adicionar a taxa de equipamento ao preço final
+        precoFinal += taxaEquipamento;
+        console.log("Taxa de equipamento adicionada. Preço final atualizado:", precoFinal);
+            
+        let precoPorPessoa = precoFinal;
+    
+        if (numeroDeMembros > 0) {
+            precoPorPessoa = precoFinal / numeroDeMembros;
+        }
     
         // Lógica de Saldo
         let saldoAtualNumerico = parseFloat(localStorage.getItem('saldoUsuario')) || 0.00;
     
-        if (saldoAtualNumerico < precoDividido) {
-            exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoDividido.toFixed(2)}€.`);
-            abrirModalSaldo();
-            return;
+        if (numeroDeMembros === 0) {
+            // Sem equipa selecionada, o utilizador paga o valor total
+            if (saldoAtualNumerico < precoFinal) {
+                exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoFinal.toFixed(2)}€.`);
+                abrirModalSaldo();
+                return;
+            }
+            saldoAtualNumerico -= precoFinal;
+        } else {
+            // Dividir o custo entre os membros
+            if (saldoAtualNumerico < precoPorPessoa) {
+                exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para pagar a sua parte de ${precoPorPessoa.toFixed(2)}€.`);
+                abrirModalSaldo();
+                return;
+            }
+            saldoAtualNumerico -= precoPorPessoa;
+            console.log(`O utilizador "${utilizadorLogado}" pagou ${precoPorPessoa.toFixed(2)}€.`);
         }
     
-        saldoAtualNumerico -= precoDividido;
+        // Atualizar o saldo no localStorage
         localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString());
+    
+        // Atualizar o saldo no DOM
+        const saldoAtualEl = document.getElementById("saldoAtual");
+        if (saldoAtualEl) {
+            saldoAtualEl.textContent = `${saldoAtualNumerico.toFixed(2)}€`;
+        }
     
         const dataFormatada = formatarDataParaReserva(dataParaReserva);
     
@@ -615,25 +781,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     
-        exibirMensagem("sucesso", `Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Novo saldo: ${saldoAtualNumerico.toFixed(2)}€`);
+        exibirMensagem("sucesso", `Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Taxa adicional de 1€ por equipamento incluída. Novo saldo: ${saldoAtualNumerico.toFixed(2)}€ `);
         fecharReserva();
-    };
-    const closeReservaBtn = reservaModal.querySelector('.modal-content > .close');
-    if (closeReservaBtn) {
-        closeReservaBtn.onclick = fecharReserva;
-    }
-    const confirmarReservaBtn = reservaModal.querySelector('.pagar-btn');
-    if (confirmarReservaBtn) {
-        confirmarReservaBtn.onclick = realizarPagamento;
-    }
+    }});
 
-
-    window.selecionarComodidade = function(element) {
-        element.classList.toggle("selecionada");
-}
-
-
-});
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
     const campoId = urlParams.get('id');
