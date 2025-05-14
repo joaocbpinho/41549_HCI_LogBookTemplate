@@ -138,6 +138,37 @@
       <p>Sem notificações novas.</p>
   </div>
 
+  <!-- Modal Detalhes da Reserva -->
+  <div id="modalDetalhesReserva" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModalDetalhesReserva()">&times;</span>
+      <h2>Detalhes da Reserva</h2>
+      <div id="detalhesReservaConteudo">
+        <p><strong>Campo:</strong> <span id="detalheCampoNome">N/D</span></p>
+        <p><strong>Data:</strong> <span id="detalheData">N/D</span></p>
+        <p><strong>Horário:</strong> <span id="detalheHorario">N/D</span></p>
+        <p><strong>Preço Total:</strong> <span id="detalhePreco">N/D</span></p>
+        <p><strong>Comodidades:</strong> <span id="detalheComodidades">N/D</span></p>
+        <p><strong>Nº de Confirmados:</strong> <span id="detalheNumConfirmados">N/D</span></p>
+        <p><strong>Equipa Convidada:</strong> <span id="detalheEquipaConvidada">N/D</span></p>
+        <p><strong>ID da Reserva:</strong> <span id="detalheReservaId">N/D</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirmar Cancelamento de Reserva -->
+  <div id="modalConfirmarCancelar" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeConfirmarCancelarModal">&times;</span>
+      <h2>Confirmar Cancelamento</h2>
+      <p id="mensagemConfirmarCancelar">Tem a certeza que quer cancelar esta reserva? Esta ação não pode ser desfeita.</p>
+      <div class="modal-actions">
+        <button id="btnManterReserva" class="btn-secundario">Não, Manter Reserva</button>
+        <button id="btnConfirmarCancelamentoDefinitivo" class="btn-perigo">Sim, Cancelar Reserva</button>
+      </div>
+    </div>
+  </div>
+
   <script src="../index/script.js"></script> <!-- ADICIONAR ESTA LINHA PARA SCRIPTS GLOBAIS -->
   <script src="reservas.js"></script>
 </body>
