@@ -274,26 +274,48 @@ const cidadesPortugal = [
 ];
 function setupAutocompleteLocalidade() {
     const localidadeInput = document.getElementById('localidade');
+    console.log("[Autocomplete] localidadeInput:", localidadeInput); // DEBUG
+
     // Cria a lista de sugestões dinamicamente se não existir
     let sugestoesList = document.getElementById('sugestoesLocalidade');
     if (!sugestoesList) {
+        console.log("[Autocomplete] sugestoesLocalidade não encontrada, criando dinamicamente."); // DEBUG
         sugestoesList = document.createElement('ul');
         sugestoesList.id = 'sugestoesLocalidade';
         sugestoesList.className = 'autocomplete-list'; // Usa a classe CSS definida
-        localidadeInput.parentNode.appendChild(sugestoesList);
+        if (localidadeInput && localidadeInput.parentNode) { // DEBUG: Verificar se parentNode existe
+            localidadeInput.parentNode.appendChild(sugestoesList);
+            console.log("[Autocomplete] sugestoesLocalidade adicionada ao DOM."); // DEBUG
+        } else {
+            console.error("[Autocomplete] localidadeInput ou seu parentNode não existe para adicionar a lista de sugestões."); // DEBUG
+            return; // Não continuar se não puder adicionar a lista
+        }
+    } else {
+        console.log("[Autocomplete] sugestoesLocalidade encontrada no DOM:", sugestoesList); // DEBUG
     }
 
-    if (!localidadeInput) return;
+    if (!localidadeInput) {
+        console.error("[Autocomplete] Input de localidade não encontrado!"); // DEBUG
+        return;
+    }
 
     localidadeInput.addEventListener('input', function() {
         const inputText = this.value.toLowerCase();
-        sugestoesList.innerHTML = '';
-        sugestoesList.classList.add('hidden');
-        if (inputText.length === 0) return;
+        console.log("[Autocomplete] Input alterado:", inputText); // DEBUG
+
+        sugestoesList.innerHTML = ''; // Limpa sugestões anteriores
+        // sugestoesList.classList.add('hidden'); // Esconde por defeito, mostra se houver sugestões
+
+        if (inputText.length === 0) {
+            console.log("[Autocomplete] Input vazio, escondendo lista."); // DEBUG
+            sugestoesList.classList.add('hidden');
+            return;
+        }
 
         const sugestoesFiltradas = cidadesPortugal.filter(cidade =>
             cidade.toLowerCase().startsWith(inputText)
         );
+        console.log("[Autocomplete] Sugestões filtradas:", sugestoesFiltradas); // DEBUG
 
         if (sugestoesFiltradas.length > 0) {
             sugestoesFiltradas.forEach(cidade => {
@@ -303,21 +325,26 @@ function setupAutocompleteLocalidade() {
                     localidadeInput.value = this.textContent;
                     sugestoesList.innerHTML = '';
                     sugestoesList.classList.add('hidden');
+                    console.log("[Autocomplete] Sugestão clicada:", this.textContent); // DEBUG
                 });
                 sugestoesList.appendChild(li);
             });
-            sugestoesList.classList.remove('hidden');
+            sugestoesList.classList.remove('hidden'); // Mostra a lista
+            console.log("[Autocomplete] Lista de sugestões mostrada."); // DEBUG
         } else {
-            sugestoesList.classList.add('hidden');
+            sugestoesList.classList.add('hidden'); // Esconde se não houver sugestões
+            console.log("[Autocomplete] Nenhuma sugestão, lista escondida."); // DEBUG
         }
     });
 
     // Fecha a lista se clicar fora
     document.addEventListener('click', function(event) {
-        if (!localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
+        if (localidadeInput && sugestoesList && !localidadeInput.contains(event.target) && !sugestoesList.contains(event.target)) {
             sugestoesList.classList.add('hidden');
+            // console.log("[Autocomplete] Clique fora, lista escondida."); // DEBUG (pode ser muito verboso)
         }
     });
+    console.log("[Autocomplete] setupAutocompleteLocalidade concluído."); // DEBUG
 }
 
 // --- Função Pesquisar ---
@@ -486,11 +513,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Carrega os dados dos campos necessários para a pesquisa e autocomplete
     carregarCampos().catch(error => {
         console.error("Falha no carregamento inicial dos campos:", error);
-        // Pode ser útil mostrar uma mensagem ao utilizador aqui
     });
 
     // Configura o autocomplete da localidade
-    setupAutocompleteLocalidade();
+    setupAutocompleteLocalidade(); // Certifique-se que esta chamada está aqui e descomentada
 
     // Adiciona listeners para os selects de hora DENTRO do popup de data/hora
     // Estes listeners são adicionados aqui porque os elementos estão no DOM principal,
