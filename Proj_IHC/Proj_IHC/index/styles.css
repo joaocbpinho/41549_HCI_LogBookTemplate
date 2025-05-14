@@ -75,6 +75,29 @@ header {
   background-color: var(--primary-color);
 }
 
+/* Estilo para o botão/link de Voltar */
+.back-button {
+  display: inline-flex; /* Para alinhar ícone e texto */
+  align-items: center;
+  padding: 8px 15px;
+  margin: 10px; /* Ajuste conforme necessário para posicionamento no header */
+  background-color: var(--primary-color); /* Ou outra cor que destaque */
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+}
+
+.back-button i {
+  margin-right: 8px; /* Espaço entre o ícone e o texto */
+}
+
+.back-button:hover {
+  background-color: var(--hover-color); /* Cor ao passar o rato */
+  color: white;
+}
+
 /* Secções */
 main {
   padding: 20px 40px; /* Aumentar padding lateral se desejar mais espaço nas bordas */
