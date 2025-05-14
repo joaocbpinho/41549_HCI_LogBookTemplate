@@ -277,65 +277,154 @@
 
   .modal-content {
     background-color: var(--background-color);
-    margin: 15% auto;
-    padding: 25px;
+    margin: 10% auto; /* Ajustado para um pouco menos de margem no topo em telas maiores */
+    padding: 20px 30px 30px 30px; /* Ajuste no padding */
     border: 1px solid var(--border-color);
     width: 90%;
-    max-width: 400px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    max-width: 550px; /* Aumentado para melhor visualização dos detalhes */
+    border-radius: 10px; /* Bordas um pouco mais suaves */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada */
     position: relative;
+    animation: fadeInModal 0.3s ease-out; /* Adiciona uma animação suave */
+  }
+
+  /* Adiciona uma animação simples para o modal aparecer */
+  @keyframes fadeInModal {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .modal-content .close {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
+    top: 15px; /* Ajuste na posição do botão fechar */
+    right: 20px; /* Ajuste na posição do botão fechar */
+    font-size: 28px; /* Tamanho do ícone de fechar */
     color: #aaa;
     cursor: pointer;
     font-weight: bold;
+    transition: color 0.2s ease; /* Transição suave para o hover */
   }
 
   .modal-content .close:hover {
-    color: #333;
+    color: var(--primary-color); /* Cor de hover mais alinhada com o tema */
   }
 
   .modal-content h2 {
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Mais espaço abaixo do título */
     color: var(--primary-color);
-    font-size: 1.4em;
+    font-size: 1.6em; /* Título um pouco maior */
+    font-weight: 600; /* Título um pouco mais forte */
+    text-align: center; /* Centralizar o título do modal */
+    padding-bottom: 15px; /* Espaçamento abaixo do título */
+    border-bottom: 2px solid var(--primary-color); /* Linha de separação mais proeminente */
   }
 
-  .modal-content label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 0.9em;
+  #detalhesReservaConteudo p {
+    margin-bottom: 15px; /* Aumenta o espaço entre os itens */
+    font-size: 1em; 
+    line-height: 1.7;   /* Melhora a legibilidade */
+    color: #444;         /* Cor do texto dos valores um pouco mais escura */
+    padding-left: 10px; /* Adiciona um pequeno recuo para os detalhes */
+    border-left: 3px solid transparent; /* Para um futuro destaque no hover, se desejado */
+    transition: background-color 0.2s ease, border-left-color 0.2s ease;
   }
 
-  .modal-content input[type="number"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    box-sizing: border-box; /* Inclui padding na largura */
+  /* Opcional: Efeito de hover suave nos itens de detalhe */
+  /*
+  #detalhesReservaConteudo p:hover {
+    background-color: #f9f9f9;
+    border-left: 3px solid var(--hover-color);
+  }
+  */
+
+  #detalhesReservaConteudo p:last-child {
+    margin-bottom: 0; /* Remove a margem do último parágrafo */
   }
 
-  .modal-content button {
-    background-color: var(--primary-color);
+  #detalhesReservaConteudo p strong {
+    color: var(--text-color); /* Cor dos rótulos (labels) */
+    font-weight: 600;         /* Rótulos um pouco mais destacados */
+    margin-right: 10px;       /* Mais espaço após o rótulo */
+    display: inline-block;    /* Garante que o margin-right funcione bem */
+    /* min-width: 140px; */  /* Opcional: para alinhar os valores, ajuste conforme necessário */
+  }
+
+  /* Estilos específicos para o Modal de Confirmação de Cancelamento */
+  #modalConfirmarCancelar .modal-content {
+    /* Adiciona uma borda superior sutil para indicar uma ação de "aviso" ou "crítica" */
+    border-top: 4px solid #dc3545; /* Cor de perigo (vermelho) */
+    padding-top: 25px; /* Ajusta o padding superior para compensar a borda */
+  }
+
+  /* O título do modal de cancelamento pode manter o estilo padrão para consistência,
+     ou pode ser alterado se desejar mais ênfase no "perigo" */
+  #modalConfirmarCancelar .modal-content h2 {
+    /* Exemplo: Se quisesse o título em vermelho também (pode ser excessivo) */
+    /* color: #dc3545; */
+    /* border-bottom-color: #dc3545; */
+    font-size: 1.7em; /* Título um pouco mais proeminente */
+  }
+
+  #mensagemConfirmarCancelar {
+    line-height: 1.7;   /* Melhora a legibilidade */
+    margin-top: 10px;   /* Espaço após o título */
+    margin-bottom: 30px; /* Mais espaço antes dos botões */
+    font-size: 1.1em;   /* Texto da mensagem um pouco maior para ênfase */
+    color: #555;         /* Cor do texto um pouco mais suave */
+    text-align: center; /* Centraliza a mensagem de confirmação */
+    padding: 0 15px;    /* Evita que o texto toque as bordas em telas menores */
+  }
+
+  #mensagemConfirmarCancelar strong {
+    color: var(--primary-color); /* Mantém o destaque para informações chave */
+    font-weight: 600;
+  }
+
+  /* Ajustes nos botões de ação dentro do modal de cancelamento */
+  #modalConfirmarCancelar .modal-actions {
+    display: flex;
+    justify-content: center; /* Centraliza os botões no modal */
+    gap: 20px; /* Aumenta o espaço entre os botões */
+    margin-top: 20px;
+  }
+
+  #modalConfirmarCancelar .modal-actions button {
+    padding: 12px 25px; /* Botões um pouco maiores para mais destaque e facilidade de clique */
+    font-size: 1em;     /* Tamanho da fonte do botão um pouco maior */
+    font-weight: 500;
+    border-radius: 6px; /* Bordas ligeiramente mais arredondadas */
+    min-width: 180px;   /* Garante que os botões tenham uma largura mínima para melhor visual */
+    text-align: center;
+  }
+
+  /* Botão de confirmação de cancelamento (Sim, Cancelar) */
+  #modalConfirmarCancelar .modal-actions .btn-perigo {
+    background-color: #dc3545;
     color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 1em;
-    transition: background-color 0.2s;
+    border: 1px solid #dc3545;
+    /* font-weight: bold; */ /* Opcional: para dar mais peso */
+  }
+  #modalConfirmarCancelar .modal-actions .btn-perigo:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3); /* Sombra sutil no hover */
   }
 
-  .modal-content button:hover {
-    background-color: var(--hover-color);
+  /* Botão de manter reserva (Não, Manter) */
+  #modalConfirmarCancelar .modal-actions .btn-secundario {
+    background-color: #f8f9fa; /* Fundo mais claro para secundário */
+    color: #333; /* Texto escuro */
+    border: 1px solid #ccc; /* Borda sutil */
+  }
+  #modalConfirmarCancelar .modal-actions .btn-secundario:hover {
+    background-color: #e9ecef;
+    border-color: #bbb;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil no hover */
   }
