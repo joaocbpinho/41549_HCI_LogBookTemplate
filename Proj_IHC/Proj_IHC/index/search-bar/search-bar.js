@@ -269,7 +269,7 @@ const cidadesPortugal = [
   "Coimbra", "Setúbal", "Almada", "Queluz", "Agualva-Cacém", "Guimarães",
   "Odivelas", "Aveiro", "Leiria", "Faro", "Évora", "Viseu", "Barreiro",
   "Matosinhos", "Ponta Delgada", "Viana do Castelo", "Santarém", "Beja",
-  "Castelo Branco", "Guarda", "Portalegre", "Bragança", "Vila Real"
+  "Castelo Branco", "Guarda", "Portalegre", "Bragança", "Vila Real", "Gafanha da Nazaré"
   // Adicione mais cidades conforme necessário
 ];
 function setupAutocompleteLocalidade() {

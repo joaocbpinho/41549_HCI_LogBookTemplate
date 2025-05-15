@@ -2,7 +2,7 @@
   {
     "id": 1,
     "nome": "Complexo Desportivo da Gafanha",
-    "localidade": "Aveiro",
+    "localidade": "Gafanha da Nazaré",
     "desporto": ["Futebol", "Ténis"],
     "preco_hora": 25.00,
     "imagens": ["../images/campo1.jpg", "../images/campo_futebol_vista_aerea.jpg"],
