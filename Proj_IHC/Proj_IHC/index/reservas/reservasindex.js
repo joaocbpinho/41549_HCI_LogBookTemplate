@@ -1,3 +1,4 @@
+
 async function carregarEExibirReservasIndex() {
   const listaReservasContainer = document.getElementById('listaReservas');
   if (!listaReservasContainer) {

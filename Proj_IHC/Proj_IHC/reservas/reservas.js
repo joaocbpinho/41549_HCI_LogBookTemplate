@@ -1,4 +1,5 @@
 // Variáveis globais para dados
+
 let todasReservas = [];
 let todosCampos = []; // Para guardar detalhes dos campos
 const modalDetalhesReserva = document.getElementById('modalDetalhesReserva'); // Referência ao novo modal

@@ -1,5 +1,10 @@
 // ========== FUNÇÕES GLOBAIS (MODAIS, SIDEBAR, RENDERIZAÇÃO INICIAL) ==========
-
+function limparLocalStorage() {
+  localStorage.clear();
+  console.log(localStorage.getItem('saldoUsuario'));
+  localStorage.removeItem('saldoUsuario');
+  console.log("Todo o conteúdo do localStorage foi apagado.");
+}
 // --- Funções para Exibir Mensagens Customizadas ---
 function exibirMensagemSucesso(mensagem) {
   const mensagemEl = document.createElement("div");
@@ -98,6 +103,7 @@ function fazerLogin() {
 
 // --- Funções Barra Lateral (Sidebar) ---
 function openProfileSidebar() {
+  limparLocalStorage();
   const sidebar = document.getElementById("profileSidebar");
   const overlay = document.getElementById("sidebarOverlay");
   if (sidebar) sidebar.style.width = "250px";
@@ -283,17 +289,17 @@ function atualizarMetodoPagamentoUI() {
 
   switch (metodoPagamentoAtual) {
     case 'visa':
-      iconeEl.src = '../images/visa_logo.png';
+      iconeEl.src = '../images/card_logo.svg';
       nomeEl.textContent = detalhesMetodo.tipo || 'Cartão de Crédito/Débito';
       detalheEl.textContent = detalhesMetodo.final ? `Terminado em ${detalhesMetodo.final}` : 'Detalhes não confirmados';
       break;
     case 'mbway':
-      iconeEl.src = '../images/mbway_logo.png';
+      iconeEl.src = '../images/mbway_logo.svg';
       nomeEl.textContent = 'MB WAY';
       detalheEl.textContent = 'Pagamento via App MB WAY';
       break;
     case 'paypal':
-      iconeEl.src = '../images/paypal_logo.png';
+      iconeEl.src = '../images/image.png';
       nomeEl.textContent = 'PayPal';
       detalheEl.textContent = 'Pagamento via conta PayPal';
       break;
