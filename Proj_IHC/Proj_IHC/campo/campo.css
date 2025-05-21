@@ -614,3 +614,43 @@ header .logo img {
   border: none;
   cursor: default;
 }
+
+/* Estilos para o Modal de Confirmação da Reserva */
+#confirmacaoReservaModal .modal-content {
+  max-width: 500px; /* Ajuste conforme necessário */
+}
+
+.resumo-reserva-detalhes p {
+  margin: 8px 0;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+.resumo-reserva-detalhes strong {
+  color: var(--primary-color); /* Ou outra cor de destaque */
+}
+
+.resumo-reserva-detalhes hr {
+  margin: 15px 0;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.resumo-reserva-detalhes .preco-destacado,
+.resumo-reserva-detalhes .preco-destacado span {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+#confirmacaoReservaModal .modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Alinha botões à direita */
+  gap: 10px; /* Espaço entre botões */
+  margin-top: 20px;
+}
+
+#confirmacaoReservaModal .modal-actions .pagar-btn,
+#confirmacaoReservaModal .modal-actions .cancelar-btn {
+  padding: 10px 20px;
+  font-size: 1em;
+}

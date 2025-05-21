@@ -1,4 +1,3 @@
-
 let todasReservas = [];
 let todosCampos = []; // Irá guardar os dados de campos.json
 
@@ -6,6 +5,13 @@ let todosCampos = []; // Irá guardar os dados de campos.json
 let selectedDate = null; // Deve ser um objeto Date
 let selectedTime = null; // Deve ser uma string como "HH:MM - HH:MM"
 let selectedAmenities = []; // Deve ser um array de strings com os nomes das comodidades
+const equipamentoSelecionado = { id: null, nome: null, preco: 0 };
+
+// NOVO: Variável para guardar detalhes da reserva pendente de confirmação
+let reservaPendenteParaConfirmacao = null;
+
+// NOVO: Referência ao modal de confirmação
+const confirmacaoReservaModal = document.getElementById("confirmacaoReservaModal");
 
 // Variáveis globais para o carrossel dinâmico
 let campoAtualImagens = [];
@@ -202,13 +208,10 @@ async function carregarReservas(campoIdParaFiltrar) {
     }
 }
 
-function guardarReservasNoLocalStorage() {
-    try {
-        localStorage.setItem('todasReservas', JSON.stringify(todasReservas));
-        console.log("Reservas guardadas no localStorage a partir de campo.js.");
-    } catch (error) {
-        console.error("Erro ao guardar reservas no localStorage em campo.js:", error);
-    }
+function guardarReservasNoLocalStorage(novaReserva) {
+    const reservasExistentes = JSON.parse(localStorage.getItem('todasReservas')) || []; // ALTERADO para 'todasReservas'
+    reservasExistentes.push(novaReserva);
+    localStorage.setItem('todasReservas', JSON.stringify(reservasExistentes)); // ALTERADO para 'todasReservas'
 }
 
 function atualizarCarrossel() {
@@ -410,20 +413,289 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Botão de perfil clicado.");
         });
     }
+
+    const btnConfirmarPagamentoFinal = document.getElementById('btnConfirmarPagamentoFinal');
+    if (btnConfirmarPagamentoFinal) {
+        console.log("Botão 'btnConfirmarPagamentoFinal' encontrado. Adicionando listener.");
+        btnConfirmarPagamentoFinal.addEventListener('click', () => {
+            console.log("Botão 'Confirmar e Pagar' clicado!");
+            efetivarReservaAposConfirmacao();
+        });
+    } else {
+        console.error("Botão 'btnConfirmarPagamentoFinal' NÃO encontrado no DOM!");
+    }
+
+    if (confirmacaoReservaModal) {
+        confirmacaoReservaModal.addEventListener('click', (event) => {
+            if (event.target === confirmacaoReservaModal) {
+                fecharConfirmacaoReservaModal();
+                reservaPendenteParaConfirmacao = null; // Limpa se fechar clicando fora
+            }
+        });
+        const closeBtn = confirmacaoReservaModal.querySelector('.close');
+        if (closeBtn) {
+            closeBtn.onclick = () => {
+                fecharConfirmacaoReservaModal();
+                reservaPendenteParaConfirmacao = null;
+            };
+        }
+        const cancelBtn = document.getElementById('btnCancelarConfirmacao');
+        if (cancelBtn) {
+            cancelBtn.onclick = () => {
+                fecharConfirmacaoReservaModal();
+                reservaPendenteParaConfirmacao = null;
+            };
+        }
+    } else {
+        console.warn("Modal de confirmação da reserva (confirmacaoReservaModal) não encontrado para configurar fecho.");
+    }
+    atualizarSaldoDisplay();
 });
 
 // Função auxiliar para formatar a data (adicione se não tiver uma similar)
 function formatarDataParaReserva(dateObj) {
-    if (!dateObj) return '';
-    // Se selectedDate já for uma string formatada, ajuste conforme necessário
-    if (typeof dateObj === 'string') return dateObj; 
-    
-    // Se selectedDate for um objeto Date
+    if (!dateObj) return 'N/D';
     const dia = String(dateObj.getDate()).padStart(2, '0');
     const mes = String(dateObj.getMonth() + 1).padStart(2, '0'); // Meses são 0-indexed
     const ano = dateObj.getFullYear();
     return `${dia}/${mes}/${ano}`;
 }
+
+// NOVO: Função para formatar data para exibição amigável
+function formatarDataParaExibicaoAmigavel(dateObj) {
+    if (!dateObj) return 'N/D';
+    return dateObj.toLocaleDateString('pt-PT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+// NOVO: Funções para abrir/fechar o modal de confirmação
+window.abrirConfirmacaoReservaModal = function() {
+    if (confirmacaoReservaModal) {
+        confirmacaoReservaModal.style.display = "block";
+    }
+}
+
+window.fecharConfirmacaoReservaModal = function() {
+    if (confirmacaoReservaModal) {
+        confirmacaoReservaModal.style.display = "none";
+    }
+}
+
+function atualizarSaldoDisplay() {
+    const saldoAtualEl = document.getElementById("saldoAtual");
+    if (!saldoAtualEl) return;
+
+    const saldoGuardado = localStorage.getItem('saldoUsuario');
+    const saldoValor = saldoGuardado ? parseFloat(saldoGuardado) : 0.00;
+
+    if (!saldoGuardado) { // Se não houver saldo, inicializa com 0.00
+        localStorage.setItem('saldoUsuario', saldoValor.toFixed(2));
+    }
+    saldoAtualEl.textContent = `${saldoValor.toFixed(2)}€`;
+}
+
+window.realizarPagamento = async function () {
+    const dataParaReserva = selectedDate;
+    const horarioParaReserva = selectedTime;
+    const comodidadesParaReserva = [...selectedAmenities];
+
+    if (!dataParaReserva || !horarioParaReserva) {
+        exibirMensagem("erro", "Por favor, selecione data e horário a partir do calendário e da lista de horários no modal de reserva.");
+        return;
+    }
+
+    const userIdLogado = localStorage.getItem('userId') || "prototipoUser";
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const campoId = urlParams.get('id');
+    let campoAtual = null;
+
+    if (todosCampos.length === 0) {
+        try {
+            const response = await fetch('campos.json');
+            if (!response.ok) throw new Error('Falha ao buscar campos.json para pagamento');
+            todosCampos = await response.json();
+        } catch (error) {
+            console.error("Erro ao carregar campos.json em realizarPagamento:", error);
+            exibirMensagem("erro", "Erro ao carregar detalhes do campo. Tente novamente.");
+            return;
+        }
+    }
+
+    if (campoId) {
+        campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
+    }
+
+    if (!campoAtual) {
+        exibirMensagem("erro", "Detalhes do campo não encontrados. Não é possível realizar a reserva.");
+        return;
+    }
+
+    const equipaSelecionadaNome = document.getElementById("equipaSelecionadaInfo")?.dataset.nomeEquipa;
+    let equipaObjParaCalculo = null;
+    let numeroMembrosEquipaOriginal = 1; 
+
+    if (equipaSelecionadaNome) {
+        const equipasGuardadas = JSON.parse(localStorage.getItem('equipas')) || [];
+        equipaObjParaCalculo = equipasGuardadas.find(e => e.nome === equipaSelecionadaNome);
+        if (equipaObjParaCalculo && equipaObjParaCalculo.membros && Array.isArray(equipaObjParaCalculo.membros)) {
+            numeroMembrosEquipaOriginal = equipaObjParaCalculo.membros.length + 1;
+        }
+    }
+
+    let precoBase = parseFloat(campoAtual.preco_hora);
+    let precoComodidades = 0;
+    if (selectedAmenities.includes("Equipamento")) {
+        precoComodidades += 1;
+    }
+
+    const precoTotalReserva = precoBase + precoComodidades;
+
+    let precoAPagarPeloUtilizador = precoTotalReserva; 
+    const capacidadeCampo = parseInt(campoAtual.capacidade);
+
+    if (capacidadeCampo && capacidadeCampo > 0) {
+        precoAPagarPeloUtilizador = precoTotalReserva / capacidadeCampo;
+    } else {
+        console.warn(`Capacidade do campo inválida ou não definida (${campoAtual.capacidade}). A parte do utilizador será o preço total.`);
+    }
+
+    console.log("Detalhes do cálculo do preço:");
+    console.log("Capacidade do Campo:", capacidadeCampo);
+    console.log("Preço Total da Reserva:", precoTotalReserva);
+    console.log("Preço a Pagar pelo Utilizador (baseado na capacidade):", precoAPagarPeloUtilizador);
+    if (equipaSelecionadaNome) {
+        console.log("Equipa selecionada (informativo):", equipaSelecionadaNome, "Membros originais considerados:", numeroMembrosEquipaOriginal);
+    }
+
+    reservaPendenteParaConfirmacao = {
+        dataParaReserva,
+        horarioParaReserva,
+        comodidadesParaReserva,
+        campoAtual,
+        equipaSelecionadaObj: equipaObjParaCalculo,
+        equipaSelecionadaNome,
+        numeroMembrosEquipa: numeroMembrosEquipaOriginal, 
+        precoTotalReserva,
+        precoAPagarPeloUtilizador, 
+        userIdLogado
+    };
+
+    document.getElementById('confirmacaoCampoNome').textContent = campoAtual.nome;
+    document.getElementById('confirmacaoData').textContent = formatarDataParaExibicaoAmigavel(dataParaReserva);
+    document.getElementById('confirmacaoHorario').textContent = horarioParaReserva;
+    document.getElementById('confirmacaoComodidades').textContent = comodidadesParaReserva.length > 0 ? comodidadesParaReserva.join(', ') : 'Nenhuma';
+    document.getElementById('confirmacaoEquipa').textContent = equipaSelecionadaNome || 'Nenhuma (reserva individual)';
+    document.getElementById('confirmacaoPrecoTotal').textContent = `${precoTotalReserva.toFixed(2)}€`;
+    document.getElementById('confirmacaoPrecoUtilizador').textContent = `${precoAPagarPeloUtilizador.toFixed(2)}€`;
+
+    abrirConfirmacaoReservaModal();
+};
+
+async function efetivarReservaAposConfirmacao() {
+    console.log("[efetivarReservaAposConfirmacao] Função chamada.");
+
+    if (!reservaPendenteParaConfirmacao) {
+        console.error("[efetivarReservaAposConfirmacao] reservaPendenteParaConfirmacao é null. Saindo.");
+        exibirMensagem("erro", "Não há detalhes de reserva para confirmar. Por favor, tente novamente.");
+        fecharConfirmacaoReservaModal();
+        return;
+    }
+
+    console.log("[efetivarReservaAposConfirmacao] Detalhes pendentes:", reservaPendenteParaConfirmacao);
+
+    const {
+        dataParaReserva,
+        horarioParaReserva,
+        comodidadesParaReserva,
+        campoAtual,
+        equipaSelecionadaObj,
+        equipaSelecionadaNome,
+        numeroMembrosEquipa,
+        precoTotalReserva,
+        precoAPagarPeloUtilizador,
+        userIdLogado
+    } = reservaPendenteParaConfirmacao;
+
+    let saldoAtualTexto = localStorage.getItem('saldoUsuario') || "0.00";
+    let saldoAtualNumerico = parseFloat(saldoAtualTexto);
+    console.log(`[efetivarReservaAposConfirmacao] Saldo: ${saldoAtualNumerico}, Preço a pagar: ${precoAPagarPeloUtilizador}`);
+
+    if (saldoAtualNumerico < precoAPagarPeloUtilizador) {
+        console.warn("[efetivarReservaAposConfirmacao] Saldo insuficiente.");
+        exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para pagar a sua parte de ${precoAPagarPeloUtilizador.toFixed(2)}€.`);
+        fecharConfirmacaoReservaModal();
+        abrirModalSaldo(); // Função global para abrir modal de saldo
+        return;
+    }
+
+    saldoAtualNumerico -= precoAPagarPeloUtilizador;
+    localStorage.setItem('saldoUsuario', saldoAtualNumerico.toFixed(2));
+    atualizarSaldoDisplay();
+    console.log("[efetivarReservaAposConfirmacao] Saldo atualizado:", saldoAtualNumerico);
+
+    const novaReserva = {
+        id: `res_${Date.now()}_${campoAtual.id}`,
+        userId: userIdLogado,
+        campoId: campoAtual.id,
+        nomeCampo: campoAtual.nome,
+        data: formatarDataParaReserva(dataParaReserva),
+        horario: horarioParaReserva,
+        preco: precoTotalReserva,
+        precoPagoPeloUtilizador: precoAPagarPeloUtilizador,
+        comodidades: comodidadesParaReserva,
+        equipasConvidadas: equipaSelecionadaNome ? [equipaSelecionadaNome] : [],
+        numeroTotalMembrosConsiderados: numeroMembrosEquipa,
+        numConfirmados: 1,
+        estado: "Confirmada"
+    };
+
+    guardarReservasNoLocalStorage(novaReserva);
+    console.log("[efetivarReservaAposConfirmacao] Reserva guardada:", novaReserva);
+
+    exibirMensagem("sucesso", `Reserva para ${campoAtual.nome} confirmada com sucesso!`);
+
+    fecharConfirmacaoReservaModal();
+    fecharReserva(); // Fecha o modal de reserva principal
+
+    selectedDate = null;
+    selectedTime = null;
+    selectedAmenities = [];
+
+    const reservaModal = document.getElementById("reservaModal");
+    if (reservaModal) {
+        reservaModal.querySelectorAll('.calendar-day.active').forEach(el => el.classList.remove('active'));
+        reservaModal.querySelectorAll('.horario-slot.selected').forEach(el => el.classList.remove('selected'));
+        
+        const equipaInfoEl = document.getElementById("equipaSelecionadaInfo");
+        if (equipaInfoEl) {
+            equipaInfoEl.textContent = "Nenhuma equipa selecionada.";
+            delete equipaInfoEl.dataset.nomeEquipa;
+        }
+        const convidarContainer = reservaModal.querySelector('.convidar-container');
+        if (convidarContainer) {
+             convidarContainer.querySelectorAll('.convidar-btn.selecionada').forEach(btn => {
+                btn.classList.remove('selecionada');
+            });
+        }
+
+        const comodidadesModalEl = document.getElementById("comodidadesModal");
+        if (comodidadesModalEl) {
+            comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada").forEach(el => el.classList.remove('selecionada'));
+        }
+    }
+    
+    reservaPendenteParaConfirmacao = null; 
+    console.log("[efetivarReservaAposConfirmacao] Processo concluído.");
+}
+
+window.fecharReserva = function () {
+    const reservaModal = document.getElementById("reservaModal");
+    if (reservaModal) {
+        reservaModal.style.display = "none";
+    } else {
+        console.error("Modal de reserva não encontrado no DOM.");
+    }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
     const reservaModal = document.getElementById("reservaModal");
@@ -454,14 +726,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    window.fecharReserva = function () {
-        const reservaModal = document.getElementById("reservaModal");
-        if (reservaModal) {
-            reservaModal.style.display = "none";
-        } else {
-            console.error("Modal de reserva não encontrado no DOM.");
-        }
-    };
     const calendarGridModal = reservaModal.querySelector(".calendar-grid");
     const calendarioMesAnoModal = reservaModal.querySelector("#calendarioMesAno");
     const prevMonthBtnModal = reservaModal.querySelector("#prevMonth");
@@ -581,7 +845,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Adicionar todas as comodidades do campo
                 if (campoSelecionado.comodidades && campoSelecionado.comodidades.length > 0) {
                     campoSelecionado.comodidades.forEach(comodidade => {
-                        const li = document.createElement("li");
+                        const li = document.createElement('li');
                         li.className = "comodidade";
                         li.setAttribute("data-nome", comodidade);
                         li.onclick = function () {
@@ -641,157 +905,5 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnConfirmarComodidadesNoModal = comodidadesModalEl ? comodidadesModalEl.querySelector('button') : null;
     if (btnConfirmarComodidadesNoModal && btnConfirmarComodidadesNoModal.textContent.toLowerCase().includes("confirmar")) {
        btnConfirmarComodidadesNoModal.onclick = confirmarComodidades;
-    }
-
-    window.realizarPagamento = async function () {
-        const dataParaReserva = selectedDate;
-        const horarioParaReserva = selectedTime;
-        const comodidadesParaReserva = selectedAmenities;
-    
-        if (!dataParaReserva || !horarioParaReserva) {
-            exibirMensagem("erro", "Por favor, selecione data e horário a partir do calendário e da lista de horários no modal de reserva.");
-            return;
-        }
-    
-        const userIdLogado = "prototipoUser"; // Simulação de utilizador logado
-    
-        const urlParams = new URLSearchParams(window.location.search);
-        const campoId = urlParams.get('id');
-        let campoAtual = null;
-    
-        if (campoId && todosCampos.length > 0) {
-            campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
-        } else if (campoId) {
-            try {
-                if (todosCampos.length === 0) {
-                    const response = await fetch('campos.json');
-                    if (!response.ok) throw new Error('Falha ao buscar campos.json');
-                    todosCampos = await response.json();
-                }
-                campoAtual = todosCampos.find(campo => campo.id === parseInt(campoId));
-            } catch (error) {
-                console.error("Erro ao tentar carregar campo para pagamento:", error);
-                exibirMensagem("erro", "Erro crítico ao carregar dados do campo. A reserva não pode ser processada.");
-                return;
-            }
-        }
-    
-        if (!campoAtual) {
-            exibirMensagem("erro", "Erro ao carregar dados do campo para processar a reserva. Tente novamente ou selecione o campo novamente.");
-            return;
-        }
-    
-        const precoCampo = parseFloat(campoAtual.preco_hora);
-        let precoFinal = precoCampo;
-    
-        // Dividir o custo entre os membros da equipa selecionada
-        let membrosTotais = [];
-        equipasSelecionadas.forEach(equipa => {
-            if (Array.isArray(equipa.membros) && equipa.membros.length > 0) {
-                membrosTotais = membrosTotais.concat(equipa.membros);
-            } else {
-                console.warn(`A equipa "${equipa.nome}" não possui membros ou o campo "membros" está incorreto.`);
-            }
-        });
-        console.log("Membros totais (incluindo o utilizador logado):", membrosTotais);
-        // Adicionar o utilizador que está a fazer a reserva
-        const utilizadorLogado = "prototipoUser"; // Simulação de utilizador logado
-        membrosTotais.push(utilizadorLogado);
-    
-        const numeroDeMembros = membrosTotais.length;
-    
-        // Adicionar taxa de reserva de equipamento
-        let taxaEquipamento = 0;
-
-        // Calcular a taxa de equipamento
-        comodidadesParaReserva.forEach(comodidade => {
-            if (["Bolas", "Cones", "Coletes"].includes(comodidade)) {
-                // Equipamento coletivo: taxa dividida entre todos os membros
-                taxaEquipamento += 1 / numeroDeMembros;
-                console.log(`Taxa coletiva para ${comodidade}:`, 1 / numeroDeMembros);
-            } else if (["Raquetes", "Rede"].includes(comodidade)) {
-                // Equipamento individual: taxa paga apenas pelo utilizador
-                taxaEquipamento += 1;
-                console.log(`Taxa individual para ${comodidade}:`, 1);
-            }
-        });
-
-        // Adicionar a taxa de equipamento ao preço final
-        precoFinal += taxaEquipamento;
-        console.log("Taxa de equipamento adicionada. Preço final atualizado:", precoFinal);
-            
-        let precoPorPessoa = precoFinal;
-    
-        if (numeroDeMembros > 0) {
-            precoPorPessoa = precoFinal / numeroDeMembros;
-        }
-    
-        // Lógica de Saldo
-        let saldoAtualNumerico = parseFloat(localStorage.getItem('saldoUsuario')) || 0.00;
-    
-        if (numeroDeMembros === 0) {
-            // Sem equipa selecionada, o utilizador paga o valor total
-            if (saldoAtualNumerico < precoFinal) {
-                exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para realizar a reserva de ${precoFinal.toFixed(2)}€.`);
-                abrirModalSaldo();
-                return;
-            }
-            saldoAtualNumerico -= precoFinal;
-        } else {
-            // Dividir o custo entre os membros
-            if (saldoAtualNumerico < precoPorPessoa) {
-                exibirMensagem("erro", `Saldo insuficiente (${saldoAtualNumerico.toFixed(2)}€) para pagar a sua parte de ${precoPorPessoa.toFixed(2)}€.`);
-                abrirModalSaldo();
-                return;
-            }
-            saldoAtualNumerico -= precoPorPessoa;
-            console.log(`O utilizador "${utilizadorLogado}" pagou ${precoPorPessoa.toFixed(2)}€.`);
-        }
-    
-        // Atualizar o saldo no localStorage
-        localStorage.setItem('saldoUsuario', saldoAtualNumerico.toString());
-    
-        // Atualizar o saldo no DOM
-        const saldoAtualEl = document.getElementById("saldoAtual");
-        if (saldoAtualEl) {
-            saldoAtualEl.textContent = `${saldoAtualNumerico.toFixed(2)}€`;
-        }
-    
-        const dataFormatada = formatarDataParaReserva(dataParaReserva);
-    
-        const novaReserva = {
-            id: Date.now(),
-            campoId: campoAtual.id,
-            nomeCampo: campoAtual.nome,
-            data: dataFormatada,
-            horario: horarioParaReserva,
-            preco: precoCampo,
-            comodidades: comodidadesParaReserva,
-            userId: userIdLogado,
-            equipasConvidadas: equipasSelecionadas.map(e => e.nome) // Adiciona as equipas convidadas
-        };
-    
-        todasReservas.push(novaReserva);
-        guardarReservasNoLocalStorage();
-    
-        // Enviar convites para os membros das equipas selecionadas
-        equipasSelecionadas.forEach(equipa => {
-            equipa.membros.forEach(membro => {
-                console.log(`Convite enviado para ${membro} da equipa "${equipa.nome}".`);
-            });
-        });
-    
-        exibirMensagem("sucesso", `Reserva para ${campoAtual.nome} em ${dataFormatada} às ${horarioParaReserva} confirmada! Taxa adicional de 1€ por equipamento incluída. Novo saldo: ${saldoAtualNumerico.toFixed(2)}€ `);
-        fecharReserva();
-    }});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const campoId = urlParams.get('id');
-
-    if (campoId) {
-        carregarDadosCampoEConfigurarPagina(campoId);
-    } else {
-        console.error('ID do campo não encontrado na URL.');
     }
 });

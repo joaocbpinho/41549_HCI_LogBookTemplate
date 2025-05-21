@@ -1,4 +1,3 @@
-
 async function carregarEExibirReservasIndex() {
   const listaReservasContainer = document.getElementById('listaReservas');
   if (!listaReservasContainer) {
@@ -23,7 +22,7 @@ async function carregarEExibirReservasIndex() {
     if (!responseCampos.ok) throw new Error(`Erro ao carregar campos: ${responseCampos.status}`);
     const todosOsCamposIndex = await responseCampos.json();
 
-    const reservasGuardadas = localStorage.getItem('todasReservas');
+    const reservasGuardadas = localStorage.getItem('todasReservas'); // Lê de 'todasReservas'
     let todasReservas = [];
     if (reservasGuardadas) {
       todasReservas = JSON.parse(reservasGuardadas);

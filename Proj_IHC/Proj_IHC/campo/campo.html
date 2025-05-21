@@ -88,6 +88,7 @@
               
                 <div class="convidar-amigos">
                   <h2>Convidar Equipas</h2>
+                  <p id="equipaSelecionadaInfo" data-nome-equipa="">Nenhuma equipa selecionada.</p>
                   <div class="convidar-container">
                     <!-- Botões de equipas serão adicionados dinamicamente aqui -->
                   </div>
@@ -104,13 +105,36 @@
         <div id="equipamentoModal" class="modal">
           <div class="modal-content">
               <span class="close" onclick="fecharEquipamentoModal()">&times;</span>
-              <h2>Escolher Equipamento</h2>
-              <ul class="equipamento-lista">
-                  <!-- Equipamentos serão adicionados dinamicamente -->
-              </ul>
-              <button onclick="confirmarEquipamento()">Confirmar</button>
+              <h2>Escolher Equipamento Adicional</h2>
+              <div id="listaEquipamentosDisponiveis">
+                  <!-- Equipamentos serão carregados aqui -->
+              </div>
+              <button onclick="confirmarEquipamento()">Confirmar Equipamento</button>
           </div>
         </div>
+
+        <!-- NOVO: Modal de Confirmação da Reserva -->
+        <div id="confirmacaoReservaModal" class="modal">
+          <div class="modal-content">
+            <span class="close" onclick="fecharConfirmacaoReservaModal()">&times;</span>
+            <h2>Confirmar Detalhes da Reserva</h2>
+            <div id="resumoReservaDetalhes" class="resumo-reserva-detalhes">
+              <p><strong>Campo:</strong> <span id="confirmacaoCampoNome">N/D</span></p>
+              <p><strong>Data:</strong> <span id="confirmacaoData">N/D</span></p>
+              <p><strong>Horário:</strong> <span id="confirmacaoHorario">N/D</span></p>
+              <p><strong>Comodidades:</strong> <span id="confirmacaoComodidades">N/D</span></p>
+              <p><strong>Equipa Convidada:</strong> <span id="confirmacaoEquipa">N/D</span></p>
+              <hr>
+              <p><strong>Preço Total da Reserva:</strong> <span id="confirmacaoPrecoTotal">N/D</span></p>
+              <p class="preco-destacado"><strong>Sua Parte a Pagar:</strong> <span id="confirmacaoPrecoUtilizador">N/D</span></p>
+            </div>
+            <div class="modal-actions">
+              <button id="btnCancelarConfirmacao" class="cancelar-btn" onclick="fecharConfirmacaoReservaModal()">Cancelar</button>
+              <button id="btnConfirmarPagamentoFinal" class="pagar-btn">Confirmar e Pagar</button>
+            </div>
+          </div>
+        </div>
+        <!-- FIM NOVO: Modal de Confirmação da Reserva -->
        
     </section>
 
