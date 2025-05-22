@@ -61,14 +61,18 @@ function carregarEquipasParaCampo(desportosCampo) {
         button.textContent = equipa.nome;
 
         button.onclick = () => {
-            if (equipasSelecionadas.includes(equipa)) {
-                equipasSelecionadas = equipasSelecionadas.filter(e => e !== equipa);
-                button.classList.remove('selecionada');
-                console.log(`Equipa "${equipa.nome}" desmarcada.`);
-            } else {
-                equipasSelecionadas.push(equipa);
-                button.classList.add('selecionada');
-                console.log(`Equipa "${equipa.nome}" selecionada!`);
+            // Permitir apenas uma equipa selecionada de cada vez
+            equipasSelecionadas = [equipa];
+            // Remover seleção visual de outros botões
+            document.querySelectorAll('.convidar-btn.selecionada').forEach(btn => btn.classList.remove('selecionada'));
+            button.classList.add('selecionada');
+            console.log(`Equipa "${equipa.nome}" selecionada!`);
+
+            // Atualizar info da equipa selecionada
+            const equipaInfoEl = document.getElementById("equipaSelecionadaInfo");
+            if (equipaInfoEl) {
+                equipaInfoEl.textContent = equipa.nome;
+                equipaInfoEl.dataset.nomeEquipa = equipa.nome;
             }
         };
 
@@ -127,7 +131,6 @@ window.abrirEquipamentos = function () {
                 ],
                 Basquetebol: [
                     { nome: "Bolas de Basquetebol", icone: "fas fa-basketball-ball" },
-                    { nome: "Tabela", icone: "fas fa-square" },
                     { nome: "Coletes", icone: "fas fa-shirt" }
                 ],
                 Voleibol: [
@@ -145,14 +148,110 @@ window.abrirEquipamentos = function () {
             const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
             listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
 
-            // Adicionar os equipamentos específicos do desporto
-            equipamentosDesporto.forEach(equipamento => {
+           equipamentosDesporto.forEach(equipamento => {
                 const li = document.createElement("li");
                 li.className = "equipamento";
                 li.setAttribute("data-nome", equipamento.nome);
-                li.onclick = function () {
+
+                const nomeLower = equipamento.nome.toLowerCase();
+                const isIndividualComQuantidade =
+                    nomeLower.includes("colete") ||
+                    nomeLower.includes("raquete de padel") ||
+                    nomeLower.includes("raquetes de padel") ||
+                    nomeLower.includes("raquete") ||
+                    nomeLower.includes("raquetes");
+
+                // Ícone
+                let icon;
+                if (equipamento.icone.endsWith && equipamento.icone.endsWith(".png")) {
+                    icon = document.createElement("img");
+                    icon.src = equipamento.icone;
+                    icon.alt = equipamento.nome;
+                    icon.style.width = "24px";
+                    icon.style.height = "24px";
+                    icon.style.marginRight = "10px";
+                } else {
+                    icon = document.createElement("i");
+                    icon.className = equipamento.icone;
+                    icon.style.marginRight = "10px";
+                }
+                li.appendChild(icon);
+
+                // Nome
+                li.appendChild(document.createTextNode(` ${equipamento.nome} `));
+
+                if (
+                    equipamento.nome.toLowerCase().includes("bolas") ||
+                    equipamento.nome.toLowerCase().includes("rede") ||
+                    equipamento.nome.toLowerCase().includes("bola de ténis") ||
+                    equipamento.nome.toLowerCase().includes("bola de padel") ||
+                    equipamento.nome.toLowerCase().includes("bola de basquetebol") ||
+                    equipamento.nome.toLowerCase().includes("bola de voleibol") ||
+                    equipamento.nome.toLowerCase().includes("bola de andebol")
+                ) {
+                    li.setAttribute("data-tipo", "coletivo");
+                    const span = document.createElement("span");
+                    span.style.color = "green";
+                    span.textContent = "(Coletivo +1€)";
+                    li.appendChild(span);
+                } else if (isIndividualComQuantidade) {
+                    li.setAttribute("data-tipo", "individual");
+                    const span = document.createElement("span");
+                    span.style.color = "blue";
+                    span.textContent = "(Individual +1€/un)";
+                    li.appendChild(span);
+
+                    // Botão -
+                    const btnMenos = document.createElement("button");
+                    btnMenos.type = "button";
+                    btnMenos.textContent = "-";
+                    btnMenos.style.marginLeft = "8px";
+                    btnMenos.onclick = function(e) {
+                        e.stopPropagation();
+                        let qtd = parseInt(inputQtd.value) || 1;
+                        if (qtd > 1) inputQtd.value = qtd - 1;
+                    };
+
+                    // Input de quantidade
+                    const inputQtd = document.createElement("input");
+                    inputQtd.type = "number";
+                    inputQtd.min = "1";
+                    inputQtd.value = "1";
+                    inputQtd.className = "quantidade-equipamento";
+                    inputQtd.style.width = "40px";
+                    inputQtd.style.margin = "0 6px";
+                    inputQtd.onclick = function(e) { e.stopPropagation(); };
+
+                    // Botão +
+                    const btnMais = document.createElement("button");
+                    btnMais.type = "button";
+                    btnMais.textContent = "+";
+                    btnMais.onclick = function(e) {
+                        e.stopPropagation();
+                        let qtd = parseInt(inputQtd.value) || 1;
+                        inputQtd.value = qtd + 1;
+                    };
+
+                    li.appendChild(btnMenos);
+                    li.appendChild(inputQtd);
+                    li.appendChild(btnMais);
+                } else {
+                    li.setAttribute("data-tipo", "individual");
+                    const span = document.createElement("span");
+                    span.style.color = "blue";
+                    span.textContent = "(Individual +1€)";
+                    li.appendChild(span);
+                }
+
+                li.onclick = function (e) {
+                    // Não marcar/desmarcar ao clicar nos botões ou input de quantidade
+                    if (e.target.tagName.toLowerCase() === "button" || e.target.tagName.toLowerCase() === "input") return;
                     this.classList.toggle("selecionada");
                 };
+                listaComodidades.appendChild(li);
+        
+                    
+                // Adicionar os equipamentos à lista           
 
                 // Verificar se o ícone é uma imagem PNG ou um ícone Font Awesome
                 if (equipamento.icone.endsWith(".png")) {
@@ -543,22 +642,36 @@ window.realizarPagamento = async function () {
     }
 
     let precoBase = parseFloat(campoAtual.preco_hora);
+    // ...dentro de window.realizarPagamento...
     let precoComodidades = 0;
-    if (selectedAmenities.includes("Equipamento")) {
-        precoComodidades += 1;
-    }
+    const equipamentosSelecionados = Array.from(document.querySelectorAll('.equipamento.selecionada'));
+    equipamentosSelecionados.forEach(li => {
+        const tipo = li.getAttribute('data-tipo');
+        if (tipo === "coletivo") {
+            // Divide por membros da equipa se houver equipa
+            if (equipaSelecionadaNome && numeroMembrosEquipaOriginal > 0) {
+                precoComodidades += 1 / numeroMembrosEquipaOriginal;
+            } else {
+                precoComodidades += 1;
+            }
+        } else {
+            // Individual, só quem reserva paga
+            precoComodidades += 1;
+        }
+    });
 
     const precoTotalReserva = precoBase + precoComodidades;
 
+    // ...existing code...
     let precoAPagarPeloUtilizador = precoTotalReserva; 
-    const capacidadeCampo = parseInt(campoAtual.capacidade);
-
-    if (capacidadeCampo && capacidadeCampo > 0) {
-        precoAPagarPeloUtilizador = precoTotalReserva / capacidadeCampo;
+    const capacidadeCampo = parseInt(campoAtual.capacidade); // Definindo um valor padrão para a capacidade
+    if (equipaSelecionadaNome && numeroMembrosEquipaOriginal > 0) {
+        precoAPagarPeloUtilizador = precoTotalReserva / numeroMembrosEquipaOriginal;
     } else {
-        console.warn(`Capacidade do campo inválida ou não definida (${campoAtual.capacidade}). A parte do utilizador será o preço total.`);
+        precoAPagarPeloUtilizador = precoTotalReserva;
     }
-
+    
+    // ...existing code...
     console.log("Detalhes do cálculo do preço:");
     console.log("Capacidade do Campo:", capacidadeCampo);
     console.log("Preço Total da Reserva:", precoTotalReserva);
