@@ -176,21 +176,49 @@ function criarEquipa() {
 // Renderizar equipas na interface
 function renderizarEquipas() {
   const equipas = JSON.parse(localStorage.getItem("equipas")) || [];
-  const listaEquipas = document.getElementById("listaEquipas");
+  const listaEquipas = document.getElementById("listaEquipas"); // This is the container in equipa.html
+
+  if (!listaEquipas) {
+    console.error("Elemento #listaEquipas não encontrado no DOM (equipa.js).");
+    return;
+  }
   listaEquipas.innerHTML = ""; // Limpar lista de equipas
 
   equipas.forEach((equipa) => {
-    const desportoFormatado = equipa.desporto.charAt(0).toUpperCase() + equipa.desporto.slice(1); // Capitalizar a primeira letra
+    const desportoFormatado = equipa.desporto ? equipa.desporto.charAt(0).toUpperCase() + equipa.desporto.slice(1) : 'N/D'; // Added check for equipa.desporto
 
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "card-equipa"; // Assuming .card-equipa is styled in equipa.css
     card.innerHTML = `
-      <h3>${equipa.nome}</h3>
-      <p><strong>Desporto:</strong> ${desportoFormatado}</p>
-      <button class="gerir-btn" onclick="abrirPopupGerirEquipa('${equipa.nome}')">Gerir</button>
+      <div class="card-equipa-content">
+        <h3>${equipa.nome || 'Equipa sem nome'}</h3>
+        <p><strong>Desporto:</strong> ${desportoFormatado}</p>
+        <button class="gerir-btn" onclick="abrirPopupGerirEquipa('${equipa.nome}')">Gerir</button>
+      </div>
     `;
     listaEquipas.appendChild(card);
   });
+
+  // Adicionar o card "Criar Equipa"
+  const addCard = document.createElement("div");
+  // Use consistent classes if you want similar base styling from styles.css
+  // For equipa.html, you might have specific styles for .add-card or rely on .card-equipa styling
+  addCard.className = "card-equipa add-card"; // Or just "add-card" if you have specific styles for it
+                                          // Or "card card-equipa add-card-equipa-page" for more specificity
+  addCard.innerHTML = `
+    <div class="add-card-content">➕ Criar Equipa</div>
+  `;
+  addCard.title = 'Criar uma nova equipa';
+  addCard.style.cursor = 'pointer'; 
+  // Make sure .add-card or the combined classes give it appropriate styling (height, etc.)
+  // to be visible and consistent with other cards.
+  // You might need to add styles for .add-card in equipa.css if they don't exist.
+  // For example, ensure it has a height similar to .card-equipa.
+
+  addCard.addEventListener('click', () => {
+    abrirPopupCriarEquipa(); // This function should be defined in equipa.js to open the popup
+  });
+  listaEquipas.appendChild(addCard);
 }
 // Abrir o pop-up de confirmação para remover a equipa
 function abrirPopupConfirmarRemoverEquipa(nomeEquipa) {

@@ -585,3 +585,26 @@ form h3 {
   align-items: center; /* Vertically center text if h3 has more height */
   justify-content: center; /* Horizontally center text (redundant if text-align: center on parent) */
 }
+
+#listaEquipas .add-card {
+  background-color: #f8f9fa;
+  border: 2px dashed #007bff;
+  color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  height: 150px; /* Mantenha a mesma altura mínima que outros .add-card se houver */
+  /* Pode herdar de um .card base se a estrutura HTML gerada incluir a classe .card */
+}
+
+#listaEquipas .add-card:hover {
+  background-color: #e2e6ea;
+  border-color: #0056b3;
+  color: #0056b3;
+}

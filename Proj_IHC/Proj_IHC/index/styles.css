@@ -68,7 +68,7 @@ header {
   padding: 5px 15px;
   border: 1px solid white;
   border-radius: 20px;
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 #saldoContainer:hover {
@@ -94,7 +94,7 @@ header {
 }
 
 .back-button:hover {
-  background-color: var(--hover-color); /* Cor ao passar o rato */
+  background-color: var(--hover-primary-color); /* Cor ao passar o rato */
   color: white;
 }
 
@@ -272,7 +272,7 @@ main {
 }
 
 .modal-content button:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 /* Modal de Login */
@@ -305,7 +305,7 @@ main {
 }
 
 #modalLogin .modal-content button:hover {
-  background-color: var(--hover-color);
+  background-color: var(--hover-primary-color);
 }
 
 /* Pop-up geral */
@@ -860,3 +860,61 @@ main {
   animation: fadeInOut 3s ease-in-out forwards; /* 'forwards' can be removed if you prefer it to just disappear */
 }
 
+#listaEquipas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-equipa { /* Usa classe específica, não sobrescreve .card diretamente */
+  background-color: #fff;
+  padding: 20px; /* Mais padding */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 120px; /* Altura mínima */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza conteúdo */
+  /* Herda .card base styles, so no need to repeat all of them */
+  height: 150px;
+}
+
+.card-equipa-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Pushes name to top, desporto to bottom */
+  align-items: center; /* Centraliza conteúdo horizontalmente */
+  width: 100%;
+  height: 100%; /* Make it fill the parent card-equipa */
+  text-align: center; /* Ensures text within children is centered */
+  overflow: hidden;
+}
+
+.card-equipa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.card-equipa h3 {
+  margin-top: 0;
+  margin-bottom: 8px; /* Menos espaço */
+  color: var(--primary-color);
+  font-size: 1.05em; /* Tamanho ajustado */
+  flex-grow: 1; /* Allow the h3 to take up available space in the middle */
+  display: flex; /* To use align-items for vertical centering of text inside h3 */
+  align-items: center; /* Vertically center text if h3 has more height */
+  justify-content: center; /* Horizontally center text (redundant if text-align: center on parent) */
+}
+
+.card-equipa p {
+  font-size: 0.85em; /* Menor */
+  color: #666;
+  margin-bottom: 0;
+}
