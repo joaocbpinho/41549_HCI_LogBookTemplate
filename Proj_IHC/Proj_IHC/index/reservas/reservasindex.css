@@ -71,7 +71,7 @@
 #listaReservas:not(.cards) {
   display: flex;
   flex-direction: column; /* Empilha a mensagem e o card "Ver todas" */
-  align-items: left;   /* Centraliza-os horizontalmente */
+  align-items: flex-start;   /* CORRIGIDO: Centraliza-os horizontalmente (ou 'center' se preferir) */
   gap: 15px;             /* Espaço entre a mensagem e o card "Ver todas" */
   padding: 20px 0;       /* Adiciona algum padding vertical ao container */
   
@@ -81,4 +81,95 @@
   width: 310px; /* Define uma largura fixa para o card, similar aos cards na grelha */
   min-height: 150px; /* Garante uma altura mínima consistente com .add-card */
   /* display: flex, justify-content e align-items já definidos acima para esta classe */
+}
+
+/* Estilos para a lista de itens no index (reservas e convites) */
+#listaReservas.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Aumentei um pouco o minmax para dar mais espaço */
+  gap: 20px;
+}
+
+#listaReservas.cards .card {
+  /* Estilos específicos para cards dentro da lista de reservas/convites */
+  cursor: pointer; /* Indica que o card é clicável */
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e0e0e0; /* Adiciona uma borda subtil a todos os cards */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  min-height: 180px; /* Altura mínima para consistência */
+  display: flex; /* Para permitir que o card-content cresça */
+  flex-direction: column; /* Empilha o conteúdo verticalmente */
+}
+
+#listaReservas.cards .card .card-content {
+  flex-grow: 1; /* Faz o conteúdo ocupar o espaço disponível */
+  padding: 15px; /* Padding interno para o conteúdo */
+}
+
+
+#listaReservas.cards .card:hover {
+  transform: translateY(-3px); /* Efeito de elevação ao passar o mouse */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Estilos para o botão de "Ver todas as reservas" */
+#listaReservas .view-all-reservas-card {
+  /* grid-column: span 2; */ /* REMOVIDO - para ocupar 1 coluna como os outros */
+  /* justify-self: center; */ /* REMOVIDO */
+  /* Herda .card, então min-height e outros estilos base são aplicados */
+  /* display: flex, align-items: center, justify-content: center já vêm da classe .add-card */
+}
+
+#listaReservas .view-all-reservas-card:hover {
+  background-color: #f0f0f0; /* Muda a cor de fundo ao passar o mouse */
+  border-color: #d0d0d0;
+}
+
+/* Estilos para os cards de convite na lista do Index */
+#listaReservas .card.convite-index {
+  background-color: #e0f2fe; 
+  border-left: 5px solid #0ea5e9; 
+  border-top: 1px solid #b3e5fc; /* Ajusta outras bordas se necessário */
+  border-right: 1px solid #b3e5fc;
+  border-bottom: 1px solid #b3e5fc;
+}
+
+#listaReservas .card.convite-index .card-content h3 {
+  color: #0369a1; /* Cor do título para convites */
+}
+
+/* Etiqueta "CONVITE" */
+#listaReservas .card.convite-index .convite-etiqueta {
+  background-color: #0ea5e9; /* Cor de fundo da etiqueta */
+  color: white;               /* Cor do texto da etiqueta */
+  padding: 4px 8px;
+  font-size: 0.75em;          /* Tamanho da fonte da etiqueta */
+  font-weight: bold;
+  border-radius: 4px;
+  margin-bottom: 8px;        /* Espaço abaixo da etiqueta */
+  display: inline-block;     /* Para que o padding e margin funcionem bem */
+  text-transform: uppercase;
+}
+
+/* Estilos para a mensagem de sem itens */
+#listaReservas > p {
+  /* grid-column: span 2; */ /* Ajustar se a grelha mudar muito, ou deixar o browser tratar */
+  justify-self: center; 
+  text-align: center; /* Garante que o texto da mensagem também está centrado */
+  width: 100%; /* Para ocupar o espaço disponível na grelha */
+  padding: 20px;
+  font-style: italic;
+  color: #777; /* Cor um pouco mais escura para melhor leitura */
+}
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  #listaReservas.cards {
+    grid-template-columns: 1fr; /* Uma coluna em ecrãs pequenos */
+  }
+
+  #listaReservas .view-all-reservas-card {
+    width: 100%; /* Largura total em ecrãs pequenos */
+    min-height: 120px; /* Altura mínima reduzida */
+  }
 }
