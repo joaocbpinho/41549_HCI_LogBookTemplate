@@ -363,11 +363,36 @@ function renderizarMinhasReservas(containerId) {
             console.warn("[reservas.js] Não foi possível re-formatar a data da reserva:", reserva.data, e);
         }
 
-        const card = document.createElement('div');
-        card.className = 'card'; // A classe .cards já está no container
+        // Definir as variáveis que estavam em falta:
+        const precoTexto = reserva.preco ? `${parseFloat(reserva.preco).toFixed(2)}€` : 'N/D';
+        
+        let comodidadesArray = [];
+        if (reserva.equipamentosSelecionados && reserva.equipamentosSelecionados.length > 0) {
+            comodidadesArray = reserva.equipamentosSelecionados.map(e => e.nome || e);
+        } else if (reserva.comodidadesSelecionadas && reserva.comodidadesSelecionadas.length > 0) {
+            comodidadesArray = reserva.comodidadesSelecionadas.map(c => c.nome || c);
+        }
+        const comodidadesTexto = comodidadesArray.length > 0 ? comodidadesArray.join(', ') : 'Nenhuma';
 
-        // Envolver o conteúdo principal em .card-content
-        // As .reserva-actions ficarão fora do .card-content para melhor controle de layout flex
+        let confirmadosTexto = reserva.estado || 'N/D'; // Usar o estado da reserva como fallback
+        if (typeof reserva.numConfirmados !== 'undefined') {
+            // Se tivermos numeroTotalMembrosConsiderados, podemos fazer um X / Y
+            if (typeof reserva.numeroTotalMembrosConsiderados !== 'undefined') {
+                 confirmadosTexto = `${reserva.numConfirmados || 0} / ${reserva.numeroTotalMembrosConsiderados || 1} membros`;
+            } else {
+                confirmadosTexto = `Confirmados: ${reserva.numConfirmados}`;
+            }
+        } else if (reserva.estado === "Confirmada" && typeof reserva.numConfirmados === 'undefined') {
+            // Se está confirmada mas não temos numConfirmados, podemos apenas dizer "Confirmada"
+            confirmadosTexto = "Confirmada";
+        }
+
+
+        const reservaIdParaBotao = reserva.id;
+
+        const card = document.createElement('div');
+        card.className = 'card'; 
+
         card.innerHTML = `
             <div class="card-content">
                 <h3>${nomeCampo}</h3>
