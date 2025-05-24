@@ -130,3 +130,4 @@ window.fecharModalDetalhesEquipa = fecharModalDetalhesEquipa;
 window.irParaPaginaEquipa = irParaPaginaEquipa;
 // abrirModalDetalhesEquipa é chamada internamente por renderizarEquipas, não precisa ser global
 // a menos que haja outros pontos de entrada.
+

@@ -10,7 +10,7 @@
     margin: 30px auto; /* Mantido */
     padding: 0 10px; /* Mantido */
     gap: 0; /* Mantido */
-    /* overflow: hidden; */ /* COMENTE OU REMOVA ESTA LINHA */
+    overflow: hidden; /* COMENTE OU REMOVA ESTA LINHA */
     grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto; /* Mantido */
   }
   
@@ -266,7 +266,7 @@
   }
   
   .popup .popup-button:hover {
-    background-color: var(--hover-color); /* Use a variável correta se tiver uma para hover */
+    background-color: var(--hover-primary-color); /* Use a variável correta se tiver uma para hover */
   }
   
   /* Adicionar a animação se ainda não estiver globalmente definida */

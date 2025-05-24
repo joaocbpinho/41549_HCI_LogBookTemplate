@@ -31,22 +31,37 @@ function carregarEquipasParaCampo(desportosCampo) {
 
     if (!equipasGuardadas || !convidarContainer) {
         console.warn("Nenhuma equipa encontrada ou container de equipas não disponível.");
+        if (convidarContainer) { // Still add the "+" button if container exists
+             convidarContainer.innerHTML = ''; // Clear previous content
+             const addButton = document.createElement('button');
+             addButton.className = 'convidar-btn add-equipa-btn'; // Added specific class for styling if needed
+             addButton.textContent = '+';
+             addButton.title = 'Adicionar/Gerir Equipas';
+             addButton.onclick = () => {
+                 window.location.href = "../equipa/equipa.html";
+             };
+             convidarContainer.appendChild(addButton);
+        }
         return;
     }
 
     const equipas = JSON.parse(equipasGuardadas);
 
     const equipasFiltradas = equipas.filter(equipa => {
-        const desportoEquipa = equipa.desporto.trim().toLowerCase();
-    
-        // Inclui sempre equipas com desporto "Outro"
+        // Ensure equipa.desporto exists and is a string before calling trim/toLowerCase
+        const desportoEquipa = equipa.desporto && typeof equipa.desporto === 'string' 
+                               ? equipa.desporto.trim().toLowerCase() 
+                               : 'indefinido'; // or some other default/error handling
+
+        // Inclui sempre equipas com desporto "outro"
         if (desportoEquipa === "outro") {
             return true;
         }
-    
+
         // Verifica se o desporto da equipa corresponde a algum desporto do campo
-        return desportosCampo.some(desportoCampo =>
-            desportoEquipa === desportoCampo.trim().toLowerCase()
+        // Ensure desportosCampo is an array and its elements are strings
+        return Array.isArray(desportosCampo) && desportosCampo.some(desportoCampo =>
+            typeof desportoCampo === 'string' && desportoEquipa === desportoCampo.trim().toLowerCase()
         );
     });
 
@@ -54,35 +69,46 @@ function carregarEquipasParaCampo(desportosCampo) {
 
     // Limpar e renderizar
     convidarContainer.innerHTML = '';
+    const equipaInfoEl = document.getElementById("equipaSelecionadaInfo");
+
 
     equipasFiltradas.forEach(equipa => {
         const button = document.createElement('button');
         button.className = 'convidar-btn';
         button.textContent = equipa.nome;
+        button.dataset.equipaNome = equipa.nome; // Store nome for easier check
 
         button.onclick = () => {
-            // Permitir apenas uma equipa selecionada de cada vez
-            equipasSelecionadas = [equipa];
-            // Remover seleção visual de outros botões
-            document.querySelectorAll('.convidar-btn.selecionada').forEach(btn => btn.classList.remove('selecionada'));
-            button.classList.add('selecionada');
-            console.log(`Equipa "${equipa.nome}" selecionada!`);
-
-            // Atualizar info da equipa selecionada
-            const equipaInfoEl = document.getElementById("equipaSelecionadaInfo");
-            if (equipaInfoEl) {
-                equipaInfoEl.textContent = equipa.nome;
-                equipaInfoEl.dataset.nomeEquipa = equipa.nome;
+            if (button.classList.contains('selecionada')) {
+                // Se já está selecionada, deseleciona
+                button.classList.remove('selecionada');
+                equipasSelecionadas = [];
+                if (equipaInfoEl) {
+                    equipaInfoEl.textContent = "Nenhuma equipa selecionada.";
+                    delete equipaInfoEl.dataset.nomeEquipa;
+                }
+                console.log(`Equipa "${equipa.nome}" deselecionada!`);
+            } else {
+                // Se não está selecionada, seleciona esta e deseleciona outras
+                document.querySelectorAll('.convidar-btn.selecionada').forEach(btn => btn.classList.remove('selecionada'));
+                button.classList.add('selecionada');
+                equipasSelecionadas = [equipa]; // Armazena o objeto equipa completo
+                if (equipaInfoEl) {
+                    equipaInfoEl.textContent = equipa.nome;
+                    equipaInfoEl.dataset.nomeEquipa = equipa.nome;
+                }
+                console.log(`Equipa "${equipa.nome}" selecionada!`);
             }
         };
 
         convidarContainer.appendChild(button);
     });
 
-    // Botão de adicionar nova equipa
+    // Botão de adicionar nova equipa (ou ir para a página de equipas)
     const addButton = document.createElement('button');
-    addButton.className = 'convidar-btn';
+    addButton.className = 'convidar-btn add-equipa-btn'; // Added specific class for styling if needed
     addButton.textContent = '+';
+    addButton.title = 'Adicionar/Gerir Equipas';
     addButton.onclick = () => {
         window.location.href = "../equipa/equipa.html";
     };
@@ -90,7 +116,7 @@ function carregarEquipasParaCampo(desportosCampo) {
 }
 
 function selecionarEquipa(equipa) {
-    exibirMensagem("sucesso",`Equipa "${equipa.nome}" selecionada! Convites serão enviados aos membros aquando a reserva.`);
+    exibirMensagem("sucesso", `Equipa "${equipa.nome}" selecionada! Convites serão enviados aos membros aquando a reserva.`);
 };
 
 function exibirMensagem(tipo, mensagem) {
@@ -148,7 +174,7 @@ window.abrirEquipamentos = function () {
             const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
             listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
 
-           equipamentosDesporto.forEach(equipamento => {
+            equipamentosDesporto.forEach(equipamento => {
                 const li = document.createElement("li");
                 li.className = "equipamento";
                 li.setAttribute("data-nome", equipamento.nome);
@@ -206,7 +232,7 @@ window.abrirEquipamentos = function () {
                     btnMenos.type = "button";
                     btnMenos.textContent = "-";
                     btnMenos.style.marginLeft = "8px";
-                    btnMenos.onclick = function(e) {
+                    btnMenos.onclick = function (e) {
                         e.stopPropagation();
                         let qtd = parseInt(inputQtd.value) || 1;
                         if (qtd > 1) inputQtd.value = qtd - 1;
@@ -220,13 +246,13 @@ window.abrirEquipamentos = function () {
                     inputQtd.className = "quantidade-equipamento";
                     inputQtd.style.width = "40px";
                     inputQtd.style.margin = "0 6px";
-                    inputQtd.onclick = function(e) { e.stopPropagation(); };
+                    inputQtd.onclick = function (e) { e.stopPropagation(); };
 
                     // Botão +
                     const btnMais = document.createElement("button");
                     btnMais.type = "button";
                     btnMais.textContent = "+";
-                    btnMais.onclick = function(e) {
+                    btnMais.onclick = function (e) {
                         e.stopPropagation();
                         let qtd = parseInt(inputQtd.value) || 1;
                         inputQtd.value = qtd + 1;
@@ -249,8 +275,8 @@ window.abrirEquipamentos = function () {
                     this.classList.toggle("selecionada");
                 };
                 listaComodidades.appendChild(li);
-        
-                    
+
+
                 // Adicionar os equipamentos à lista           
 
                 // Verificar se o ícone é uma imagem PNG ou um ícone Font Awesome
@@ -265,11 +291,7 @@ window.abrirEquipamentos = function () {
                 } else {
                     const icon = document.createElement("i");
                     icon.className = equipamento.icone;
-                    li.appendChild(icon);
                 }
-
-                li.appendChild(document.createTextNode(` ${equipamento.nome}`));
-                listaComodidades.appendChild(li);
             });
 
             // Atualizar o título do modal para "Equipamentos"
@@ -339,11 +361,11 @@ async function carregarDadosCampoEConfigurarPagina(id) {
             document.title = `${campoSelecionado.nome} - Play Smart`;
             console.log("Função chamada para o desporto:", campoSelecionado.desporto);
             carregarEquipasParaCampo(campoSelecionado.desporto);
-        
+
             const campoTituloElement = document.querySelector('.campo-section h1');
             if (campoTituloElement) {
                 campoTituloElement.textContent = campoSelecionado.nome;
-                
+
             }
 
             campoAtualImagens = campoSelecionado.imagens && campoSelecionado.imagens.length > 0 ? campoSelecionado.imagens : ['../images/default_campo.png'];
@@ -357,16 +379,16 @@ async function carregarDadosCampoEConfigurarPagina(id) {
                     <p id="campoDescricao"><i class="fas fa-futbol"></i> ${campoSelecionado.descricao || 'Descrição não disponível.'}</p>
                     <div id="campoComodidadesLista">
                         ${campoSelecionado.comodidades ? campoSelecionado.comodidades.map(c => {
-                            let iconClass = 'fa-question-circle'; // Ícone padrão caso não seja identificado
-                            if (c.toLowerCase().includes('balneário')) iconClass = 'fa-shower';
-                            else if (c.toLowerCase().includes('equipamento')) iconClass = 'fa-shirt';
-                            else if (c.toLowerCase().includes('estacionamento')) iconClass = 'fa-parking';
-                            else if (c.toLowerCase().includes('iluminação')) iconClass = 'fa-lightbulb';
-                            else if (c.toLowerCase().includes('wc')) iconClass = 'fa-restroom';
-                            else if (c.toLowerCase().includes('bar')) iconClass = 'fa-martini-glass';
-        
-                            return `<p><i class="fas ${iconClass}"></i> ${c}</p>`;
-                        }).join('') : '<p>Nenhuma comodidade listada.</p>'}
+                    let iconClass = 'fa-question-circle'; // Ícone padrão caso não seja identificado
+                    if (c.toLowerCase().includes('balneário')) iconClass = 'fa-shower';
+                    else if (c.toLowerCase().includes('equipamento')) iconClass = 'fa-shirt';
+                    else if (c.toLowerCase().includes('estacionamento')) iconClass = 'fa-parking';
+                    else if (c.toLowerCase().includes('iluminação')) iconClass = 'fa-lightbulb';
+                    else if (c.toLowerCase().includes('wc')) iconClass = 'fa-restroom';
+                    else if (c.toLowerCase().includes('bar')) iconClass = 'fa-martini-glass';
+
+                    return `<p><i class="fas ${iconClass}"></i> ${c}</p>`;
+                }).join('') : '<p>Nenhuma comodidade listada.</p>'}
                     </div>
                     <p id="campoCapacidade"><i class="fas fa-users"></i> Capacidade: ${campoSelecionado.capacidade || 'N/A'} jogadores</p>
                     <p id="campoPreco"><i class="fas fa-euro-sign"></i> Preço por hora: ${parseFloat(campoSelecionado.preco_hora).toFixed(2)}€</p>
@@ -388,8 +410,8 @@ async function carregarDadosCampoEConfigurarPagina(id) {
                         const li = document.createElement('li');
                         li.className = 'comodidade';
                         li.setAttribute('data-nome', comodidade);
-                        li.onclick = function() { selecionarComodidade(this); };
-                        
+                        li.onclick = function () { selecionarComodidade(this); };
+
                         let iconClass = 'fa-question-circle';
                         if (comodidade.toLowerCase().includes('balneário')) iconClass = 'fa-shower';
                         else if (comodidade.toLowerCase().includes('equipamento')) iconClass = 'fa-shirt';
@@ -409,10 +431,10 @@ async function carregarDadosCampoEConfigurarPagina(id) {
             console.error('Campo não encontrado com o ID:', id);
             const campoTituloElement = document.querySelector('.campo-section h1');
             if (campoTituloElement) campoTituloElement.textContent = "Campo não encontrado";
-            if(campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
-            if(campoImageElement) campoImageElement.alt = "Campo não encontrado";
+            if (campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
+            if (campoImageElement) campoImageElement.alt = "Campo não encontrado";
             const infoSection = document.querySelector('.campo-info');
-            if(infoSection) infoSection.innerHTML = "<p>Não foi possível carregar as informações do campo.</p>";
+            if (infoSection) infoSection.innerHTML = "<p>Não foi possível carregar as informações do campo.</p>";
             if (prevBtn) prevBtn.style.display = 'none';
             if (nextBtn) nextBtn.style.display = 'none';
         }
@@ -420,29 +442,29 @@ async function carregarDadosCampoEConfigurarPagina(id) {
         console.error('Erro ao carregar dados do campo:', error);
         const campoTituloElement = document.querySelector('.campo-section h1');
         if (campoTituloElement) campoTituloElement.textContent = "Erro ao carregar campo";
-        if(campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
-        if(campoImageElement) campoImageElement.alt = "Erro ao carregar campo";
+        if (campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
+        if (campoImageElement) campoImageElement.alt = "Erro ao carregar campo";
     }
 }
 
-window.mostrarDirecoes = function(endereco) {
+window.mostrarDirecoes = function (endereco) {
     if (endereco) {
         window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(endereco)}`, '_blank');
     } else {
-        exibirMensagem("erro","Endereço não disponível para mostrar direções.");
+        exibirMensagem("erro", "Endereço não disponível para mostrar direções.");
     }
 }
 
-window.copiarEndereco = function(endereco) {
+window.copiarEndereco = function (endereco) {
     if (endereco) {
         navigator.clipboard.writeText(endereco).then(() => {
-            exibirMensagem("sucesso",'Endereço copiado!');
+            exibirMensagem("sucesso", 'Endereço copiado!');
         }).catch(err => {
             console.error('Erro ao copiar endereço: ', err);
-            exibirMensagem("erro",'Erro ao copiar endereço.');
+            exibirMensagem("erro", 'Erro ao copiar endereço.');
         });
     } else {
-        exibirMensagem("erro","Endereço não disponível para copiar.");
+        exibirMensagem("erro", "Endereço não disponível para copiar.");
     }
 }
 
@@ -456,10 +478,10 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         console.error('ID do campo não encontrado na URL.');
         document.querySelector('.campo-section h1').textContent = "Campo Inválido";
-        if(campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
-        if(campoImageElement) campoImageElement.alt = "Campo inválido";
+        if (campoImageElement) campoImageElement.src = '../images/default_campo_error.png';
+        if (campoImageElement) campoImageElement.alt = "Campo inválido";
         const infoSection = document.querySelector('.campo-info');
-        if(infoSection) infoSection.innerHTML = "<p>Por favor, selecione um campo válido a partir da página inicial.</p>";
+        if (infoSection) infoSection.innerHTML = "<p>Por favor, selecione um campo válido a partir da página inicial.</p>";
         if (prevBtn) prevBtn.style.display = 'none';
         if (nextBtn) nextBtn.style.display = 'none';
     }
@@ -489,7 +511,7 @@ document.addEventListener("DOMContentLoaded", () => {
         saldoContainer.addEventListener("click", () => {
             const modalAdicionarSaldo = document.getElementById("modalAdicionarSaldo");
             if (modalAdicionarSaldo) {
-                 modalAdicionarSaldo.style.display = "block";
+                modalAdicionarSaldo.style.display = "block";
             } else {
                 console.warn("Elemento modalAdicionarSaldo não encontrado no DOM de campo.html.");
             }
@@ -567,13 +589,13 @@ function formatarDataParaExibicaoAmigavel(dateObj) {
 }
 
 // NOVO: Funções para abrir/fechar o modal de confirmação
-window.abrirConfirmacaoReservaModal = function() {
+window.abrirConfirmacaoReservaModal = function () {
     if (confirmacaoReservaModal) {
         confirmacaoReservaModal.style.display = "block";
     }
 }
 
-window.fecharConfirmacaoReservaModal = function() {
+window.fecharConfirmacaoReservaModal = function () {
     if (confirmacaoReservaModal) {
         confirmacaoReservaModal.style.display = "none";
     }
@@ -645,20 +667,30 @@ window.realizarPagamento = async function () {
     // ...dentro de window.realizarPagamento...
     let precoComodidades = 0;
     const equipamentosSelecionados = Array.from(document.querySelectorAll('.equipamento.selecionada'));
-    equipamentosSelecionados.forEach(li => {
+    const equipamentosInfo = equipamentosSelecionados.map(li => {
         const tipo = li.getAttribute('data-tipo');
+        const nome = li.getAttribute('data-nome');
+        let quantidade = 1;
+        const inputQtd = li.querySelector('.quantidade-equipamento');
+        if (inputQtd) {
+            quantidade = parseInt(inputQtd.value) || 1;
+        }
         if (tipo === "coletivo") {
-            // Divide por membros da equipa se houver equipa
             if (equipaSelecionadaNome && numeroMembrosEquipaOriginal > 0) {
                 precoComodidades += 1 / numeroMembrosEquipaOriginal;
+                return `${nome} (Coletivo, +1€ dividido)`;
             } else {
                 precoComodidades += 1;
+                return `${nome} (Coletivo, +1€)`;
             }
         } else {
-            // Individual, só quem reserva paga
-            precoComodidades += 1;
+            precoComodidades += quantidade * 1;
+            return `${nome} (Individual, ${quantidade}x +${quantidade}€)`;
         }
     });
+        // ...existing code...
+    document.getElementById('confirmacaoComodidades').textContent = equipamentosInfo.length > 0 ? equipamentosInfo.join(', ') : 'Nenhum';
+    // ...existing code...
 
     const precoTotalReserva = precoBase + precoComodidades;
 
@@ -693,15 +725,23 @@ window.realizarPagamento = async function () {
         userIdLogado
     };
 
+    // ...existing code...
     document.getElementById('confirmacaoCampoNome').textContent = campoAtual.nome;
     document.getElementById('confirmacaoData').textContent = formatarDataParaExibicaoAmigavel(dataParaReserva);
     document.getElementById('confirmacaoHorario').textContent = horarioParaReserva;
+    // Troque esta linha:
     document.getElementById('confirmacaoComodidades').textContent = comodidadesParaReserva.length > 0 ? comodidadesParaReserva.join(', ') : 'Nenhuma';
-    document.getElementById('confirmacaoEquipa').textContent = equipaSelecionadaNome || 'Nenhuma (reserva individual)';
+    // Por esta:
+    document.getElementById('confirmacaoComodidades').textContent = equipamentosInfo.length > 0 ? equipamentosInfo.join(', ') : 'Nenhum';
+
+    document.getElementById('confirmacaoEquipa').textContent = equipaSelecionadaNome
+        ? `${equipaSelecionadaNome} (${numeroMembrosEquipaOriginal} jogadores)`
+        : 'Nenhuma (reserva individual)';
     document.getElementById('confirmacaoPrecoTotal').textContent = `${precoTotalReserva.toFixed(2)}€`;
     document.getElementById('confirmacaoPrecoUtilizador').textContent = `${precoAPagarPeloUtilizador.toFixed(2)}€`;
 
     abrirConfirmacaoReservaModal();
+    // ...existing code...
 };
 
 async function efetivarReservaAposConfirmacao() {
@@ -778,7 +818,7 @@ async function efetivarReservaAposConfirmacao() {
     if (reservaModal) {
         reservaModal.querySelectorAll('.calendar-day.active').forEach(el => el.classList.remove('active'));
         reservaModal.querySelectorAll('.horario-slot.selected').forEach(el => el.classList.remove('selected'));
-        
+
         const equipaInfoEl = document.getElementById("equipaSelecionadaInfo");
         if (equipaInfoEl) {
             equipaInfoEl.textContent = "Nenhuma equipa selecionada.";
@@ -786,7 +826,7 @@ async function efetivarReservaAposConfirmacao() {
         }
         const convidarContainer = reservaModal.querySelector('.convidar-container');
         if (convidarContainer) {
-             convidarContainer.querySelectorAll('.convidar-btn.selecionada').forEach(btn => {
+            convidarContainer.querySelectorAll('.convidar-btn.selecionada').forEach(btn => {
                 btn.classList.remove('selecionada');
             });
         }
@@ -796,8 +836,8 @@ async function efetivarReservaAposConfirmacao() {
             comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada").forEach(el => el.classList.remove('selecionada'));
         }
     }
-    
-    reservaPendenteParaConfirmacao = null; 
+
+    reservaPendenteParaConfirmacao = null;
     console.log("[efetivarReservaAposConfirmacao] Processo concluído.");
 }
 
@@ -831,7 +871,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (comodidadesModalEl) {
                 comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada").forEach(el => el.classList.remove('selecionada'));
             }
-    
+
             // Exibir o modal de reserva
             reservaModal.style.display = "block";
         } else {
@@ -879,7 +919,7 @@ document.addEventListener("DOMContentLoaded", () => {
             dayEl.innerText = d;
             const currentDateLoop = new Date(year, month, d);
 
-            if (currentDateLoop < today.setHours(0,0,0,0)) {
+            if (currentDateLoop < today.setHours(0, 0, 0, 0)) {
                 dayEl.classList.add("disabled");
             } else {
                 dayEl.addEventListener("click", () => {
@@ -887,7 +927,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     const activeDay = calendarGridModal.querySelector('.calendar-day.active');
                     if (activeDay) activeDay.classList.remove("active");
-                    
+
                     dayEl.classList.add("active");
                     selectedDate = new Date(year, month, d);
                     console.log("Data selecionada (modal):", selectedDate);
@@ -910,7 +950,7 @@ document.addEventListener("DOMContentLoaded", () => {
             renderCalendarModal(currentDateModal);
         });
     }
-    
+
     if (calendarGridModal) {
         renderCalendarModal(currentDateModal);
     }
@@ -933,7 +973,7 @@ document.addEventListener("DOMContentLoaded", () => {
             slot.addEventListener("click", () => {
                 const selectedSlot = horariosListModal.querySelector('.horario-slot.selected');
                 if (selectedSlot) selectedSlot.classList.remove("selected");
-                
+
                 slot.classList.add("selected");
                 selectedTime = horario;
                 console.log("Horário selecionado (modal):", selectedTime);
@@ -950,11 +990,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const campoId = urlParams.get('id');
             const campoSelecionado = todosCampos.find(campo => campo.id === parseInt(campoId));
-    
+
             if (campoSelecionado) {
                 const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
                 listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
-    
+
                 // Adicionar todas as comodidades do campo
                 if (campoSelecionado.comodidades && campoSelecionado.comodidades.length > 0) {
                     campoSelecionado.comodidades.forEach(comodidade => {
@@ -964,26 +1004,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         li.onclick = function () {
                             this.classList.toggle("selecionada");
                         };
-    
+
                         let iconClass = "fa-question-circle"; // Ícone padrão
                         if (comodidade.toLowerCase().includes("balneário")) iconClass = "fa-shower";
                         else if (comodidade.toLowerCase().includes("equipamento")) iconClass = "fa-shirt";
                         else if (comodidade.toLowerCase().includes("estacionamento")) iconClass = "fa-parking";
                         else if (comodidade.toLowerCase().includes("iluminação")) iconClass = "fa-lightbulb";
                         else if (comodidade.toLowerCase().includes("wc")) iconClass = "fa-restroom";
-    
+
                         li.innerHTML = `<i class="fas ${iconClass}"></i> ${comodidade}`;
                         listaComodidades.appendChild(li);
                     });
                 } else {
                     listaComodidades.innerHTML = '<li>Nenhuma comodidade disponível.</li>';
                 }
-    
+
                 // Atualizar o título do modal para "Comodidades"
                 const modalTitle = comodidadesModalEl.querySelector("h2");
                 modalTitle.textContent = "Comodidades";
             }
-    
+
             comodidadesModalEl.style.display = "block";
         } else {
             console.error("Modal de comodidades não encontrado no DOM.");
@@ -997,26 +1037,26 @@ document.addEventListener("DOMContentLoaded", () => {
         if (comodidadesModalEl) {
             selectedAmenities = Array.from(comodidadesModalEl.querySelectorAll(".comodidades-lista li.selecionada"))
                 .map(el => el.getAttribute("data-nome"));
-    
+
             // Adicionar preço adicional para "Equipamento"
             let precoAdicional = 0;
             if (selectedAmenities.includes("Equipamento")) {
                 precoAdicional += 1; // Exemplo: 5€ por equipamento
                 exibirMensagem("sucesso", "Preço adicional de 1€ adicionado para Equipamento.");
             }
-    
+
             exibirMensagem("sucesso", `Comodidades confirmadas: ${selectedAmenities.join(", ") || "Nenhuma"}`);
             fecharComodidades();
         }
     };
-    
-  
+
+
     const closeComodidadesBtn = comodidadesModalEl ? comodidadesModalEl.querySelector('.close') : null;
     if (closeComodidadesBtn) {
         closeComodidadesBtn.onclick = fecharComodidades;
     }
     const btnConfirmarComodidadesNoModal = comodidadesModalEl ? comodidadesModalEl.querySelector('button') : null;
     if (btnConfirmarComodidadesNoModal && btnConfirmarComodidadesNoModal.textContent.toLowerCase().includes("confirmar")) {
-       btnConfirmarComodidadesNoModal.onclick = confirmarComodidades;
+        btnConfirmarComodidadesNoModal.onclick = confirmarComodidades;
     }
 });
