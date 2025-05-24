@@ -86,16 +86,31 @@ function guardarTodasReservas(reservas) {
 
 
 function abrirModalConfirmarAceitarConvite(detalhesConvite) {
-    convitePendenteParaAceitar = detalhesConvite; // Guarda os detalhes
+    console.log("[reservas.js] abrirModalConfirmarAceitarConvite chamada com:", detalhesConvite); // DEBUG
+    convitePendenteParaAceitar = detalhesConvite; 
+    precoBaseConviteAtual = parseFloat(detalhesConvite.preco);
 
+    // ... (população dos elementos do modal) ...
     document.getElementById('confirmacaoConviteCampoNome').textContent = detalhesConvite.campoNome;
-    document.getElementById('confirmacaoConviteData').textContent = detalhesConvite.dataISO; // Mostrar YYYY-MM-DD ou formatar
+    document.getElementById('confirmacaoConviteData').textContent = detalhesConvite.dataISO;
     document.getElementById('confirmacaoConviteHora').textContent = detalhesConvite.hora;
-    document.getElementById('confirmacaoConviteOriginador').textContent = detalhesConvite.originador || 'Equipa Desconhecida'; // Adicionar 'originador' ao dataset do botão se quiser
-    document.getElementById('confirmacaoConvitePreco').textContent = `${parseFloat(detalhesConvite.preco).toFixed(2)}€`;
+    document.getElementById('confirmacaoConviteOriginador').textContent = detalhesConvite.originador || 'Equipa Desconhecida';
+    document.getElementById('confirmacaoConvitePrecoBase').textContent = `${precoBaseConviteAtual.toFixed(2)}€`;
 
+    console.log("[reservas.js] Verificando todosCampos antes de carregar equipamentos:", todosCampos); // DEBUG
+    if (todosCampos && todosCampos.length > 0) {
+        carregarEquipamentosParaModalConvite(detalhesConvite.campoId);
+    } else {
+        console.warn("[reservas.js] 'todosCampos' está vazio ou não definido ao tentar carregar equipamentos para convite."); // DEBUG
+        document.getElementById('listaEquipamentosConvite').innerHTML = '<li>Erro ao carregar equipamentos (dados de campos indisponíveis).</li>';
+        atualizarPrecoTotalConviteModal(); // Para garantir que o preço final reflete a ausência de equipamentos
+    }
+    
     if (modalConfirmarAceitarConvite) {
+        console.log("[reservas.js] Exibindo modalConfirmarAceitarConvite."); // DEBUG
         modalConfirmarAceitarConvite.style.display = 'block';
+    } else {
+        console.error("[reservas.js] modalConfirmarAceitarConvite é null!"); // DEBUG
     }
 }
 
@@ -126,31 +141,45 @@ async function processarAceitacaoConviteDefinitiva() {
         return;
     }
 
-    const { conviteId, campoId, campoNome, dataISO, hora, preco, originador } = convitePendenteParaAceitar;
+    const { conviteId, campoId, campoNome, dataISO, hora, originador } = convitePendenteParaAceitar;
+    
+    let custoEquipamentosSelecionados = 0;
+    const equipamentosSelecionadosParaReserva = [];
+    const listaEquipamentosEl = document.getElementById('listaEquipamentosConvite');
+    if (listaEquipamentosEl) {
+        listaEquipamentosEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+            const precoEquip = parseFloat(checkbox.dataset.preco);
+            custoEquipamentosSelecionados += precoEquip;
+            equipamentosSelecionadosParaReserva.push({
+                nome: checkbox.dataset.nome,
+                preco: precoEquip
+            });
+        });
+    }
 
-    // console.log(`[Convite ${conviteId}] Confirmada aceitação. Preço: ${preco}`);
+    const precoFinalAPagar = precoBaseConviteAtual + custoEquipamentosSelecionados;
 
     const [year, month, day] = dataISO.split('-');
     const dataFormatadaParaStorage = `${day}/${month}/${year}`;
-    const userIdLogado = "prototipoUser";
+    const userIdLogado = "prototipoUser"; // Para protótipo
     let saldoAtual = getSaldoUtilizador();
 
-    if (isNaN(preco) || preco <= 0) {
-        exibirFeedback("Preço inválido para o convite.", "danger");
+    if (isNaN(precoFinalAPagar) || precoFinalAPagar < 0) {
+        exibirFeedback("Preço final inválido para o convite.", "danger");
         fecharModalConfirmarAceitarConvite();
         return;
     }
 
-    if (saldoAtual < preco) {
-        exibirFeedback("Saldo insuficiente para aceitar este convite e reservar.", "danger");
+    if (saldoAtual < precoFinalAPagar) {
+        exibirFeedback("Saldo insuficiente para aceitar este convite e reservar os equipamentos.", "danger");
         if (typeof window.abrirModalSaldo === 'function') {
             window.abrirModalSaldo();
         }
         fecharModalConfirmarAceitarConvite();
-        return;
+        return; 
     }
 
-    const novoSaldo = saldoAtual - preco;
+    const novoSaldo = saldoAtual - precoFinalAPagar;
     atualizarSaldoUtilizador(novoSaldo);
 
     const novaReserva = {
@@ -160,53 +189,49 @@ async function processarAceitacaoConviteDefinitiva() {
         nomeCampo: campoNome,
         data: dataFormatadaParaStorage,
         horario: hora,
-        preco: preco,
-        comodidadesSelecionadas: [],
-        equipamentosSelecionados: [],
+        preco: precoFinalAPagar, // Preço total pago
+        // Opcional: pode querer guardar o preço base do convite e o custo dos equipamentos separadamente
+        // precoBaseOriginal: precoBaseConviteAtual, 
+        // custoEquipamentos: custoEquipamentosSelecionados,
+        comodidadesSelecionadas: [], // Manter para consistência, pode ser usado no futuro
+        equipamentosSelecionados: equipamentosSelecionadosParaReserva, // Guardar os equipamentos selecionados
         estado: "Confirmada",
         origem: "convite_aceite"
     };
-
-    todasReservas.push(novaReserva);
-    guardarReservasNoLocalStorage();
-
-    exibirFeedback(`Convite aceite! Reserva para ${campoNome} em ${dataFormatadaParaStorage} às ${hora} confirmada.`, "success");
     
-    const conviteCardElement = document.getElementById(`convite-${convitePendenteParaAceitar.conviteId}`);
+    todasReservas.push(novaReserva); 
+    guardarReservasNoLocalStorage(); 
+
+    exibirFeedback(`Convite aceite! Reserva para ${campoNome} em ${dataFormatadaParaStorage} às ${hora} confirmada (Equipamentos: ${equipamentosSelecionadosParaReserva.map(e => e.nome).join(', ') || 'Nenhum'}). Preço: ${precoFinalAPagar.toFixed(2)}€`, "success");
+    
+    const conviteCardElement = document.getElementById(`convite-${conviteId}`);
     if (conviteCardElement) {
         conviteCardElement.remove();
     }
     
     renderizarMinhasReservas('listaMinhasReservas');
     fecharModalConfirmarAceitarConvite();
-    atualizarVisibilidadeMensagemConvites(); // CHAMAR AQUI
+    atualizarVisibilidadeMensagemConvites();
 }
 
 
 function configurarBotoesConvite() {
+    console.log("[reservas.js] Iniciando configurarBotoesConvite..."); // DEBUG
     document.querySelectorAll('.btn-aceitar-convite').forEach(button => {
+        console.log("[reservas.js] Configurando botão 'Aceitar e Reservar':", button); // DEBUG
         button.addEventListener('click', async (event) => {
-            const conviteId = event.target.dataset.conviteId; // ex: "estatico-1"
+            console.log("[reservas.js] Botão 'Aceitar e Reservar' CLICADO."); // DEBUG
+            const conviteId = event.target.dataset.conviteId;
             const campoId = event.target.dataset.campoId;
             const campoNome = event.target.dataset.campoNome;
-            const dataISO = event.target.dataset.data; // YYYY-MM-DD
-            const hora = event.target.dataset.hora; // HH:MM
+            const dataISO = event.target.dataset.data;
+            const hora = event.target.dataset.hora;
             const preco = parseFloat(event.target.dataset.preco);
-            // Para o campo "Convidado por:", pode adicionar um data-attribute ao botão no HTML
-            // Ex: data-originador="Equipa Os Campeões"
-            const originador = event.target.dataset.originador || button.closest('.card').querySelector('p:nth-of-type(4)').textContent.replace('Convidado por: ','').trim();
+            const originador = event.target.dataset.originador || button.closest('.card')?.querySelector('p:nth-of-type(4)')?.textContent.replace('Convidado por: ','').trim();
 
-
-            // Em vez de processar diretamente, abre o modal de confirmação
-            abrirModalConfirmarAceitarConvite({
-                conviteId, // Passa o ID original do convite para poder remover o card certo
-                campoId,
-                campoNome,
-                dataISO,
-                hora,
-                preco,
-                originador
-            });
+            const detalhesConvite = { conviteId, campoId, campoNome, dataISO, hora, preco, originador };
+            console.log("[reservas.js] Detalhes do convite para abrir modal:", detalhesConvite); // DEBUG
+            abrirModalConfirmarAceitarConvite(detalhesConvite);
         });
     });
 
@@ -228,36 +253,40 @@ function configurarBotoesConvite() {
 
 // Função para carregar os campos do JSON (necessário para nomes)
 async function carregarCampos() {
+    console.log("[reservas.js] Iniciando carregarCampos..."); // DEBUG
     // Evita recarregar se já tiverem sido carregados
     if (todosCampos.length > 0) {
+        console.log("[reservas.js] Campos já carregados."); // DEBUG
         return Promise.resolve();
     }
     try {
-        const response = await fetch('../campo/campos.json'); // Caminho relativo ao HTML
+        const response = await fetch('../campo/campos.json'); 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         todosCampos = await response.json();
-        console.log("Campos carregados com sucesso:", todosCampos);
+        console.log("[reservas.js] Campos carregados com sucesso:", todosCampos); // DEBUG
     } catch (error) {
-        console.error("Erro ao carregar campos.json:", error);
+        console.error("[reservas.js] Erro ao carregar campos.json:", error); // DEBUG
+        // Considerar como lidar com este erro - talvez exibir uma mensagem ao utilizador
         return Promise.reject(error);
     }
 }
 
 // Função para carregar as reservas do localStorage
 async function carregarReservas() {
+    console.log("[reservas.js] Iniciando carregarReservas..."); // DEBUG
     try {
-        const reservasGuardadas = localStorage.getItem('todasReservas'); // Chave correta
+        const reservasGuardadas = localStorage.getItem('todasReservas');
         if (reservasGuardadas) {
             todasReservas = JSON.parse(reservasGuardadas);
-            console.log("[reservas.js] Reservas carregadas do localStorage:", todasReservas);
+            console.log("[reservas.js] Reservas carregadas do localStorage:", todasReservas); // DEBUG
         } else {
             todasReservas = [];
-            console.log("[reservas.js] Nenhuma reserva no localStorage. Iniciando com array vazio.");
+            console.log("[reservas.js] Nenhuma reserva no localStorage."); // DEBUG
         }
     } catch (error) {
-        console.error("[reservas.js] Erro ao carregar/processar reservas do localStorage:", error);
+        console.error("[reservas.js] Erro ao carregar/processar reservas do localStorage:", error); // DEBUG
         todasReservas = [];
     }
     return Promise.resolve();
@@ -276,12 +305,13 @@ function guardarReservasNoLocalStorage() {
 // ========== FUNÇÕES DE RENDERIZAÇÃO ==========
 
 function renderizarMinhasReservas(containerId) {
+    console.log(`[reservas.js] Iniciando renderizarMinhasReservas para container: ${containerId}`); // DEBUG
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`[reservas.js] Container com ID '${containerId}' não encontrado para renderizar reservas.`);
+        console.error(`[reservas.js] Container com ID '${containerId}' não encontrado.`); // DEBUG
         return;
     }
-
+    console.log("[reservas.js] Limpando container de reservas..."); // DEBUG
     container.innerHTML = ''; // Limpa 'A carregar...' ou conteúdo antigo
 
     const userIdLogado = "prototipoUser";
@@ -588,11 +618,18 @@ function adicionarEventListenersAcoes() {
 }
 
 async function inicializarPaginaReservas() {
+    console.log("[reservas.js] Iniciando inicializarPaginaReservas..."); // DEBUG
     try {
         await carregarCampos(); 
+        console.log("[reservas.js] carregarCampos concluído em inicializarPaginaReservas."); // DEBUG
         await carregarReservas(); 
-        renderizarMinhasReservas('listaMinhasReservas'); // Isto já trata a mensagem de "sem reservas"
-        configurarBotoesConvite(); // Isto agora também trata a mensagem de "sem convites" no final
+        console.log("[reservas.js] carregarReservas concluído em inicializarPaginaReservas."); // DEBUG
+        
+        renderizarMinhasReservas('listaMinhasReservas'); 
+        console.log("[reservas.js] renderizarMinhasReservas chamada a partir de inicializarPaginaReservas."); // DEBUG
+        
+        configurarBotoesConvite(); 
+        console.log("[reservas.js] configurarBotoesConvite chamada a partir de inicializarPaginaReservas."); // DEBUG
 
         if (spanCloseDetalhesReserva) {
             spanCloseDetalhesReserva.onclick = fecharModalDetalhesReserva;
@@ -633,13 +670,20 @@ async function inicializarPaginaReservas() {
         });
 
     } catch (error) {
-        console.error("Erro ao inicializar a página de reservas:", error);
-        const container = document.getElementById('listaMinhasReservas');
-        if (container) {
-            container.innerHTML = '<p>Ocorreu um erro ao carregar os dados das reservas. Verifique a consola para mais detalhes.</p>';
+        console.error("[reservas.js] Erro CRÍTICO ao inicializar a página de reservas:", error); // DEBUG
+        const containerReservas = document.getElementById('listaMinhasReservas');
+        if (containerReservas) {
+            containerReservas.innerHTML = '<p>Ocorreu um erro grave ao carregar os dados. Tente recarregar a página.</p>';
+        }
+        const containerConvites = document.querySelector('#convites-pendentes-section .lista-convites.cards');
+        if (containerConvites) {
+            // Poderia adicionar uma mensagem de erro aqui também se a configuração dos convites depender de dados que falharam
         }
     }
 }
+
+// Certifique-se que inicializarPaginaReservas é chamada quando o DOM está pronto
+document.addEventListener('DOMContentLoaded', inicializarPaginaReservas);
 
 /* REMOVER ESTA FUNÇÃO SE NÃO FOR MAIS NECESSÁRIA APÓS PADRONIZAR PARA exibirFeedback
 function exibirMensagem(tipo, mensagem) {
@@ -670,7 +714,201 @@ function carregarEquipas() {
         return [];
     }
 }
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM carregado para reservas.js");
-    inicializarPaginaReservas();
-});
+
+// SIMULAÇÃO: Estrutura de dados para equipamentos disponíveis por desporto
+// Idealmente, isto viria de campos.json ou de um ficheiro de configuração dedicado
+const equipamentosDisponiveisPorDesporto = {
+    "Futebol": [
+        { nome: "Bola de Futebol", icone: "fas fa-futbol", preco: 2.00 },
+        { nome: "Coletes (5 unidades)", icone: "fas fa-shirt", preco: 3.00 }
+    ],
+    "Futsal": [
+        { nome: "Bola de Futsal", icone: "fas fa-futbol", preco: 2.00 },
+        { nome: "Coletes (5 unidades)", icone: "fas fa-shirt", preco: 3.00 }
+    ],
+    "Padel": [
+        { nome: "Raquete de Padel", icone: "fas fa-racquet", preco: 2.50 }, // Use um ícone apropriado
+        { nome: "Bolas de Padel (tubo)", icone: "fas fa-baseball-ball", preco: 1.50 } // Use um ícone apropriado
+    ],
+    "Ténis": [
+        { nome: "Raquete de Ténis", icone: "fas fa-racquet", preco: 2.50 },
+        { nome: "Bolas de Ténis (tubo)", icone: "fas fa-baseball-ball", preco: 1.50 }
+    ],
+    "Basquetebol": [
+        { nome: "Bola de Basquetebol", icone: "fas fa-basketball-ball", preco: 2.00 }
+    ],
+    // Adicione outros desportos e equipamentos conforme necessário
+};
+
+let precoBaseConviteAtual = 0; // Para guardar o preço base do convite ao abrir o modal
+
+// Função para carregar e exibir equipamentos no modal de convite
+function carregarEquipamentosParaModalConvite(campoId) {
+    console.log(`[reservas.js] Iniciando carregarEquipamentosParaModalConvite para campoId: ${campoId}`); // DEBUG
+    const listaEquipamentosEl = document.getElementById('listaEquipamentosConvite');
+    if (!listaEquipamentosEl) {
+        console.error("Elemento #listaEquipamentosConvite não encontrado.");
+        return;
+    }
+    listaEquipamentosEl.innerHTML = ''; // Limpa lista anterior
+
+    const campo = todosCampos.find(c => c.id.toString() === campoId.toString());
+    if (!campo || !Array.isArray(campo.desporto) || campo.desporto.length === 0) {
+        listaEquipamentosEl.innerHTML = '<li>Informação de desporto indisponível para este campo.</li>';
+        atualizarPrecoTotalConviteModal();
+        return;
+    }
+
+    // Considera o primeiro desporto listado para o campo para buscar equipamentos
+    const desportoPrincipal = campo.desporto[0]; 
+    const equipamentosParaDesporto = equipamentosDisponiveisPorDesporto[desportoPrincipal] || [];
+
+    if (equipamentosParaDesporto.length === 0) {
+        listaEquipamentosEl.innerHTML = '<li>Nenhum equipamento adicional disponível para este desporto.</li>';
+    } else {
+        equipamentosParaDesporto.forEach(equip => {
+            const li = document.createElement('li');
+            const checkboxId = `equip-convite-${equip.nome.replace(/\s+/g, '-').toLowerCase()}`;
+            li.innerHTML = `
+                <label for="${checkboxId}">
+                    <input type="checkbox" id="${checkboxId}" data-nome="${equip.nome}" data-preco="${equip.preco}">
+                    <i class="${equip.icone || 'fas fa-tools'}"></i> ${equip.nome} (+${parseFloat(equip.preco).toFixed(2)}€)
+                </label>
+            `;
+            li.querySelector('input[type="checkbox"]').addEventListener('change', atualizarPrecoTotalConviteModal);
+            listaEquipamentosEl.appendChild(li);
+        });
+    }
+    atualizarPrecoTotalConviteModal(); // Calcula e mostra o preço inicial
+}
+
+// Função para atualizar o cálculo do preço total no modal de convite
+function atualizarPrecoTotalConviteModal() {
+    const listaEquipamentosEl = document.getElementById('listaEquipamentosConvite');
+    const custoTotalEquipamentosEl = document.getElementById('custoTotalEquipamentosConvite');
+    const precoFinalEl = document.getElementById('confirmacaoConvitePrecoFinal');
+
+    if (!listaEquipamentosEl || !custoTotalEquipamentosEl || !precoFinalEl) return;
+
+    let custoEquipamentos = 0;
+    listaEquipamentosEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+        custoEquipamentos += parseFloat(checkbox.dataset.preco);
+    });
+
+    custoTotalEquipamentosEl.textContent = custoEquipamentos.toFixed(2);
+    const precoFinalTotal = precoBaseConviteAtual + custoEquipamentos;
+    precoFinalEl.textContent = `${precoFinalTotal.toFixed(2)}€`;
+}
+
+// Modificar abrirModalConfirmarAceitarConvite
+function abrirModalConfirmarAceitarConvite(detalhesConvite) {
+    console.log("[reservas.js] abrirModalConfirmarAceitarConvite chamada com:", detalhesConvite); // DEBUG
+    convitePendenteParaAceitar = detalhesConvite; 
+    precoBaseConviteAtual = parseFloat(detalhesConvite.preco);
+
+    // ... (população dos elementos do modal) ...
+    document.getElementById('confirmacaoConviteCampoNome').textContent = detalhesConvite.campoNome;
+    document.getElementById('confirmacaoConviteData').textContent = detalhesConvite.dataISO;
+    document.getElementById('confirmacaoConviteHora').textContent = detalhesConvite.hora;
+    document.getElementById('confirmacaoConviteOriginador').textContent = detalhesConvite.originador || 'Equipa Desconhecida';
+    document.getElementById('confirmacaoConvitePrecoBase').textContent = `${precoBaseConviteAtual.toFixed(2)}€`;
+
+    console.log("[reservas.js] Verificando todosCampos antes de carregar equipamentos:", todosCampos); // DEBUG
+    if (todosCampos && todosCampos.length > 0) {
+        carregarEquipamentosParaModalConvite(detalhesConvite.campoId);
+    } else {
+        console.warn("[reservas.js] 'todosCampos' está vazio ou não definido ao tentar carregar equipamentos para convite."); // DEBUG
+        document.getElementById('listaEquipamentosConvite').innerHTML = '<li>Erro ao carregar equipamentos (dados de campos indisponíveis).</li>';
+        atualizarPrecoTotalConviteModal(); // Para garantir que o preço final reflete a ausência de equipamentos
+    }
+    
+    if (modalConfirmarAceitarConvite) {
+        console.log("[reservas.js] Exibindo modalConfirmarAceitarConvite."); // DEBUG
+        modalConfirmarAceitarConvite.style.display = 'block';
+    } else {
+        console.error("[reservas.js] modalConfirmarAceitarConvite é null!"); // DEBUG
+    }
+}
+
+// Modificar processarAceitacaoConviteDefinitiva
+async function processarAceitacaoConviteDefinitiva() {
+    if (!convitePendenteParaAceitar) {
+        console.error("Nenhum convite pendente para aceitar.");
+        fecharModalConfirmarAceitarConvite();
+        return;
+    }
+
+    const { conviteId, campoId, campoNome, dataISO, hora, originador } = convitePendenteParaAceitar;
+    
+    let custoEquipamentosSelecionados = 0;
+    const equipamentosSelecionadosParaReserva = [];
+    const listaEquipamentosEl = document.getElementById('listaEquipamentosConvite');
+    if (listaEquipamentosEl) {
+        listaEquipamentosEl.querySelectorAll('input[type="checkbox"]:checked').forEach(checkbox => {
+            const precoEquip = parseFloat(checkbox.dataset.preco);
+            custoEquipamentosSelecionados += precoEquip;
+            equipamentosSelecionadosParaReserva.push({
+                nome: checkbox.dataset.nome,
+                preco: precoEquip
+            });
+        });
+    }
+
+    const precoFinalAPagar = precoBaseConviteAtual + custoEquipamentosSelecionados;
+
+    const [year, month, day] = dataISO.split('-');
+    const dataFormatadaParaStorage = `${day}/${month}/${year}`;
+    const userIdLogado = "prototipoUser"; // Para protótipo
+    let saldoAtual = getSaldoUtilizador();
+
+    if (isNaN(precoFinalAPagar) || precoFinalAPagar < 0) {
+        exibirFeedback("Preço final inválido para o convite.", "danger");
+        fecharModalConfirmarAceitarConvite();
+        return;
+    }
+
+    if (saldoAtual < precoFinalAPagar) {
+        exibirFeedback("Saldo insuficiente para aceitar este convite e reservar os equipamentos.", "danger");
+        if (typeof window.abrirModalSaldo === 'function') {
+            window.abrirModalSaldo();
+        }
+        fecharModalConfirmarAceitarConvite();
+        return; 
+    }
+
+    const novoSaldo = saldoAtual - precoFinalAPagar;
+    atualizarSaldoUtilizador(novoSaldo);
+
+    const novaReserva = {
+        id: `res-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        userId: userIdLogado,
+        campoId: campoId,
+        nomeCampo: campoNome,
+        data: dataFormatadaParaStorage,
+        horario: hora,
+        preco: precoFinalAPagar, // Preço total pago
+        // Opcional: pode querer guardar o preço base do convite e o custo dos equipamentos separadamente
+        // precoBaseOriginal: precoBaseConviteAtual, 
+        // custoEquipamentos: custoEquipamentosSelecionados,
+        comodidadesSelecionadas: [], // Manter para consistência, pode ser usado no futuro
+        equipamentosSelecionados: equipamentosSelecionadosParaReserva, // Guardar os equipamentos selecionados
+        estado: "Confirmada",
+        origem: "convite_aceite"
+    };
+    
+    todasReservas.push(novaReserva); 
+    guardarReservasNoLocalStorage(); 
+
+    exibirFeedback(`Convite aceite! Reserva para ${campoNome} em ${dataFormatadaParaStorage} às ${hora} confirmada (Equipamentos: ${equipamentosSelecionadosParaReserva.map(e => e.nome).join(', ') || 'Nenhum'}). Preço: ${precoFinalAPagar.toFixed(2)}€`, "success");
+    
+    const conviteCardElement = document.getElementById(`convite-${conviteId}`);
+    if (conviteCardElement) {
+        conviteCardElement.remove();
+    }
+    
+    renderizarMinhasReservas('listaMinhasReservas');
+    fecharModalConfirmarAceitarConvite();
+    atualizarVisibilidadeMensagemConvites();
+}
+
+// ... (restante do seu código, incluindo inicializarPaginaReservas onde carregarCampos é chamada)

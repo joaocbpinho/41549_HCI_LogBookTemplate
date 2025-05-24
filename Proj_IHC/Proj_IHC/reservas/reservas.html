@@ -64,30 +64,28 @@
     <section id="convites-pendentes-section" class="section">
       <h2>Convites Pendentes</h2>
       <div class="lista-convites cards">
-        <!-- Mensagem para quando não há convites -->
         <p id="mensagemSemConvites" class="sem-itens-mensagem" style="display: none;">Não tem convites pendentes de momento.</p>
         
-        <!-- Exemplo de Convite Estático Modificado -->
+        <!-- Exemplo de Convite Estático Modificado para usar Campo ID 1 -->
         <div class="card" id="convite-estatico-1"> 
           <h3>Convite para Jogo de Futebol</h3>
-          <p><strong>Campo:</strong> Estádio Municipal</p>
-          <p><strong>Data:</strong> 2025-07-15</p>
-          <p><strong>Hora:</strong> 19:00</p>
-          <p><strong>Convidado por:</strong> Equipa "Os Campeões"</p>
-          <p><strong>Preço para si:</strong> 10.00€</p>
+          <p><strong>Campo:</strong> Complexo Desportivo da Gafanha</p> <!-- Nome do Campo ID 1 -->
+          <p><strong>Data:</strong> 2025-08-10</p> <!-- Data de exemplo -->
+          <p><strong>Hora:</strong> 18:00</p> <!-- Hora de exemplo -->
+          <p><strong>Convidado por:</strong> Amigos da Gafanha</p> <!-- Originador de exemplo -->
+          <p><strong>Preço para si:</strong> 8.00€</p> <!-- Preço de exemplo -->
           <div class="reserva-actions">
             <button class="btn btn-success btn-aceitar-convite" 
                     data-convite-id="estatico-1" 
-                    data-campo-id="c2" 
-                    data-campo-nome="Estádio Municipal" 
-                    data-data="2025-07-15" 
-                    data-hora="19:00" 
-                    data-preco="10"
-                    data-originador="Equipa Os Campeões">Aceitar e Reservar</button>
+                    data-campo-id="1" 
+                    data-campo-nome="Complexo Desportivo da Gafanha" 
+                    data-data="2025-08-10" 
+                    data-hora="18:00" 
+                    data-preco="8" 
+                    data-originador="Amigos da Gafanha">Aceitar e Reservar</button>
             <button class="btn btn-danger btn-recusar-convite" data-convite-id="estatico-1">Recusar</button>
           </div>
         </div>
-        <!-- Adicione mais convites estáticos aqui se necessário, seguindo a nova estrutura -->
       </div>
     </section>
   </main>
@@ -207,7 +205,7 @@
     </div>
   </div>
 
-  <!-- NOVO: Modal para Confirmar Aceitação de Convite -->
+  <!-- NOVO: Modal para Confirmar Aceitação de Convite (MODIFICADO) -->
   <div id="modalConfirmarAceitarConvite" class="modal">
     <div class="modal-content">
       <span class="close" id="closeConfirmarAceitarConviteModal">&times;</span>
@@ -217,9 +215,20 @@
         <p><strong>Data:</strong> <span id="confirmacaoConviteData">N/D</span></p>
         <p><strong>Hora:</strong> <span id="confirmacaoConviteHora">N/D</span></p>
         <p><strong>Convidado por:</strong> <span id="confirmacaoConviteOriginador">N/D</span></p>
-        <hr>
-        <p class="preco-destacado"><strong>Preço para si:</strong> <span id="confirmacaoConvitePreco">N/D</span></p>
+        <p class="preco-base"><strong>Preço base para si:</strong> <span id="confirmacaoConvitePrecoBase">N/D</span></p>
       </div>
+
+      <!-- NOVA SECÇÃO DE EQUIPAMENTOS -->
+      <div id="equipamentosConviteSection" style="margin-top: 15px; margin-bottom:15px;">
+        <h4>Equipamentos Adicionais</h4>
+        <ul id="listaEquipamentosConvite" class="equipamento-lista">
+          <!-- Equipamentos serão carregados aqui pelo JS -->
+          <!-- Exemplo: <li><label><input type="checkbox" data-nome="Bolas" data-preco="1.00"> Bolas (+1.00€)</label></li> -->
+        </ul>
+        <p style="margin-top: 5px;"><strong>Custo total equipamentos:</strong> <span id="custoTotalEquipamentosConvite">0.00</span>€</p>
+      </div>
+      <hr>
+      <p class="preco-destacado"><strong>Preço TOTAL para si:</strong> <span id="confirmacaoConvitePrecoFinal">N/D</span></p>
       <p>Tem a certeza que deseja aceitar este convite e realizar a reserva?</p>
       <div class="modal-actions">
         <button id="btnCancelarAceitacaoConvite" class="btn-secundario">Cancelar</button>
