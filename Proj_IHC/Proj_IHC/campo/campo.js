@@ -262,7 +262,6 @@ window.abrirEquipamentos = function () {
                 } else {
                     li.setAttribute("data-tipo", "individual");
                     const span = document.createElement("span");
-                    span.style.color = "blue";
                     span.textContent = "(Individual +1€)";
                     li.appendChild(span);
                 }

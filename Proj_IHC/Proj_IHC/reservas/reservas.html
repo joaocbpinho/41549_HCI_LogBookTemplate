@@ -71,6 +71,7 @@
         
         <!-- Exemplo de Convite Estático Modificado para usar Campo ID 1 -->
         <div class="card" id="convite-estatico-1"> 
+          <div class = "card-content">
           <h3>Convite para Jogo de Futebol</h3>
           <p><strong>Campo:</strong> Complexo Desportivo da Gafanha</p> <!-- Nome do Campo ID 1 -->
           <p><strong>Data:</strong> 2025-08-10</p> <!-- Data de exemplo -->
@@ -89,6 +90,7 @@
             <button class="btn btn-danger btn-recusar-convite" data-convite-id="estatico-1">Recusar</button>
           </div>
         </div>
+      </div>
       </div>
     </section>
   </main>
@@ -152,7 +154,7 @@
           <span>Mastercard</span>
         </li>
         <li onclick="selecionarMetodo('mbway')">
-          <img src="../images/mbway_icon.png" alt="MB WAY">
+          <img src="../images/mbway_logo.svg" alt="MB WAY">
           <span>MB WAY</span>
         </li>
       </ul>
@@ -235,6 +237,12 @@
         <p><strong>Hora:</strong> <span id="confirmacaoConviteHora">N/D</span></p>
         <p><strong>Convidado por:</strong> <span id="confirmacaoConviteOriginador">N/D</span></p>
         <p class="preco-base"><strong>Preço base para si:</strong> <span id="confirmacaoConvitePrecoBase">N/D</span></p>
+        <!-- NOVO: Botão para direções -->
+        <div class="direcoes-container" style="margin-top: 10px;">
+          <button id="btnDirecoesConvite" class="btn btn-info" onclick="abrirDirecoesConviteModal()"">
+            <i class="fas fa-map-marker-alt"></i> Ver Direções
+          </button>
+        </div>
       </div>
 
       <!-- NOVA SECÇÃO DE EQUIPAMENTOS -->
@@ -249,9 +257,10 @@
       <hr>
       <p class="preco-destacado"><strong>Preço TOTAL para si:</strong> <span id="confirmacaoConvitePrecoFinal">N/D</span></p>
       <p>Tem a certeza que deseja aceitar este convite e realizar a reserva?</p>
-      <div class="modal-actions">
-        <button id="btnCancelarAceitacaoConvite" class="btn-secundario">Cancelar</button>
+      <div class="modal-actions" style="display: flex;justify-content: space-between;gap: 10px;/* margin-top: auto; // padding: 0 15px 15px 15px; */">
         <button id="btnConfirmarAceitacaoConviteDefinitivo" class="btn-success">Sim, Aceitar e Reservar</button>
+        <button id="btnCancelarAceitacaoConvite" class="btn-secundario">Cancelar</button>
+        
       </div>
     </div>
   </div>

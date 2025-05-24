@@ -548,6 +548,15 @@ function processarCancelamentoDefinitivo() {
     fecharModalConfirmarCancelar(); // Fecha o modal após a ação
     reservaIdParaCancelar = null;   // Limpa o ID
 }
+// Função para abrir direções do campo no convite
+window.abrirDirecoesConviteModal= function() {
+ 
+
+        // Abre o Google Maps com as coordenadas do campo
+    const url = `https://maps.app.goo.gl/ZZCxfYNBAncmJryq6`;
+    window.open(url, '_blank');
+   
+};
 function cancelarPresencas(event) {
     const reservaId = event.target.dataset.reservaId;
     const reservaIndex = todasReservas.findIndex(r => r.id && r.id.toString() === reservaId);
@@ -728,23 +737,23 @@ function carregarEquipas() {
 // Idealmente, isto viria de campos.json ou de um ficheiro de configuração dedicado
 const equipamentosDisponiveisPorDesporto = {
     "Futebol": [
-        { nome: "Bola de Futebol", icone: "fas fa-futbol", preco: 2.00 },
-        { nome: "Coletes (5 unidades)", icone: "fas fa-shirt", preco: 3.00 }
+        { nome: "Bola de Futebol", icone: "fas fa-futbol", preco: 1.00 },
+        { nome: "Coletes ", icone: "fas fa-shirt", preco: 1.00 }
     ],
     "Futsal": [
-        { nome: "Bola de Futsal", icone: "fas fa-futbol", preco: 2.00 },
-        { nome: "Coletes (5 unidades)", icone: "fas fa-shirt", preco: 3.00 }
+        { nome: "Bola de Futsal", icone: "fas fa-futbol", preco: 1.00 },
+        { nome: "Coletes" , icone: "fas fa-shirt", preco: 1.00 }
     ],
     "Padel": [
-        { nome: "Raquete de Padel", icone: "fas fa-racquet", preco: 2.50 }, // Use um ícone apropriado
-        { nome: "Bolas de Padel (tubo)", icone: "fas fa-baseball-ball", preco: 1.50 } // Use um ícone apropriado
+        { nome: "Raquete de Padel", icone: "fas fa-racquet", preco: 1.00 }, // Use um ícone apropriado
+        { nome: "Bolas de Padel (tubo)", icone: "fas fa-baseball-ball", preco: 1.00 } // Use um ícone apropriado
     ],
     "Ténis": [
-        { nome: "Raquete de Ténis", icone: "fas fa-racquet", preco: 2.50 },
-        { nome: "Bolas de Ténis (tubo)", icone: "fas fa-baseball-ball", preco: 1.50 }
+        { nome: "Raquete de Ténis", icone: "fas fa-racquet", preco: 1.00 },
+        { nome: "Bolas de Ténis (tubo)", icone: "fas fa-baseball-ball", preco: 1.00 }
     ],
     "Basquetebol": [
-        { nome: "Bola de Basquetebol", icone: "fas fa-basketball-ball", preco: 2.00 }
+        { nome: "Bola de Basquetebol", icone: "fas fa-basketball-ball", preco: 1.00 }
     ],
     // Adicione outros desportos e equipamentos conforme necessário
 };

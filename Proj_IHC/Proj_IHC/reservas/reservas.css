@@ -64,6 +64,7 @@ main {
   .card h3 {
     margin: 0 0 10px;
     font-size: 18px;
+    text-align: center;
     color: var(--primary-color);
   }
   
@@ -84,7 +85,7 @@ main {
   /* Botões de Ações */
   .reserva-actions {
   display: flex;
-  justify-content: flex-start; /* Ou flex-end, ou space-between conforme preferir */
+  justify-content: center; /* Ou flex-end, ou space-between conforme preferir */
   gap: 10px;
   margin-top: auto; /* Empurra as ações para o final do card se o card-content crescer */
   padding: 0 15px 15px 15px; /* Adiciona padding se os botões estiverem fora do card-content */
@@ -550,3 +551,4 @@ main {
   font-size: 14px;
   text-align: center;
 }
+
