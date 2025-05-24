@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> <!-- Se precisar de Font Awesome -->
 </head>
 <body>
+  <div id="feedbackMessage" style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050; padding: 15px; border-radius: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);"></div>
+
   <header>
     <a href="../index/index.html" class="back-button"> <!-- BOTÃO VOLTAR ADICIONADO -->
       <i class="fas fa-arrow-left"></i> Voltar
@@ -55,6 +57,37 @@
       <div id="listaMinhasReservas" class="cards">
         <!-- Cards serão inseridos aqui pelo JavaScript -->
         <p>A carregar reservas...</p>
+      </div>
+    </section>
+
+    <!-- SECÇÃO DE CONVITES PENDENTES MODIFICADA ABAIXO -->
+    <section id="convites-pendentes-section" class="section">
+      <h2>Convites Pendentes</h2>
+      <div class="lista-convites cards">
+        <!-- Mensagem para quando não há convites -->
+        <p id="mensagemSemConvites" class="sem-itens-mensagem" style="display: none;">Não tem convites pendentes de momento.</p>
+        
+        <!-- Exemplo de Convite Estático Modificado -->
+        <div class="card" id="convite-estatico-1"> 
+          <h3>Convite para Jogo de Futebol</h3>
+          <p><strong>Campo:</strong> Estádio Municipal</p>
+          <p><strong>Data:</strong> 2025-07-15</p>
+          <p><strong>Hora:</strong> 19:00</p>
+          <p><strong>Convidado por:</strong> Equipa "Os Campeões"</p>
+          <p><strong>Preço para si:</strong> 10.00€</p>
+          <div class="reserva-actions">
+            <button class="btn btn-success btn-aceitar-convite" 
+                    data-convite-id="estatico-1" 
+                    data-campo-id="c2" 
+                    data-campo-nome="Estádio Municipal" 
+                    data-data="2025-07-15" 
+                    data-hora="19:00" 
+                    data-preco="10"
+                    data-originador="Equipa Os Campeões">Aceitar e Reservar</button>
+            <button class="btn btn-danger btn-recusar-convite" data-convite-id="estatico-1">Recusar</button>
+          </div>
+        </div>
+        <!-- Adicione mais convites estáticos aqui se necessário, seguindo a nova estrutura -->
       </div>
     </section>
   </main>
@@ -174,7 +207,29 @@
     </div>
   </div>
 
-  <script src="../index/script.js"></script> <!-- ADICIONAR ESTA LINHA PARA SCRIPTS GLOBAIS -->
-  <script src="reservas.js"></script>
+  <!-- NOVO: Modal para Confirmar Aceitação de Convite -->
+  <div id="modalConfirmarAceitarConvite" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeConfirmarAceitarConviteModal">&times;</span>
+      <h2>Confirmar Aceitação do Convite</h2>
+      <div id="detalhesConviteParaConfirmar" class="resumo-reserva-detalhes">
+        <p><strong>Campo:</strong> <span id="confirmacaoConviteCampoNome">N/D</span></p>
+        <p><strong>Data:</strong> <span id="confirmacaoConviteData">N/D</span></p>
+        <p><strong>Hora:</strong> <span id="confirmacaoConviteHora">N/D</span></p>
+        <p><strong>Convidado por:</strong> <span id="confirmacaoConviteOriginador">N/D</span></p>
+        <hr>
+        <p class="preco-destacado"><strong>Preço para si:</strong> <span id="confirmacaoConvitePreco">N/D</span></p>
+      </div>
+      <p>Tem a certeza que deseja aceitar este convite e realizar a reserva?</p>
+      <div class="modal-actions">
+        <button id="btnCancelarAceitacaoConvite" class="btn-secundario">Cancelar</button>
+        <button id="btnConfirmarAceitacaoConviteDefinitivo" class="btn-success">Sim, Aceitar e Reservar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANTER ESTAS LINHAS DE SCRIPT NO FINAL DO BODY -->
+  <script src="../index/script.js"></script> 
+  <script src="reservas.js"></script> 
 </body>
 </html>

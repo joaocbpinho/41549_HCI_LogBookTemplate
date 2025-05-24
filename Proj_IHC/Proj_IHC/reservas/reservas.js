@@ -10,9 +10,219 @@ const modalConfirmarCancelar = document.getElementById('modalConfirmarCancelar')
 const btnCloseConfirmarCancelarModal = document.getElementById('closeConfirmarCancelarModal');
 const btnConfirmarCancelamentoDefinitivo = document.getElementById('btnConfirmarCancelamentoDefinitivo');
 const btnManterReserva = document.getElementById('btnManterReserva');
-const mensagemConfirmarCancelarEl = document.getElementById('mensagemConfirmarCancelar'); // Para personalizar a mensagem
+const mensagemConfirmarCancelarEl = document.getElementById('mensagemConfirmarCancelar'); 
 
-let reservaIdParaCancelar = null; // Variável para guardar o ID da reserva a ser cancelada
+// NOVO: Referências para o modal de confirmação de aceitar convite
+const modalConfirmarAceitarConvite = document.getElementById('modalConfirmarAceitarConvite');
+const btnCloseConfirmarAceitarConviteModal = document.getElementById('closeConfirmarAceitarConviteModal');
+const btnConfirmarAceitacaoConviteDefinitivo = document.getElementById('btnConfirmarAceitacaoConviteDefinitivo');
+const btnCancelarAceitacaoConvite = document.getElementById('btnCancelarAceitacaoConvite');
+let convitePendenteParaAceitar = null; 
+
+// NOVO: Referência para a mensagem de sem convites
+const mensagemSemConvitesEl = document.getElementById('mensagemSemConvites');
+const listaConvitesContainer = document.querySelector('#convites-pendentes-section .lista-convites.cards');
+
+
+let reservaIdParaCancelar = null; // Variável para guardar o ID da reserva a ser cancelada // DESCOMENTAR ESTA LINHA
+
+// NOVO: Funções para exibir mensagens de feedback
+function exibirFeedback(mensagem, tipo) { // tipo pode ser 'success', 'danger', 'info'
+    const feedbackEl = document.getElementById('feedbackMessage');
+    if (feedbackEl) {
+        feedbackEl.textContent = mensagem;
+        feedbackEl.className = `alert alert-${tipo}`; // Usa classes Bootstrap-like para estilo
+        feedbackEl.style.display = 'block';
+        setTimeout(() => {
+            feedbackEl.style.display = 'none';
+        }, 4000);
+    } else {
+        // Fallback se o elemento não existir
+        alert(`${tipo.toUpperCase()}: ${mensagem}`);
+    }
+}
+
+// Funções de utilidade para gestão de saldo e utilizador (MODIFICADAS)
+function getSaldoUtilizador() {
+    const saldoString = localStorage.getItem('saldoUsuario'); // Ler diretamente de 'saldoUsuario'
+    // console.log("[getSaldoUtilizador] saldoUsuario (string from localStorage):", saldoString);
+    if (saldoString === null) {
+        console.warn("[getSaldoUtilizador] 'saldoUsuario' não encontrado no localStorage. Retornando 0.");
+        return 0;
+    }
+    const saldoNumerico = parseFloat(saldoString);
+    if (isNaN(saldoNumerico)) {
+        console.warn("[getSaldoUtilizador] 'saldoUsuario' não é um número válido. Valor:", saldoString, ". Retornando 0.");
+        return 0;
+    }
+    // console.log("[getSaldoUtilizador] Saldo retornado (de saldoUsuario):", saldoNumerico);
+    return saldoNumerico;
+}
+
+function atualizarSaldoUtilizador(novoSaldo) {
+    if (typeof novoSaldo !== 'number' || isNaN(novoSaldo)) {
+        console.error("[atualizarSaldoUtilizador] Tentativa de atualizar saldo com valor não numérico:", novoSaldo);
+        return;
+    }
+    localStorage.setItem('saldoUsuario', novoSaldo.toFixed(2)); // Guardar como string, consistente com index/script.js
+    // console.log("[atualizarSaldoUtilizador] Saldo atualizado em 'saldoUsuario' para:", novoSaldo.toFixed(2));
+    
+    // Tenta chamar a função global para atualizar a navbar, se existir
+    if (typeof window.atualizarSaldoNavbar === 'function') {
+        window.atualizarSaldoNavbar();
+    } else if (document.getElementById("saldoAtual")) { // Fallback para atualizar diretamente se a função global não for encontrada
+        document.getElementById("saldoAtual").textContent = `${novoSaldo.toFixed(2)}€`;
+    }
+}
+
+// Funções de utilidade para gestão de reservas (consistente com campo.js)
+function getTodasReservas() {
+    return JSON.parse(localStorage.getItem('todasReservas')) || [];
+}
+
+function guardarTodasReservas(reservas) {
+    localStorage.setItem('todasReservas', JSON.stringify(reservas));
+}
+
+
+function abrirModalConfirmarAceitarConvite(detalhesConvite) {
+    convitePendenteParaAceitar = detalhesConvite; // Guarda os detalhes
+
+    document.getElementById('confirmacaoConviteCampoNome').textContent = detalhesConvite.campoNome;
+    document.getElementById('confirmacaoConviteData').textContent = detalhesConvite.dataISO; // Mostrar YYYY-MM-DD ou formatar
+    document.getElementById('confirmacaoConviteHora').textContent = detalhesConvite.hora;
+    document.getElementById('confirmacaoConviteOriginador').textContent = detalhesConvite.originador || 'Equipa Desconhecida'; // Adicionar 'originador' ao dataset do botão se quiser
+    document.getElementById('confirmacaoConvitePreco').textContent = `${parseFloat(detalhesConvite.preco).toFixed(2)}€`;
+
+    if (modalConfirmarAceitarConvite) {
+        modalConfirmarAceitarConvite.style.display = 'block';
+    }
+}
+
+function fecharModalConfirmarAceitarConvite() {
+    if (modalConfirmarAceitarConvite) {
+        modalConfirmarAceitarConvite.style.display = 'none';
+    }
+    convitePendenteParaAceitar = null; // Limpa os detalhes pendentes
+}
+
+// NOVO: Função para verificar e mostrar/esconder mensagem de sem convites
+function atualizarVisibilidadeMensagemConvites() {
+    if (listaConvitesContainer && mensagemSemConvitesEl) {
+        const numeroDeConvites = listaConvitesContainer.querySelectorAll('.card').length;
+        if (numeroDeConvites === 0) {
+            mensagemSemConvitesEl.style.display = 'block';
+        } else {
+            mensagemSemConvitesEl.style.display = 'none';
+        }
+    }
+}
+
+
+async function processarAceitacaoConviteDefinitiva() {
+    if (!convitePendenteParaAceitar) {
+        console.error("Nenhum convite pendente para aceitar.");
+        fecharModalConfirmarAceitarConvite();
+        return;
+    }
+
+    const { conviteId, campoId, campoNome, dataISO, hora, preco, originador } = convitePendenteParaAceitar;
+
+    // console.log(`[Convite ${conviteId}] Confirmada aceitação. Preço: ${preco}`);
+
+    const [year, month, day] = dataISO.split('-');
+    const dataFormatadaParaStorage = `${day}/${month}/${year}`;
+    const userIdLogado = "prototipoUser";
+    let saldoAtual = getSaldoUtilizador();
+
+    if (isNaN(preco) || preco <= 0) {
+        exibirFeedback("Preço inválido para o convite.", "danger");
+        fecharModalConfirmarAceitarConvite();
+        return;
+    }
+
+    if (saldoAtual < preco) {
+        exibirFeedback("Saldo insuficiente para aceitar este convite e reservar.", "danger");
+        if (typeof window.abrirModalSaldo === 'function') {
+            window.abrirModalSaldo();
+        }
+        fecharModalConfirmarAceitarConvite();
+        return;
+    }
+
+    const novoSaldo = saldoAtual - preco;
+    atualizarSaldoUtilizador(novoSaldo);
+
+    const novaReserva = {
+        id: `res-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        userId: userIdLogado,
+        campoId: campoId,
+        nomeCampo: campoNome,
+        data: dataFormatadaParaStorage,
+        horario: hora,
+        preco: preco,
+        comodidadesSelecionadas: [],
+        equipamentosSelecionados: [],
+        estado: "Confirmada",
+        origem: "convite_aceite"
+    };
+
+    todasReservas.push(novaReserva);
+    guardarReservasNoLocalStorage();
+
+    exibirFeedback(`Convite aceite! Reserva para ${campoNome} em ${dataFormatadaParaStorage} às ${hora} confirmada.`, "success");
+    
+    const conviteCardElement = document.getElementById(`convite-${convitePendenteParaAceitar.conviteId}`);
+    if (conviteCardElement) {
+        conviteCardElement.remove();
+    }
+    
+    renderizarMinhasReservas('listaMinhasReservas');
+    fecharModalConfirmarAceitarConvite();
+    atualizarVisibilidadeMensagemConvites(); // CHAMAR AQUI
+}
+
+
+function configurarBotoesConvite() {
+    document.querySelectorAll('.btn-aceitar-convite').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const conviteId = event.target.dataset.conviteId; // ex: "estatico-1"
+            const campoId = event.target.dataset.campoId;
+            const campoNome = event.target.dataset.campoNome;
+            const dataISO = event.target.dataset.data; // YYYY-MM-DD
+            const hora = event.target.dataset.hora; // HH:MM
+            const preco = parseFloat(event.target.dataset.preco);
+            // Para o campo "Convidado por:", pode adicionar um data-attribute ao botão no HTML
+            // Ex: data-originador="Equipa Os Campeões"
+            const originador = event.target.dataset.originador || button.closest('.card').querySelector('p:nth-of-type(4)').textContent.replace('Convidado por: ','').trim();
+
+
+            // Em vez de processar diretamente, abre o modal de confirmação
+            abrirModalConfirmarAceitarConvite({
+                conviteId, // Passa o ID original do convite para poder remover o card certo
+                campoId,
+                campoNome,
+                dataISO,
+                hora,
+                preco,
+                originador
+            });
+        });
+    });
+
+    document.querySelectorAll('.btn-recusar-convite').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const conviteId = event.target.dataset.conviteId;
+            const conviteCardElement = document.getElementById(`convite-${conviteId}`); // ID do card é "convite-estatico-1"
+            if (conviteCardElement) {
+                conviteCardElement.remove();
+            }
+            exibirFeedback("Convite recusado.", "info");
+            atualizarVisibilidadeMensagemConvites(); // CHAMAR AQUI
+        });
+    });
+    atualizarVisibilidadeMensagemConvites(); // CHAMAR AQUI para o estado inicial
+}
 
 // ========== FUNÇÕES DE CARREGAMENTO DE DADOS ==========
 
@@ -280,15 +490,8 @@ function processarCancelamentoDefinitivo() {
     const partePagaPeloUtilizador = parseFloat(reservaParaCancelar.preco) / numeroDeMembros;
 
     // Atualizar o saldo do utilizador
-    let saldoAtualNumerico = parseFloat(localStorage.getItem('saldoUsuario')) || 0.00;
-    saldoAtualNumerico += partePagaPeloUtilizador; // Devolve apenas a parte paga pelo utilizador
-    localStorage.setItem('saldoUsuario', saldoAtualNumerico.toFixed(2));
-
-    // Atualizar o saldo no DOM
-    const saldoAtualEl = document.getElementById("saldoAtual");
-    if (saldoAtualEl) {
-        saldoAtualEl.textContent = `${saldoAtualNumerico.toFixed(2)}€`;
-    }
+    let saldoAtualUtilizador = getSaldoUtilizador();
+    atualizarSaldoUtilizador(saldoAtualUtilizador + partePagaPeloUtilizador);
 
     // Remover a reserva do array
     const originalLength = todasReservas.length;
@@ -296,7 +499,8 @@ function processarCancelamentoDefinitivo() {
 
     if (todasReservas.length < originalLength) {
         guardarReservasNoLocalStorage();
-        exibirMensagem("sucesso", `Reserva ID: ${reservaIdParaCancelar} cancelada com sucesso! ${partePagaPeloUtilizador.toFixed(2)}€ devolvidos ao saldo.`);
+        // exibirMensagem("sucesso", `Reserva ID: ${reservaIdParaCancelar} cancelada com sucesso! ${partePagaPeloUtilizador.toFixed(2)}€ devolvidos ao saldo.`); // LINHA ANTIGA
+        exibirFeedback(`Reserva ID: ${reservaIdParaCancelar} cancelada com sucesso! ${partePagaPeloUtilizador.toFixed(2)}€ devolvidos ao saldo.`, "success"); // LINHA NOVA
         renderizarMinhasReservas('listaMinhasReservas');
     } else {
         alert(`[reservas.js] Erro ao tentar cancelar a reserva ID: ${reservaIdParaCancelar}. A reserva não foi removida ou já não existia.`);
@@ -314,7 +518,7 @@ function cancelarPresencas(event) {
         return;
     }
 
-    const userIdLogado = localStorage.getItem('userId') || '123456';
+    const userIdLogado = "prototipoUser"; // LINHA NOVA
     if (todasReservas[reservaIndex].userId !== userIdLogado) {
         alert("Apenas o criador da reserva pode gerir as presenças desta forma (ex: zerar confirmados).");
         return;
@@ -385,16 +589,15 @@ function adicionarEventListenersAcoes() {
 
 async function inicializarPaginaReservas() {
     try {
-        await carregarCampos();
-        await carregarReservas();
-        renderizarMinhasReservas('listaMinhasReservas');
+        await carregarCampos(); 
+        await carregarReservas(); 
+        renderizarMinhasReservas('listaMinhasReservas'); // Isto já trata a mensagem de "sem reservas"
+        configurarBotoesConvite(); // Isto agora também trata a mensagem de "sem convites" no final
 
-        // Adicionar event listener para fechar o modal de detalhes se ele existir
         if (spanCloseDetalhesReserva) {
             spanCloseDetalhesReserva.onclick = fecharModalDetalhesReserva;
         }
         
-        // Event listeners para o modal de confirmação de cancelamento
         if (btnCloseConfirmarCancelarModal) {
             btnCloseConfirmarCancelarModal.onclick = fecharModalConfirmarCancelar;
         }
@@ -405,13 +608,27 @@ async function inicializarPaginaReservas() {
             btnManterReserva.onclick = fecharModalConfirmarCancelar;
         }
 
-        // Fechar modais se clicar fora do conteúdo
+        // NOVO: Event listeners para o modal de confirmação de aceitar convite
+        if (btnCloseConfirmarAceitarConviteModal) {
+            btnCloseConfirmarAceitarConviteModal.onclick = fecharModalConfirmarAceitarConvite;
+        }
+        if (btnConfirmarAceitacaoConviteDefinitivo) {
+            btnConfirmarAceitacaoConviteDefinitivo.onclick = processarAceitacaoConviteDefinitiva;
+        }
+        if (btnCancelarAceitacaoConvite) {
+            btnCancelarAceitacaoConvite.onclick = fecharModalConfirmarAceitarConvite;
+        }
+
         window.addEventListener('click', function(event) {
             if (event.target === modalDetalhesReserva) {
                 fecharModalDetalhesReserva();
             }
             if (event.target === modalConfirmarCancelar) {
                 fecharModalConfirmarCancelar();
+            }
+            // NOVO: Fechar modal de aceitar convite se clicar fora
+            if (event.target === modalConfirmarAceitarConvite) {
+                fecharModalConfirmarAceitarConvite();
             }
         });
 
@@ -423,18 +640,21 @@ async function inicializarPaginaReservas() {
         }
     }
 }
+
+/* REMOVER ESTA FUNÇÃO SE NÃO FOR MAIS NECESSÁRIA APÓS PADRONIZAR PARA exibirFeedback
 function exibirMensagem(tipo, mensagem) {
-    const mensagemDiv = document.createElement("div");
-    mensagemDiv.className = `mensagem-${tipo}`; // "mensagem-sucesso" ou "mensagem-erro"
-    mensagemDiv.textContent = mensagem;
-  
-    document.body.appendChild(mensagemDiv);
-  
-    // Remover a mensagem após 3 segundos
-    setTimeout(() => {
-        mensagemDiv.remove();
-    }, 3000);
-  }
+  const mensagemDiv = document.createElement("div");
+  mensagemDiv.className = `mensagem-${tipo}`; // "mensagem-sucesso" ou "mensagem-erro"
+  mensagemDiv.textContent = mensagem;
+
+  document.body.appendChild(mensagemDiv);
+
+  // Remover a mensagem após 3 segundos
+  setTimeout(() => {
+      mensagemDiv.remove();
+  }, 3000);
+}
+*/
 
 function carregarEquipas() {
     try {
