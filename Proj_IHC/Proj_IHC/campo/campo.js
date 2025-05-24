@@ -171,6 +171,7 @@ window.abrirEquipamentos = function () {
 
             const equipamentosDesporto = equipamentos[campoSelecionado.desporto[0]] || [];
 
+            
             const listaComodidades = comodidadesModalEl.querySelector(".comodidades-lista");
             listaComodidades.innerHTML = ''; // Limpa a lista antes de adicionar
 
@@ -229,7 +230,8 @@ window.abrirEquipamentos = function () {
                     const btnMenos = document.createElement("button");
                     btnMenos.type = "button";
                     btnMenos.textContent = "-";
-                    btnMenos.style.marginLeft = "8px";
+                    btnMenos.className = "buttons-equip";
+                    // btnMenos.style.marginLeft = "8px";
                     btnMenos.onclick = function (e) {
                         e.stopPropagation();
                         let qtd = parseInt(inputQtd.value) || 1;
@@ -250,6 +252,7 @@ window.abrirEquipamentos = function () {
                     const btnMais = document.createElement("button");
                     btnMais.type = "button";
                     btnMais.textContent = "+";
+                    btnMais.className = "buttons-equip";
                     btnMais.onclick = function (e) {
                         e.stopPropagation();
                         let qtd = parseInt(inputQtd.value) || 1;

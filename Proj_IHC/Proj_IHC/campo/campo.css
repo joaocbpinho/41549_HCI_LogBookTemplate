@@ -629,3 +629,19 @@ body {
 .comodidades-content {
   text-align: center !important;
 }
+
+.buttons-equip {
+  background-color: var(--primary-color) !important;
+    color: white !important;
+    border: 2px solid var(--primary-color) !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s, color 0.3s !important;
+}
+
+.buttons-equip:hover {
+  background-color: white !important;
+  color: var(--primary-color) !important;
+  border: 2px solid var(--primary-color) !important;
+}

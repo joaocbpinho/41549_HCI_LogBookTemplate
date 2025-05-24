@@ -27,19 +27,18 @@ const listaConvitesContainer = document.querySelector('#convites-pendentes-secti
 let reservaIdParaCancelar = null; // Variável para guardar o ID da reserva a ser cancelada // DESCOMENTAR ESTA LINHA
 
 // NOVO: Funções para exibir mensagens de feedback
-function exibirFeedback(mensagem, tipo) { // tipo pode ser 'success', 'danger', 'info'
-    const feedbackEl = document.getElementById('feedbackMessage');
-    if (feedbackEl) {
-        feedbackEl.textContent = mensagem;
-        feedbackEl.className = `alert alert-${tipo}`; // Usa classes Bootstrap-like para estilo
-        feedbackEl.style.display = 'block';
-        setTimeout(() => {
-            feedbackEl.style.display = 'none';
-        }, 4000);
-    } else {
-        // Fallback se o elemento não existir
-        alert(`${tipo.toUpperCase()}: ${mensagem}`);
-    }
+function exibirFeedback(mensagem) { // tipo pode ser 'success', 'danger', 'info'
+    const mensagemSucesso = document.createElement("div");
+    mensagemSucesso.className = "mensagem-sucesso";
+    mensagemSucesso.textContent = mensagem;
+
+    document.body.appendChild(mensagemSucesso);
+
+    // Remover a mensagem após 3 segundos
+    setTimeout(() => {
+        mensagemSucesso.remove();
+    }, 3000);
+
 }
 
 // Funções de utilidade para gestão de saldo e utilizador (MODIFICADAS)
