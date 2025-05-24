@@ -217,13 +217,11 @@ window.abrirEquipamentos = function () {
                 ) {
                     li.setAttribute("data-tipo", "coletivo");
                     const span = document.createElement("span");
-                    span.style.color = "green";
                     span.textContent = "(Coletivo +1€)";
                     li.appendChild(span);
                 } else if (isIndividualComQuantidade) {
                     li.setAttribute("data-tipo", "individual");
                     const span = document.createElement("span");
-                    span.style.color = "blue";
                     span.textContent = "(Individual +1€/un)";
                     li.appendChild(span);
 
@@ -665,6 +663,7 @@ window.realizarPagamento = async function () {
 
     let precoBase = parseFloat(campoAtual.preco_hora);
     // ...dentro de window.realizarPagamento...
+    let precoComodidadescoletivas = 0;
     let precoComodidades = 0;
     const equipamentosSelecionados = Array.from(document.querySelectorAll('.equipamento.selecionada'));
     const equipamentosInfo = equipamentosSelecionados.map(li => {
@@ -677,28 +676,28 @@ window.realizarPagamento = async function () {
         }
         if (tipo === "coletivo") {
             if (equipaSelecionadaNome && numeroMembrosEquipaOriginal > 0) {
-                precoComodidades += 1 / numeroMembrosEquipaOriginal;
+                precoComodidadescoletivas += 1;
                 return `${nome} (Coletivo, +1€ dividido)`;
             } else {
-                precoComodidades += 1;
+                precoComodidadescoletivas += 1;
                 return `${nome} (Coletivo, +1€)`;
             }
         } else {
             precoComodidades += quantidade * 1;
-            return `${nome} (Individual, ${quantidade}x +${quantidade}€)`;
+            return precoComodidades,`${nome} (Individual, ${quantidade}x +${quantidade}€)`;
         }
     });
         // ...existing code...
     document.getElementById('confirmacaoComodidades').textContent = equipamentosInfo.length > 0 ? equipamentosInfo.join(', ') : 'Nenhum';
     // ...existing code...
 
-    const precoTotalReserva = precoBase + precoComodidades;
-
+    const precoTotalReserva = precoBase + precoComodidadescoletivas + precoComodidades; // Preço total da reserva
+    const precoadividir = precoBase + precoComodidadescoletivas; // Preço a dividir entre os membros da equipa
     // ...existing code...
     let precoAPagarPeloUtilizador = precoTotalReserva; 
     const capacidadeCampo = parseInt(campoAtual.capacidade); // Definindo um valor padrão para a capacidade
     if (equipaSelecionadaNome && numeroMembrosEquipaOriginal > 0) {
-        precoAPagarPeloUtilizador = precoTotalReserva / numeroMembrosEquipaOriginal;
+        precoAPagarPeloUtilizador = (precoadividir / numeroMembrosEquipaOriginal) + precoComodidades;
     } else {
         precoAPagarPeloUtilizador = precoTotalReserva;
     }
