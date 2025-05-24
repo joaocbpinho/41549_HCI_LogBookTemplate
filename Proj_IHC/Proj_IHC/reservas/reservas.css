@@ -1,115 +1,62 @@
-/* Paleta de Cores */
-:root {
-    --primary-color: #0078d7;
-    --secondary-color: #f4f4f9;
-    --text-color: #333;
-    --hover-color: #005a9e;
-    --background-color: #ffffff;
-    --border-color: #ccc;
-  }
-  
-  /* Geral */
-  body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-  }
-  
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .logo-img {
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  .header-icons {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-  
-  #saldoContainer {
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    padding: 5px 15px;
-    border: 1px solid white;
-    border-radius: 20px;
-    background-color: var(--hover-color);
-  }
-  
-  #saldoContainer:hover {
-    background-color: var(--primary-color);
-  }
-  
-  #profileButton {
-    background-color: var(--hover-color);
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  #profileButton:hover {
-    background-color: var(--primary-color);
-  }
-  
-  /* Main Content */
-  main {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .section {
-    margin-bottom: 30px;
-  }
-  
-  .section h2 {
-    text-align: left;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    border-bottom: 2px solid var(--border-color);
-    padding-bottom: 5px;
-  }
-  
-  /* Cartões */
-  .cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .card {
-    background-color: var(--background-color);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  
-  .card:hover {
+/* Main Content */
+main {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section h2 {
+  text-align: left;
+  /* color: var(--primary-color); */ /* Esta cor virá do index/styles.css se :root for removido */
+  color: #333; /* Ou defina uma cor específica se não quiser a do :root do index */
+  margin-bottom: 20px;
+  font-size: 20px; /* Pode ajustar se quiser diferente do index */
+  font-weight: bold;
+  border-bottom: 2px solid #ccc; /* var(--border-color) virá do index/styles.css */
+  padding-bottom: 5px;
+}
+
+/* Cartões */
+.cards {
+  /* display: flex; */ 
+  /* flex-direction: column; */ 
+  gap: 20px; 
+}
+
+.card {
+  background-color: #ffffff; /* var(--background-color) virá do index/styles.css */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 180px; 
+  border: 1px solid #e0e0e0; 
+  display: flex; 
+  flex-direction: column; 
+}
+
+.card .card-content {
+  padding: 15px; 
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+.card .card-content p {
+  margin: 5px 0; 
+  font-size: 14px;
+  color: #333; /* var(--text-color) virá do index/styles.css */
+}
+
+.card .card-content p:last-child {
+    margin-bottom: 10px; /* Adiciona um pouco de espaço antes das ações */
+}
+
+
+.card:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
@@ -136,10 +83,15 @@
   
   /* Botões de Ações */
   .reserva-actions {
-    display: flex;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-top: 15px;
+  display: flex;
+  justify-content: flex-start; /* Ou flex-end, ou space-between conforme preferir */
+  gap: 10px;
+  margin-top: auto; /* Empurra as ações para o final do card se o card-content crescer */
+  padding: 0 15px 15px 15px; /* Adiciona padding se os botões estiverem fora do card-content */
+  /* Se os botões estiverem DENTRO do card-content, o padding já estará lá.
+     Nesse caso, apenas margin-top: auto; seria suficiente.
+     Vamos assumir que os botões ficam no final do .card, mas fora do .card-content principal.
+     Se preferir dentro, ajuste o JS e remova o padding daqui. */
   }
   
   .reserva-actions button {
@@ -158,8 +110,9 @@
     background-color: white;
     color: var(--primary-color);
   }
-  /* Sidebar */
-.sidebar {
+  /* REMOVER TODA A SECÇÃO DE ESTILOS DA SIDEBAR ABAIXO DE RESERVAS.CSS */
+  /*
+  .sidebar {
     height: 100%;
     width: 0;
     position: fixed;
@@ -250,17 +203,19 @@
   }
 
   .sidebar .sidebar-logout {
-    margin-top: auto; /* Empurra o botão para baixo */
+    margin-top: auto; 
     margin-bottom: 20px;
     color: #dc3545;
-    border-left: 3px solid transparent; /* Garante que não tem borda por defeito */
+    border-left: 3px solid transparent; 
   }
 
   .sidebar .sidebar-logout:hover {
     background-color: #dc3545;
     color: white;
-    border-left-color: #dc3545; /* Mantém consistência */
+    border-left-color: #dc3545; 
   }
+  */
+  /* FIM DA SECÇÃO A SER REMOVIDA */
 
   /* Estilos para Modal */
   .modal {
@@ -577,4 +532,21 @@
 #modalConfirmarAceitarConvite .preco-base {
     font-size: 0.9em;
     color: #555;
+}
+
+/* Painel de Notificações (DEVE SER IGUAL AO INDEX.HTML) */
+#notificationPanel {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#notificationPanel p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+  text-align: center;
 }

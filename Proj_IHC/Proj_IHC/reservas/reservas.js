@@ -364,35 +364,19 @@ function renderizarMinhasReservas(containerId) {
         }
 
         const card = document.createElement('div');
-        card.className = 'card';
-        const precoTexto = (reserva.preco !== undefined && reserva.preco !== null)
-            ? parseFloat(reserva.preco).toFixed(2) + '€'
-            : 'N/D';
-        
-        const comodidadesTexto = reserva.comodidades && reserva.comodidades.length > 0 ? reserva.comodidades.join(', ') : 'Nenhuma especificada';
+        card.className = 'card'; // A classe .cards já está no container
 
-        const reservaIdParaBotao = reserva.id || `reserva_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-        if (!reserva.id) {
-            console.warn("[reservas.js] Reserva sem ID, gerando um temporário para o botão:", reserva);
-        }
-
-        const equipasGuardadas = carregarEquipas();
-        const totalMembros = Array.isArray(reserva.equipasConvidadas) && reserva.equipasConvidadas.length > 0
-            ? reserva.equipasConvidadas.reduce((total, equipaNome) => {
-                const equipa = equipasGuardadas.find(e => e.nome.trim().toLowerCase() === equipaNome.trim().toLowerCase());
-                return total + (Array.isArray(equipa?.membros) ? equipa.membros.length : 0);
-            }, 1) // Inclui o utilizador
-            : 1;
-
-        const confirmadosTexto = `${reserva.numConfirmados || 2} / ${totalMembros} membros`;
-
+        // Envolver o conteúdo principal em .card-content
+        // As .reserva-actions ficarão fora do .card-content para melhor controle de layout flex
         card.innerHTML = `
-            <h3>${nomeCampo}</h3>
-            <p><strong>Data:</strong> ${dataFormatada}</p>
-            <p><strong>Horário:</strong> ${reserva.horario || 'N/D'}</p>
-            <p><strong>Preço:</strong> ${precoTexto}</p>
-            <p><strong>Comodidades Solicitadas:</strong> ${comodidadesTexto}</p>
-            <p><strong>Confirmados:</strong> ${confirmadosTexto}</p>
+            <div class="card-content">
+                <h3>${nomeCampo}</h3>
+                <p><strong>Data:</strong> ${dataFormatada}</p>
+                <p><strong>Horário:</strong> ${reserva.horario || 'N/D'}</p>
+                <p><strong>Preço:</strong> ${precoTexto}</p>
+                <p><strong>Comodidades Solicitadas:</strong> ${comodidadesTexto}</p>
+                <p><strong>Confirmados:</strong> ${confirmadosTexto}</p>
+            </div>
             <div class="reserva-actions">
                 <button class="detalhes-btn" data-reserva-id="${reservaIdParaBotao}">Mais Detalhes</button>
                 <button class="cancelar-reserva-btn" data-reserva-id="${reservaIdParaBotao}">Cancelar Reserva</button>

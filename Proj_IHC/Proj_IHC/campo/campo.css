@@ -6,50 +6,6 @@ body {
   color: var(--text-color);
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background-color: var(--primary-color);
-  color: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-header .logo {
-  display: flex;
-  align-items: center;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-header .logo img {
-  height: 40px;
-  margin-right: 10px;
-}
-
-.header-icons {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-#saldoContainer {
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
-  color: white;
-  padding: 5px 15px;
-  border: 1px solid white;
-  border-radius: 20px;
-  background-color: var(--hover-primary-color);
-}
-
-#saldoContainer:hover {
-  background-color: var(--primary-color);
-}
-
-
 .campo-section {
   text-align: center;
   padding: 20px;

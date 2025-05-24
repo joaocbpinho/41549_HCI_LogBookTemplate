@@ -202,110 +202,140 @@
     </div>
   </div>
 
-  <!-- Modal Adicionar Saldo (COPIADO DE INDEX.HTML) -->
-  <div id="modalAdicionarSaldo" class="modal">
-    <div class="modal-content">
+  <!-- Modal Adicionar Saldo (ATUALIZADO PARA SER IGUAL AO INDEX.HTML) -->
+  <div id="modalAdicionarSaldo" class="popup"> <!-- Mantém a classe popup para herdar estilos base -->
+    <div class="popup-content"> <!-- Usar popup-content para consistência com index.css -->
       <span class="close" onclick="fecharModalSaldo()">&times;</span>
       <h2>Adicionar Saldo</h2>
-      <div class="saldo-input-container">
-        <label for="valorSaldo">Valor a adicionar:</label>
-        <input type="number" id="valorSaldo" placeholder="0.00" min="0.01" step="0.01">
-        <span>€</span>
-      </div>
+
+      <!-- Opções de Valor -->
       <div class="saldo-opcoes">
-        <button onclick="definirValorSaldo(5)">+5€</button>
-        <button onclick="definirValorSaldo(10)">+10€</button>
-        <button onclick="definirValorSaldo(20)">+20€</button>
-        <button onclick="definirValorSaldo(50)">+50€</button>
+        <button onclick="definirValorSaldo(10)">10€</button>
+        <button onclick="definirValorSaldo(20)">20€</button>
+        <button onclick="definirValorSaldo(50)">50€</button>
+        <button onclick="definirValorSaldo(100)">100€</button>
       </div>
 
+      <!-- Input de Valor -->
+      <div class="saldo-input-container">
+          <label for="valorSaldo">Valor:</label>
+          <input type="text" id="valorSaldo" placeholder="0.00" step="0.01" min="0"/>
+          <span>€</span>
+      </div>
+
+      <!-- Secção Método de Pagamento -->
       <div class="metodo-pagamento">
         <div class="metodo-header">
           <h3>Método de Pagamento</h3>
-          <a href="#" class="alterar-link" onclick="abrirModalMetodosPagamento()">Alterar</a>
+          <a class="alterar-link" onclick="abrirModalMetodosPagamento()">Alterar</a>
         </div>
-        <div class="metodo-detalhes" id="metodoAtualDisplay">
+        <div class="metodo-detalhes" id="metodoSelecionadoContainer">
+          <!-- Conteúdo será preenchido pelo JavaScript -->
           <div class="metodo-icone">
-            <img src="../images/visa_icon.png" alt="Visa" id="metodoIconeAtual">
+              <img id="metodoSelecionadoIcone" src="../images/mbway_logo.svg" alt="Método"> <!-- Imagem Padrão, ajuste o src se necessário -->
           </div>
           <div class="metodo-info">
-            <p id="metodoNomeAtual">Visa</p>
-            <p id="metodoDetalheAtual">**** 1234</p>
+              <p id="metodoSelecionadoNome">Nenhum selecionado</p>
+              <p id="metodoSelecionadoDetalhe"></p> 
           </div>
         </div>
       </div>
+
+      <!-- Botão Depositar -->
       <button class="btn-depositar" onclick="adicionarSaldo()">Depositar</button>
     </div>
   </div>
 
-  <!-- Modal para Selecionar Método de Pagamento (COPIADO DE INDEX.HTML) -->
+  <!-- Modal para Selecionar Método de Pagamento (Verificar se já é igual ao index.html) -->
   <div id="modalMetodoPagamento" class="popup">
     <div class="popup-content">
       <span class="close" onclick="fecharModalMetodosPagamento()">&times;</span>
       <h2>Selecionar Método de Pagamento</h2>
       <ul class="metodos-pagamento-lista">
-        <li onclick="selecionarMetodo('visa')">
-          <img src="../images/visa_icon.png" alt="Visa">
-          <span>Visa</span>
-        </li>
-        <li onclick="selecionarMetodo('mastercard')">
-          <img src="../images/mastercard_icon.png" alt="Mastercard">
-          <span>Mastercard</span>
+        <li onclick="selecionarMetodo('visa')"> <!-- Assumindo que 'visa' cobre Visa/Mastercard aqui -->
+          <img src="../images/card_logo.svg" alt="Visa/Mastercard"> 
+          <span>Visa / Mastercard</span>
         </li>
         <li onclick="selecionarMetodo('mbway')">
-          <img src="../images/mbway_icon.png" alt="MB WAY">
+          <img src="../images/mbway_logo.svg" alt="MB WAY"> 
           <span>MB WAY</span>
+        </li>
+        <li onclick="selecionarMetodo('paypal')">
+          <img src="../images/image.png" alt="PayPal"> <!-- Verifique se esta imagem existe e o caminho está correto -->
+          <span>PayPal</span>
         </li>
       </ul>
     </div>
   </div>
 
-  <!-- Modal para Detalhes do Cartão (COPIADO DE INDEX.HTML) -->
+  <!-- Modal para Detalhes do Cartão (Verificar se já é igual ao index.html) -->
   <div id="modalDetalhesCartao" class="popup">
     <div class="popup-content">
       <span class="close" onclick="fecharModalDetalhesCartao()">&times;</span>
       <h2>Detalhes do Cartão</h2>
-      <label for="numeroCartao">Número do Cartão:</label>
-      <input type="text" id="numeroCartao" placeholder="xxxx xxxx xxxx xxxx">
+      <div>
+        <label for="numeroCartao">Número do Cartão</label>
+        <input type="text" id="numeroCartao" placeholder="**** **** **** ****">
+      </div>
+      <div>
+        <label for="nomeTitular">Nome do Titular</label>
+        <input type="text" id="nomeTitular" placeholder="Nome como aparece no cartão">
+      </div>
       <div class="cartao-detalhes">
         <div>
-          <label for="validadeCartao">Validade (MM/AA):</label>
-          <input type="text" id="validadeCartao" placeholder="MM/AA">
+          <label for="dataValidade">Data de Validade</label>
+          <input type="text" id="dataValidade" placeholder="MM/AA">
         </div>
         <div>
-          <label for="cvvCartao">CVV:</label>
-          <input type="text" id="cvvCartao" placeholder="123">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" placeholder="***">
         </div>
       </div>
       <button class="btn-confirmar" onclick="confirmarDetalhesCartao()">Confirmar</button>
     </div>
   </div>
 
-  <!-- Barra Lateral do Perfil (COPIADO DE INDEX.HTML) -->
+  <!-- NOVO: Modal Confirmação de Pagamento (COPIAR DE INDEX.HTML) -->
+  <div id="modalConfirmacaoPagamento" class="popup">
+    <div class="popup-content">
+      <span class="close" onclick="fecharModalConfirmacaoPagamento()">&times;</span>
+      <div class="confirmacao-icon">
+        <img src="../images/check_icon.png" alt="Confirmado"> <!-- Certifique-se que este caminho é válido -->
+      </div>
+      <h2>Pagamento Confirmado!</h2>
+      <p id="mensagemConfirmacaoPagamento">O seu saldo foi atualizado com sucesso.</p>
+      <button class="btn-ok" onclick="fecharModalConfirmacaoPagamento()">OK</button>
+    </div>
+  </div>
+
+  <!-- Barra Lateral do Perfil (ATUALIZADA PARA CONSISTÊNCIA COM INDEX.HTML) -->
   <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeProfileSidebar()"></div>
   <div id="profileSidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeProfileSidebar()">&times;</a>
+
+    <!-- Secção de Informações do Perfil -->
     <div class="profile-info">
-      <img src="../images/default_profile.png" alt="Foto de Perfil" class="profile-pic">
+      <img src="../images/persona1_joao.png" alt="Foto de Perfil" class="profile-pic"> <!-- Consistente com index.html -->
       <div class="profile-text">
-        <span class="profile-name">Utilizador</span>
-        <span class="profile-id">#12345</span>
+        <span class="profile-name">João Silva</span> <!-- Consistente com index.html -->
+        <span class="profile-id">ID: 123456</span> <!-- Consistente com index.html -->
       </div>
     </div>
+
+    <!-- Links do Menu -->
     <a href="../index/index.html">🏠 Início</a>
-    <a href="javascript:void(0)" onclick="toggleNotificationPanel(event)">🔔 Notificações</a>
+    <a href="javascript:void(0)" onclick="toggleNotificationPanel(event)">🔔 Notificações</a> <!-- Função global -->
     <a href="equipa.html">👥 Equipas</a>
     <a href="../reservas/reservas.html">📅 Reservas</a>
-    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a>
+    <a href="#" class="sidebar-logout" onclick="fazerLogout()">🚪 Sair</a> <!-- Função global -->
   </div>
 
-  <!-- Painel de Notificações (COPIADO DE INDEX.HTML) -->
+  <!-- Painel de Notificações (ATUALIZADO PARA CONSISTÊNCIA COM INDEX.HTML) -->
   <div id="notificationPanel" class="notification-panel">
-    <p>Sem notificações novas.</p>
+      <p>Sem notificações novas.</p>
   </div>
 
-  <script src="../index/script.js"></script> <!-- ADICIONAR ESTA LINHA PARA SCRIPTS GLOBAIS -->
+  <script src="../index/script.js"></script> 
   <script src="equipa.js"></script>
 </body>
-
 </html>
