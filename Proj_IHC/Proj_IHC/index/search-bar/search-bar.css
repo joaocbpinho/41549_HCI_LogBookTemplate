@@ -10,7 +10,7 @@
     margin: 30px auto; /* Mantido */
     padding: 0 10px; /* Mantido */
     gap: 0; /* Mantido */
-    overflow: hidden; /* COMENTE OU REMOVA ESTA LINHA */
+    /* overflow: hidden; */ /* COMENTE OU REMOVA ESTA LINHA */
     grid-template-columns: 1.5fr 1.2fr 1.2fr 1fr auto; /* Mantido */
   }
   
